@@ -1,24 +1,757 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Payment Services</title>
-<style>
-:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111;background:#fff}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#fff}.app{min-height:100vh;display:grid;grid-template-columns:260px 1fr;padding:28px;gap:28px}.sidebar{border-right:1px solid #e5e7eb;padding:12px 22px 12px 0}.menu{display:grid;gap:8px}.service{width:100%;display:flex;align-items:center;gap:13px;padding:13px 14px;border:1px solid transparent;border-radius:12px;background:#fff;color:#111;text-align:left;font:inherit;font-weight:600;cursor:pointer;transition:.2s ease}.service:hover{background:#f7f7f7;border-color:#e5e7eb}.service.active{background:#f0f0f0;border-color:#e1e1e1}.service:focus-visible{outline:2px solid #111;outline-offset:2px}.icon{width:28px;height:28px;display:grid;place-items:center;flex:none;color:#111}.icon svg{width:100%;height:100%;display:block}.name{font-size:15px}.detail{min-width:0;display:flex;align-items:center;justify-content:center;padding:12px 0}.panel{width:min(680px,100%);min-height:360px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;box-shadow:0 12px 32px rgba(17,17,17,.07);display:grid;place-items:center;padding:48px;animation:enter .28s ease both}.panel[hidden]{display:none}.panel-inner{text-align:center;display:grid;justify-items:center;gap:18px}.panel-logo{width:54px;height:54px}.panel-name{margin:0;font-size:16px;font-weight:600;color:#555}.panel-title{margin:0;font-size:38px;letter-spacing:-1.4px;line-height:1.05}@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@media(max-width:680px){.app{display:flex;flex-direction:column;padding:18px;gap:18px}.sidebar{border-right:0;border-bottom:1px solid #e5e7eb;padding:0 0 18px}.menu{grid-template-columns:repeat(3,1fr);gap:7px}.service{flex-direction:column;justify-content:center;gap:7px;padding:12px 6px;text-align:center}.name{font-size:12px}.detail{padding:0}.panel{min-height:300px;padding:30px}.panel-title{font-size:32px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Edit and download a clearly watermarked sample payment screen mockup. No payments are processed.">
+  <meta name="theme-color" content="#f2f4f7">
+  <title>Payment Demo Mockup Studio</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #222a35;
+      background: #f2f4f7;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-optical-sizing: auto;
+      --ink: #222a35;
+      --muted: #687383;
+      --line: #e1e5eb;
+      --orange: #ed9417;
+      --orange-dark: #9d5018;
+      --demo: #a5342e;
+    }
+
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; background: #f2f4f7; }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .studio-shell {
+      width: min(1400px, calc(100% - 40px));
+      min-height: calc(100vh - 40px);
+      margin: 20px auto;
+      display: grid;
+      grid-template-columns: 350px minmax(0, 1fr);
+      align-items: start;
+      gap: 22px;
+    }
+    .editor-panel, .preview-panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 12px 36px rgba(22, 32, 48, .06);
+    }
+    .editor-panel {
+      position: sticky;
+      top: 20px;
+      height: calc(100vh - 40px);
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+    }
+    .editor-header {
+      flex: none;
+      padding: 19px 22px 17px;
+      border-bottom: 1px solid #eceff3;
+    }
+    .studio-brand { display: flex; align-items: center; gap: 11px; }
+    .studio-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      flex: none;
+      place-items: center;
+      border-radius: 12px;
+      background: #fff2df;
+      color: var(--orange-dark);
+    }
+    .studio-mark svg { width: 21px; height: 21px; }
+    .studio-brand-name { margin: 0; font-size: 13px; font-weight: 750; letter-spacing: .025em; }
+    .studio-brand-caption { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+    .safety-flag {
+      margin-top: 15px;
+      padding: 10px 11px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid #f0c5bd;
+      border-radius: 11px;
+      background: #fff4f1;
+      color: #812c27;
+    }
+    .safety-dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: #bf3b32; }
+    .safety-copy { display: grid; gap: 2px; }
+    .safety-copy strong { font-size: 10px; letter-spacing: .075em; }
+    .safety-copy span { font-size: 10px; }
+    .editor-body { flex: 1; overflow-y: auto; padding: 20px 22px 24px; scrollbar-color: #c8ced7 transparent; scrollbar-width: thin; }
+    .editor-title { margin: 0; font-size: 22px; line-height: 1.2; letter-spacing: -.55px; }
+    .editor-description { margin: 7px 0 19px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .editor-form { display: grid; gap: 20px; }
+    .editor-section { min-width: 0; margin: 0; padding: 0; border: 0; }
+    .section-title { margin: 0 0 11px; padding: 0; color: #404a58; font-size: 10px; font-weight: 800; letter-spacing: .095em; text-transform: uppercase; }
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 10px; }
+    .field-grid.single { grid-template-columns: 1fr; }
+    .field { min-width: 0; display: grid; align-content: start; gap: 6px; }
+    .field.wide { grid-column: 1 / -1; }
+    .field label { color: #475161; font-size: 11px; font-weight: 650; }
+    .field input, .field textarea {
+      width: 100%;
+      min-height: 40px;
+      padding: 9px 10px;
+      border: 1px solid #dce1e7;
+      border-radius: 9px;
+      outline: 0;
+      background: #fff;
+      color: var(--ink);
+      font-size: 12px;
+      transition: border-color .16s ease, box-shadow .16s ease;
+    }
+    .field textarea { min-height: 66px; resize: vertical; line-height: 1.45; }
+    .field input:focus, .field textarea:focus { border-color: #dd8a22; box-shadow: 0 0 0 3px rgba(237, 148, 23, .15); }
+    .field-hint { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    .editor-footer { flex: none; padding: 14px 22px 16px; border-top: 1px solid #eceff3; background: #fff; }
+    .download-button {
+      width: 100%;
+      min-height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 0;
+      border-radius: 11px;
+      background: #242c38;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 750;
+      transition: background .16s ease, transform .16s ease;
+    }
+    .download-button:hover:not(:disabled) { transform: translateY(-1px); background: #111720; }
+    .download-button:focus-visible, .reset-button:focus-visible { outline: 2px solid #c76722; outline-offset: 3px; }
+    .download-button:disabled { cursor: not-allowed; opacity: .5; }
+    .download-button svg { width: 17px; height: 17px; }
+    .download-status { min-height: 14px; margin: 9px 0 0; color: #536070; text-align: center; font-size: 10px; line-height: 1.4; }
+
+    .preview-panel { min-height: calc(100vh - 40px); display: grid; grid-template-rows: auto 1fr auto; }
+    .preview-toolbar {
+      min-height: 66px;
+      padding: 12px 19px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #e9edf1;
+    }
+    .preview-heading h2 { margin: 0; font-size: 13px; font-weight: 750; }
+    .preview-heading p { margin: 4px 0 0; color: var(--muted); font-size: 10px; }
+    .toolbar-actions { display: flex; align-items: center; gap: 10px; }
+    .live-label { display: inline-flex; align-items: center; gap: 6px; color: #526273; font-size: 10px; white-space: nowrap; }
+    .live-label::before { width: 7px; height: 7px; border-radius: 50%; background: #3e9a67; content: ""; }
+    .reset-button {
+      min-height: 33px;
+      padding: 0 10px;
+      border: 1px solid #dfe4ea;
+      border-radius: 8px;
+      background: #fff;
+      color: #414d5b;
+      font-size: 10px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+    .reset-button:hover { background: #f7f8fa; }
+    .preview-stage {
+      min-height: 500px;
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: auto;
+      background-color: #f6f7f9;
+      background-image: radial-gradient(#dce1e8 .85px, transparent .85px);
+      background-size: 17px 17px;
+    }
+    #mockupCanvas {
+      display: block;
+      width: min(100%, 360px);
+      height: auto;
+      flex: none;
+      border: 1px solid rgba(28, 37, 49, .08);
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 16px 44px rgba(32, 42, 55, .16);
+    }
+    .preview-footer {
+      min-height: 39px;
+      padding: 10px 17px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid #e9edf1;
+      color: var(--muted);
+      font-size: 9px;
+    }
+    .preview-footer strong { color: #485262; font-weight: 650; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 760px) {
+      .studio-shell { width: min(100% - 20px, 560px); min-height: 0; margin: 10px auto 20px; grid-template-columns: 1fr; gap: 13px; }
+      .editor-panel { position: static; height: auto; min-height: 0; }
+      .editor-body { overflow: visible; padding: 19px 18px 22px; }
+      .editor-header { padding: 16px 18px 14px; }
+      .editor-footer { padding: 13px 18px 15px; }
+      .preview-panel { min-height: 0; }
+      .preview-toolbar { min-height: 62px; padding: 11px 14px; }
+      .preview-stage { min-height: 0; padding: 15px 12px; }
+      #mockupCanvas { width: min(100%, 360px); }
+      .preview-footer { padding: 9px 12px; }
+    }
+    @media (max-width: 390px) {
+      .preview-heading p { max-width: 160px; line-height: 1.35; }
+      .toolbar-actions { gap: 7px; }
+      .live-label { font-size: 9px; }
+      .reset-button { padding-inline: 8px; }
+      .field-grid { gap: 10px 8px; }
+      .field input, .field textarea { font-size: 11px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
 </head>
 <body>
-<main class="app">
-<aside class="sidebar"><nav class="menu" aria-label="Payment services">
-<button class="service active" type="button" aria-pressed="true" data-brand="FreeRecharge"><span class="icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M18.4 2.5 6.5 18h8.2l-1.4 11.5L25.5 14h-8.1z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/></svg></span><span class="name">FreeRecharge</span></button>
-<button class="service" type="button" aria-pressed="false" data-brand="Paytm"><span class="icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="3.5" y="7" width="25" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M9 16h14M16 10v12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span><span class="name">Paytm</span></button>
-<button class="service" type="button" aria-pressed="false" data-brand="Mobikwik"><span class="icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m10 16 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="name">Mobikwik</span></button>
-</nav></aside>
-<section class="detail" aria-live="polite"><article class="panel" id="panel"><div class="panel-inner"><svg class="panel-logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M18.4 2.5 6.5 18h8.2l-1.4 11.5L25.5 14h-8.1z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/></svg><p class="panel-name" id="brand">FreeRecharge</p><h1 class="panel-title">Coming Soon</h1></div></article></section>
-</main>
-<script>
-const buttons=[...document.querySelectorAll('.service')],panel=document.querySelector('#panel'),brand=document.querySelector('#brand');
-const logos={FreeRecharge:'<path d="M18.4 2.5 6.5 18h8.2l-1.4 11.5L25.5 14h-8.1z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>',Paytm:'<rect x="3.5" y="7" width="25" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M9 16h14M16 10v12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>',Mobikwik:'<circle cx="16" cy="16" r="12.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m10 16 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'};
-buttons.forEach(button=>button.addEventListener('click',()=>{buttons.forEach(item=>{item.classList.toggle('active',item===button);item.setAttribute('aria-pressed',item===button)});const selected=button.dataset.brand;brand.textContent=selected;panel.querySelector('.panel-logo').innerHTML=logos[selected];panel.classList.remove('panel');void panel.offsetWidth;panel.classList.add('panel');}));
-</script>
+  <main class="studio-shell">
+    <aside class="editor-panel" aria-labelledby="editorTitle">
+      <header class="editor-header">
+        <div class="studio-brand">
+          <span class="studio-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="3"></rect><path d="M8 10h8M8 14h5"></path></svg>
+          </span>
+          <div>
+            <p class="studio-brand-name">SCREEN MOCKUP STUDIO</p>
+            <p class="studio-brand-caption">Editable sample image builder</p>
+          </div>
+        </div>
+        <div class="safety-flag" role="note">
+          <span class="safety-dot" aria-hidden="true"></span>
+          <span class="safety-copy"><strong>DEMO ONLY</strong><span>No payment is initiated or verified.</span></span>
+        </div>
+      </header>
+
+      <div class="editor-body">
+        <h1 class="editor-title" id="editorTitle">Customize your demo</h1>
+        <p class="editor-description">Changes appear in the phone preview. The DEMO watermark and safety labels stay on the exported image.</p>
+
+        <form class="editor-form" id="editorForm">
+          <fieldset class="editor-section">
+            <legend class="section-title">Phone status bar</legend>
+            <div class="field-grid">
+              <div class="field">
+                <label for="statusTime">Time</label>
+                <input id="statusTime" name="statusTime" type="time" value="07:01">
+              </div>
+              <div class="field">
+                <label for="networkType">Network</label>
+                <input id="networkType" name="networkType" type="text" value="5G" maxlength="6" autocomplete="off">
+              </div>
+              <div class="field">
+                <label for="batteryLevel">Battery %</label>
+                <input id="batteryLevel" name="batteryLevel" type="number" min="0" max="100" step="1" value="67" inputmode="numeric">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="editor-section">
+            <legend class="section-title">Sender and recipient</legend>
+            <div class="field-grid">
+              <div class="field">
+                <label for="senderName">From · name</label>
+                <input id="senderName" name="senderName" type="text" value="SAMPLE SENDER" maxlength="32" autocomplete="off">
+              </div>
+              <div class="field">
+                <label for="senderDetails">From · details</label>
+                <input id="senderDetails" name="senderDetails" type="text" value="SAMPLE BANK ···· 0000" maxlength="34" autocomplete="off">
+              </div>
+              <div class="field">
+                <label for="recipientName">To · name</label>
+                <input id="recipientName" name="recipientName" type="text" value="SAMPLE RECIPIENT" maxlength="32" autocomplete="off">
+              </div>
+              <div class="field">
+                <label for="recipientDetails">To · details</label>
+                <input id="recipientDetails" name="recipientDetails" type="text" value="PHONE ···· 0000" maxlength="34" autocomplete="off">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="editor-section">
+            <legend class="section-title">Amount</legend>
+            <div class="field-grid single">
+              <div class="field">
+                <label for="amount">Amount in INR</label>
+                <input id="amount" name="amount" type="number" min="1" max="999999999" step="1" value="2000" inputmode="numeric" required aria-describedby="amountHint">
+                <p class="field-hint" id="amountHint">Whole numbers only · maximum INR 999,999,999.</p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="editor-section">
+            <legend class="section-title">Screen text</legend>
+            <div class="field-grid single">
+              <div class="field">
+                <label for="screenHeading">Heading</label>
+                <input id="screenHeading" name="screenHeading" type="text" value="Payment preview only" maxlength="42" autocomplete="off">
+              </div>
+              <div class="field">
+                <label for="screenMessage">Message</label>
+                <textarea id="screenMessage" name="screenMessage" maxlength="110">This is a demo screen. No payment has been initiated.</textarea>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+
+      <footer class="editor-footer">
+        <button class="download-button" id="downloadButton" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"></path><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"></path></svg>
+          Download demo image · PNG
+        </button>
+        <p class="download-status" id="downloadStatus" role="status" aria-live="polite">The export always includes a visible demo watermark.</p>
+      </footer>
+    </aside>
+
+    <section class="preview-panel" aria-labelledby="previewTitle">
+      <header class="preview-toolbar">
+        <div class="preview-heading">
+          <h2 id="previewTitle">Phone screen preview</h2>
+          <p>Watermarked sample · no real payment</p>
+        </div>
+        <div class="toolbar-actions">
+          <span class="live-label">Live preview</span>
+          <button class="reset-button" id="resetButton" type="button">Reset sample</button>
+        </div>
+      </header>
+      <div class="preview-stage">
+        <canvas id="mockupCanvas" width="576" height="1280" role="img" aria-label="Demo payment screen preview. No payment has been made."></canvas>
+      </div>
+      <footer class="preview-footer">
+        <span><strong>PNG export</strong> · 576 × 1280 px</span>
+        <span>DEMO watermark included</span>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.querySelector('#mockupCanvas');
+    const context = canvas.getContext('2d');
+    const form = document.querySelector('#editorForm');
+    const downloadButton = document.querySelector('#downloadButton');
+    const downloadStatus = document.querySelector('#downloadStatus');
+    const resetButton = document.querySelector('#resetButton');
+    const fields = {
+      time: document.querySelector('#statusTime'),
+      network: document.querySelector('#networkType'),
+      battery: document.querySelector('#batteryLevel'),
+      senderName: document.querySelector('#senderName'),
+      senderDetails: document.querySelector('#senderDetails'),
+      recipientName: document.querySelector('#recipientName'),
+      recipientDetails: document.querySelector('#recipientDetails'),
+      amount: document.querySelector('#amount'),
+      heading: document.querySelector('#screenHeading'),
+      message: document.querySelector('#screenMessage')
+    };
+    const width = canvas.width;
+    const height = canvas.height;
+    const fontStack = 'Inter, Arial, sans-serif';
+
+    function roundedPath(ctx, x, y, w, h, radius) {
+      const r = Math.min(radius, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function roundedRect(ctx, x, y, w, h, radius, fill, stroke) {
+      roundedPath(ctx, x, y, w, h, radius);
+      if (fill) {
+        ctx.fillStyle = fill;
+        ctx.fill();
+      }
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.stroke();
+      }
+    }
+
+    function fitFont(text, maxWidth, baseSize, weight = 700, minSize = 12) {
+      let size = baseSize;
+      context.font = `${weight} ${size}px ${fontStack}`;
+      while (size > minSize && context.measureText(text).width > maxWidth) {
+        size -= 1;
+        context.font = `${weight} ${size}px ${fontStack}`;
+      }
+      return size;
+    }
+
+    function wrapText(text, maxWidth, maxLines, font) {
+      context.font = font;
+      const words = String(text || '').trim().split(/\s+/).filter(Boolean);
+      if (!words.length) return [];
+      const lines = [];
+      let line = '';
+      for (const word of words) {
+        const candidate = line ? `${line} ${word}` : word;
+        if (context.measureText(candidate).width <= maxWidth || !line) {
+          line = candidate;
+        } else {
+          lines.push(line);
+          line = word;
+          if (lines.length === maxLines - 1) break;
+        }
+      }
+      if (line && lines.length < maxLines) lines.push(line);
+      if (lines.length === maxLines && words.join(' ').length > lines.join(' ').length) {
+        let last = lines[maxLines - 1];
+        while (last && context.measureText(`${last}…`).width > maxWidth) last = last.slice(0, -1);
+        lines[maxLines - 1] = `${last.trimEnd()}…`;
+      }
+      return lines;
+    }
+
+    function readValues() {
+      const rawAmount = fields.amount.value.trim();
+      const numericAmount = Number(rawAmount);
+      const validAmount = rawAmount !== '' && Number.isSafeInteger(numericAmount) && numericAmount > 0 && numericAmount <= 999999999;
+      return {
+        time: fields.time.value || '07:01',
+        network: fields.network.value.trim().slice(0, 6) || '5G',
+        battery: Math.min(100, Math.max(0, Number.parseInt(fields.battery.value, 10) || 0)),
+        senderName: fields.senderName.value.trim() || 'SAMPLE SENDER',
+        senderDetails: fields.senderDetails.value.trim() || 'SAMPLE BANK ···· 0000',
+        recipientName: fields.recipientName.value.trim() || 'SAMPLE RECIPIENT',
+        recipientDetails: fields.recipientDetails.value.trim() || 'PHONE ···· 0000',
+        amount: validAmount ? new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(numericAmount) : 'SET AMOUNT',
+        validAmount,
+        heading: fields.heading.value.trim() || 'Payment preview only',
+        message: fields.message.value.trim() || 'This is a demo screen. No payment has been initiated.'
+      };
+    }
+
+    function drawStatusBar(values) {
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, width, 58);
+      context.textBaseline = 'middle';
+      context.textAlign = 'left';
+      context.fillStyle = '#20232a';
+      context.font = `500 18px ${fontStack}`;
+      const timeParts = values.time.split(':');
+      const displayTime = `${Number.parseInt(timeParts[0], 10)}:${timeParts[1] || '01'}`;
+      context.fillText(displayTime, 34, 30);
+
+      context.fillStyle = '#21242a';
+      context.beginPath();
+      context.arc(282, 29, 7, 0, Math.PI * 2);
+      context.fill();
+      context.beginPath();
+      context.moveTo(282, 35);
+      context.lineTo(276, 25);
+      context.lineTo(288, 25);
+      context.closePath();
+      context.fill();
+      context.fillStyle = '#fff';
+      context.beginPath();
+      context.arc(282, 27, 2, 0, Math.PI * 2);
+      context.fill();
+
+      context.textAlign = 'left';
+      context.fillStyle = '#20232a';
+      context.font = `700 12px ${fontStack}`;
+      context.fillText(values.network.toUpperCase(), 298, 29);
+      context.fillStyle = '#20232a';
+      const barX = 345;
+      for (let i = 0; i < 4; i += 1) {
+        const barHeight = 7 + i * 4;
+        context.fillRect(barX + i * 8, 38 - barHeight, 5, barHeight);
+      }
+      context.font = `600 11px ${fontStack}`;
+      context.textAlign = 'right';
+      context.fillText(`${values.battery}%`, 515, 29);
+      roundedPath(context, 521, 21, 28, 15, 3);
+      context.strokeStyle = '#3b4149';
+      context.lineWidth = 1.5;
+      context.stroke();
+      context.fillStyle = '#40464d';
+      context.fillRect(525, 24, Math.max(2, 20 * values.battery / 100), 9);
+      context.fillRect(550, 25, 3, 7);
+    }
+
+    function drawCurrencyMark(x, y) {
+      context.save();
+      context.translate(x, y);
+      context.strokeStyle = '#20232a';
+      context.lineWidth = 3.2;
+      context.lineCap = 'round';
+      context.lineJoin = 'round';
+      context.beginPath();
+      context.moveTo(5, 5);
+      context.lineTo(35, 5);
+      context.moveTo(5, 15);
+      context.lineTo(35, 15);
+      context.moveTo(7, 15);
+      context.lineTo(17, 15);
+      context.bezierCurveTo(32, 15, 32, 3, 18, 3);
+      context.moveTo(7, 15);
+      context.lineTo(29, 40);
+      context.stroke();
+      context.restore();
+    }
+
+    function drawTransferCard(values) {
+      roundedRect(context, 31, 260, 514, 128, 23, '#eff3f5');
+      context.textBaseline = 'middle';
+      context.textAlign = 'left';
+      context.fillStyle = '#66717e';
+      context.font = `700 10px ${fontStack}`;
+      context.fillText('FROM · SAMPLE', 62, 284);
+      context.fillText('TO · SAMPLE', 342, 284);
+
+      context.fillStyle = '#222a35';
+      const leftNameSize = fitFont(values.senderName, 183, 17, 700, 12);
+      context.font = `700 ${leftNameSize}px ${fontStack}`;
+      context.fillText(values.senderName, 62, 314);
+      context.fillStyle = '#65707d';
+      const leftDetailSize = fitFont(values.senderDetails, 183, 12, 500, 9);
+      context.font = `500 ${leftDetailSize}px ${fontStack}`;
+      context.fillText(values.senderDetails, 62, 346);
+
+      context.fillStyle = '#222a35';
+      const rightNameSize = fitFont(values.recipientName, 178, 17, 700, 12);
+      context.font = `700 ${rightNameSize}px ${fontStack}`;
+      context.fillText(values.recipientName, 342, 314);
+      context.fillStyle = '#65707d';
+      const rightDetailSize = fitFont(values.recipientDetails, 178, 12, 500, 9);
+      context.font = `500 ${rightDetailSize}px ${fontStack}`;
+      context.fillText(values.recipientDetails, 342, 346);
+
+      context.beginPath();
+      context.arc(288, 325, 17, 0, Math.PI * 2);
+      context.fillStyle = '#fff';
+      context.fill();
+      context.strokeStyle = '#a3adb7';
+      context.lineWidth = 1.5;
+      context.beginPath();
+      context.moveTo(281, 325);
+      context.lineTo(295, 325);
+      context.moveTo(291, 321);
+      context.lineTo(295, 325);
+      context.lineTo(291, 329);
+      context.stroke();
+    }
+
+    function drawPromoCard(y, background, eyebrow, title, caption, kind) {
+      roundedRect(context, 31, y, 514, 174, 22, background);
+      context.textAlign = 'left';
+      context.textBaseline = 'middle';
+      context.fillStyle = '#775b3b';
+      context.font = `700 10px ${fontStack}`;
+      context.fillText(eyebrow, 61, y + 36);
+      context.fillStyle = '#2a313a';
+      const titleSize = fitFont(title, 300, 21, 700, 15);
+      context.font = `700 ${titleSize}px ${fontStack}`;
+      context.fillText(title, 61, y + 71);
+      context.fillStyle = '#6a6a64';
+      context.font = `500 12px ${fontStack}`;
+      context.fillText(caption, 61, y + 98);
+      roundedRect(context, 61, y + 119, 130, 33, 10, '#f08b5d');
+      context.fillStyle = '#fff';
+      context.textAlign = 'center';
+      context.font = `700 10px ${fontStack}`;
+      context.fillText('SAMPLE ONLY', 126, y + 136);
+
+      if (kind === 'cards') {
+        context.save();
+        context.translate(444, y + 93);
+        context.rotate(-.18);
+        roundedRect(context, -38, -54, 94, 113, 12, '#eaa3a6');
+        roundedRect(context, -26, -43, 94, 113, 12, '#fff7ef', '#e9dacb');
+        roundedRect(context, -17, -32, 72, 13, 6, '#f2bd7c');
+        context.fillStyle = '#465c74';
+        context.beginPath();
+        context.arc(35, 35, 13, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+      } else {
+        roundedRect(context, 425, y + 29, 77, 118, 14, '#344b54');
+        roundedRect(context, 431, y + 36, 65, 102, 10, '#f7fffc');
+        context.beginPath();
+        context.arc(463, y + 78, 20, 0, Math.PI * 2);
+        context.fillStyle = '#c4eadb';
+        context.fill();
+        context.fillStyle = '#398a70';
+        context.beginPath();
+        context.arc(463, y + 78, 8, 0, Math.PI * 2);
+        context.fill();
+        roundedRect(context, 444, y + 111, 39, 5, 3, '#91d6da');
+      }
+    }
+
+    function drawWatermark() {
+      context.save();
+      context.translate(width / 2, height / 2);
+      context.rotate(-Math.PI / 7);
+      context.fillStyle = 'rgba(158, 43, 39, .17)';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      context.font = `900 39px ${fontStack}`;
+      context.fillText('DEMO ONLY · NOT A PAYMENT', 0, -210);
+      context.fillText('DEMO ONLY · NOT A PAYMENT', 0, 0);
+      context.fillText('DEMO ONLY · NOT A PAYMENT', 0, 210);
+      context.restore();
+    }
+
+    function renderMockup() {
+      const values = readValues();
+      context.clearRect(0, 0, width, height);
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, width, height);
+
+      drawStatusBar(values);
+      roundedRect(context, 22, 58, 532, 35, 9, '#fff0ed');
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      context.fillStyle = '#962e29';
+      context.font = `800 12px ${fontStack}`;
+      context.fillText('DEMO ONLY · NOT A PAYMENT', width / 2, 76);
+
+      context.strokeStyle = '#535b63';
+      context.lineWidth = 4;
+      context.lineCap = 'round';
+      context.beginPath();
+      context.moveTo(47, 111);
+      context.lineTo(67, 131);
+      context.moveTo(67, 111);
+      context.lineTo(47, 131);
+      context.stroke();
+
+      context.beginPath();
+      context.arc(width / 2, 140, 19, 0, Math.PI * 2);
+      context.fillStyle = '#ed9417';
+      context.fill();
+      for (const dotX of [width / 2 - 7, width / 2, width / 2 + 7]) {
+        context.beginPath();
+        context.arc(dotX, 140, 2.1, 0, Math.PI * 2);
+        context.fillStyle = '#fff';
+        context.fill();
+      }
+      context.textAlign = 'center';
+      context.fillStyle = '#a85a20';
+      context.font = `800 12px ${fontStack}`;
+      context.fillText('PAYMENT SCREEN DEMO', width / 2, 174);
+      context.fillStyle = '#747c85';
+      context.font = `500 9px ${fontStack}`;
+      context.fillText('SAMPLE PREVIEW · NOT CONNECTED TO A PAYMENT', width / 2, 191);
+
+      roundedRect(context, 0, 214, width, 616, 25, '#fff');
+      drawTransferCard(values);
+
+      context.beginPath();
+      context.arc(width / 2, 474, 52, 0, Math.PI * 2);
+      context.fillStyle = '#f5a313';
+      context.fill();
+      for (const dotX of [width / 2 - 22, width / 2, width / 2 + 22]) {
+        context.beginPath();
+        context.arc(dotX, 474, 6.5, 0, Math.PI * 2);
+        context.fillStyle = '#fff';
+        context.fill();
+      }
+
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      context.fillStyle = '#333940';
+      const headingSize = fitFont(values.heading, 490, 24, 500, 15);
+      context.font = `500 ${headingSize}px ${fontStack}`;
+      context.fillText(values.heading, width / 2, 574);
+
+      const amountText = values.amount;
+      const amountFontSize = amountText === 'SET AMOUNT' ? 36 : fitFont(amountText, 350, 61, 750, 27);
+      context.font = `750 ${amountFontSize}px ${fontStack}`;
+      const amountWidth = context.measureText(amountText).width;
+      const groupWidth = 37 + 13 + amountWidth;
+      const amountX = (width - groupWidth) / 2;
+      drawCurrencyMark(amountX, 618);
+      context.textAlign = 'left';
+      context.fillStyle = '#20232a';
+      context.fillText(amountText, amountX + 50, 652);
+
+      context.textAlign = 'center';
+      context.fillStyle = '#636c76';
+      context.font = `600 11px ${fontStack}`;
+      context.fillText('SAMPLE AMOUNT · INR', width / 2, 701);
+      const messageLines = wrapText(values.message, 438, 2, `500 15px ${fontStack}`);
+      context.fillStyle = '#424850';
+      context.font = `500 15px ${fontStack}`;
+      messageLines.forEach((line, index) => context.fillText(line, width / 2, 745 + index * 22));
+      context.fillStyle = '#922d28';
+      context.font = `800 11px ${fontStack}`;
+      context.fillText('NO PAYMENT HAS BEEN MADE OR VERIFIED', width / 2, 795);
+
+      drawPromoCard(860, '#fff2d5', 'GENERIC SAMPLE BANNER', 'Example offer tile', 'Not a real offer, bank or issuer', 'cards');
+      drawPromoCard(1053, '#dff4ec', 'GENERIC SAMPLE PANEL', 'Demo screen content', 'No funds are sent or received', 'phone');
+
+      roundedRect(context, 218, 1257, 140, 8, 5, '#85878b');
+      drawWatermark();
+      downloadButton.disabled = !values.validAmount;
+      canvas.setAttribute('aria-label', `Demo payment screen preview. ${values.senderName} to ${values.recipientName}. Amount INR ${values.amount}. No payment has been made.`);
+    }
+
+    form.addEventListener('input', () => {
+      renderMockup();
+      downloadStatus.textContent = 'Preview updated. The demo watermark stays on the image.';
+    });
+
+    resetButton.addEventListener('click', () => {
+      form.reset();
+      renderMockup();
+      downloadStatus.textContent = 'Sample values restored.';
+    });
+
+    downloadButton.addEventListener('click', () => {
+      if (!form.reportValidity()) return;
+      const values = readValues();
+      if (!values.validAmount) {
+        fields.amount.focus();
+        downloadStatus.textContent = 'Enter a whole amount between INR 1 and INR 999,999,999.';
+        return;
+      }
+
+      canvas.toBlob(blob => {
+        if (!blob) {
+          downloadStatus.textContent = 'Could not create the PNG. Please try again.';
+          return;
+        }
+        const objectUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = objectUrl;
+        link.download = 'payment-demo-mockup.png';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+        downloadStatus.textContent = 'Demo PNG downloaded with the watermark included.';
+      }, 'image/png');
+    });
+
+    renderMockup();
+  </script>
 </body>
 </html>

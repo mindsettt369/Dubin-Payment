@@ -457,21 +457,35 @@
       const displayTime = `${Number.parseInt(timeParts[0], 10)}:${timeParts[1] || '01'}`;
       context.fillText(displayTime, 34, 30);
 
-      context.fillStyle = '#21242a';
+      context.fillStyle = '#24272c';
       context.beginPath();
-      context.arc(282, 29, 6, 0, Math.PI * 2);
+      context.arc(82, 30, 4, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = '#8e3f9e';
+      context.beginPath();
+      context.arc(113, 30, 5, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = '#24272c';
+      context.font = `700 12px ${fontStack}`;
+      context.fillText('30°', 124, 30);
+
+      context.beginPath();
+      context.arc(340, 25, 6, 0, Math.PI * 2);
       context.fill();
       context.fillStyle = '#fff';
       context.beginPath();
-      context.arc(282, 29, 2, 0, Math.PI * 2);
+      context.arc(340, 25, 2, 0, Math.PI * 2);
       context.fill();
+      context.fillStyle = '#24272c';
+      context.font = `700 8px ${fontStack}`;
+      context.fillText('0.08 Vo', 353, 24);
+      context.font = `700 7px ${fontStack}`;
+      context.fillText('KB/S', 353, 34);
+      context.fillText('LTE2', 383, 34);
+      context.font = `700 11px ${fontStack}`;
+      context.fillText('5G', 383, 24);
 
-      context.textAlign = 'left';
-      context.fillStyle = '#20232a';
-      context.font = `700 12px ${fontStack}`;
-      context.fillText(values.network.toUpperCase(), 298, 29);
-      context.fillStyle = '#20232a';
-      const barX = 345;
+      const barX = 414;
       for (let i = 0; i < 4; i += 1) {
         const barHeight = 7 + i * 4;
         context.fillRect(barX + i * 8, 38 - barHeight, 5, barHeight);
@@ -483,7 +497,7 @@
       context.strokeStyle = '#3b4149';
       context.lineWidth = 1.5;
       context.stroke();
-      context.fillStyle = '#40464d';
+      context.fillStyle = '#e3ad28';
       context.fillRect(525, 24, Math.max(2, 20 * values.battery / 100), 9);
       context.fillRect(550, 25, 3, 7);
     }

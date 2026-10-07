@@ -478,28 +478,28 @@
       context.fill();
       context.fillStyle = '#24272c';
       context.font = `700 8px ${fontStack}`;
-      context.fillText('0.08 Vo', 353, 24);
+      context.fillText('0.08 Vo', 366, 24);
       context.font = `700 7px ${fontStack}`;
-      context.fillText('KB/S', 353, 34);
-      context.fillText('LTE2', 383, 34);
+      context.fillText('KB/S', 366, 34);
+      context.fillText('LTE2', 396, 34);
       context.font = `700 11px ${fontStack}`;
-      context.fillText('5G', 383, 24);
+      context.fillText('5G', 396, 24);
 
-      const barX = 414;
+      const barX = 427;
       for (let i = 0; i < 4; i += 1) {
         const barHeight = 7 + i * 4;
-        context.fillRect(barX + i * 8, 38 - barHeight, 5, barHeight);
+        context.fillRect(barX + i * 7, 38 - barHeight, 5, barHeight);
       }
       context.font = `600 11px ${fontStack}`;
       context.textAlign = 'right';
-      context.fillText(`${values.battery}%`, 515, 29);
-      roundedPath(context, 521, 21, 28, 15, 3);
+      context.fillText(`${values.battery}%`, 510, 29);
+      roundedPath(context, 516, 21, 28, 15, 3);
       context.strokeStyle = '#3b4149';
       context.lineWidth = 1.5;
       context.stroke();
       context.fillStyle = '#e3ad28';
-      context.fillRect(525, 24, Math.max(2, 20 * values.battery / 100), 9);
-      context.fillRect(550, 25, 3, 7);
+      context.fillRect(520, 24, Math.max(2, 20 * values.battery / 100), 9);
+      context.fillRect(545, 25, 3, 7);
     }
 
     function drawCurrencyMark(x, y) {

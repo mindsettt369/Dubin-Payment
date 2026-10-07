@@ -745,11 +745,11 @@
       context.fillStyle = '#636c76';
       context.font = `600 11px ${fontStack}`;
       context.fillText('AMOUNT · INR', width / 2, 701);
-      const messageFont = '500 13px ' + fontStack;
-      const messageLines = wrapText(values.message, 500, 3, messageFont);
-      context.fillStyle = '#424850';
-      context.font = messageFont;
-      messageLines.forEach((line, index) => context.fillText(line, width / 2, 745 + index * 19));
+  const messageFont = '500 16px ' + fontStack;
+  const messageLines = wrapText(values.message, 540, 3, messageFont);
+  context.fillStyle = '#24272c';
+  context.font = messageFont;
+  messageLines.forEach((line, index) => context.fillText(line, width / 2, 745 + index * 24));
   drawRealPromoImage();
 
       roundedRect(context, 218, 1257, 140, 8, 5, '#85878b');

@@ -284,7 +284,11 @@
               <div class="field">
                 <label for="graphPosition">Graph position</label>
                 <input id="graphPosition" name="graphPosition" type="number" min="380" max="480" step="1" value="415" inputmode="numeric">
-                <p class="field-hint">Moves the complete signal graph left or right.</p>
+              </div>
+              <div class="field">
+                <label for="statusGroupPosition">Network group position</label>
+                <input id="statusGroupPosition" name="statusGroupPosition" type="number" min="0" max="100" step="1" value="0" inputmode="numeric">
+                <p class="field-hint">Moves network labels and graphs together.</p>
               </div>
               <div class="field wide">
                 <label for="graphCount">Signal graphs</label>
@@ -392,6 +396,7 @@
   dotGap: document.querySelector('#dotGap'),
   graphGap: document.querySelector('#graphGap'),
   graphPosition: document.querySelector('#graphPosition'),
+  statusGroupPosition: document.querySelector('#statusGroupPosition'),
   graphCount: document.querySelector('#graphCount'),
       senderName: document.querySelector('#senderName'),
       senderDetails: document.querySelector('#senderDetails'),
@@ -480,6 +485,7 @@
   dotGap: Math.min(40, Math.max(4, Number.parseInt(fields.dotGap.value, 10) || 18)),
   graphGap: Math.min(50, Math.max(0, Number.parseInt(fields.graphGap.value, 10) || 30)),
   graphPosition: Math.min(480, Math.max(380, Number.parseInt(fields.graphPosition.value, 10) || 415)),
+  statusGroupPosition: Math.min(100, Math.max(0, Number.parseInt(fields.statusGroupPosition.value, 10) || 0)),
   graphCount: Number(fields.graphCount.value) === 2 ? 2 : 1,
         senderName: fields.senderName.value.trim() || 'JOSHI',
         senderDetails: fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)',
@@ -531,14 +537,16 @@
       context.fill();
       context.fillStyle = '#24272c';
       context.font = `700 8px ${fontStack}`;
-      context.fillText('0.08 Vo', 366, 24);
+      const groupOffset = values.statusGroupPosition;
+      context.fillText('0.08 Vo', 366 + groupOffset, 24);
       context.font = `700 7px ${fontStack}`;
-      context.fillText('KB/S', 366, 34);
-      context.fillText('LTE2', 380, 34);
+      context.fillText('KB/S', 366 + groupOffset, 34);
+      context.fillText('LTE2', 380 + groupOffset, 34);
       context.font = `700 11px ${fontStack}`;
-      context.fillText('5G', 397, 24);
-
-      const graphPositions = values.graphCount === 2 ? [values.graphPosition, values.graphPosition + values.graphGap] : [values.graphPosition];
+      context.fillText('5G', 397 + groupOffset, 24);
+  
+  const graphBase = values.graphPosition + groupOffset;
+  const graphPositions = values.graphCount === 2 ? [graphBase, graphBase + values.graphGap] : [graphBase];
       for (const graphX of graphPositions) {
         for (let i = 0; i < 4; i += 1) {
           const barHeight = 7 + i * 4;

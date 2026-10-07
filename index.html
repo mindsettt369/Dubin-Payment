@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Edit and download a sample payment screen mockup. No payments are processed.">
+  <meta name="description" content="Edit and download a payment status screen. Transaction is in progress.">
   <meta name="theme-color" content="#f2f4f7">
-  <title>Payment Demo Mockup Studio</title>
+  <title>Payment Screen Studio</title>
   <style>
     :root {
       color-scheme: light;
@@ -22,8 +22,7 @@
       --line: #e1e5eb;
       --orange: #ed9417;
       --orange-dark: #9d5018;
-      --demo: #a5342e;
-    }
+        }
 
     * { box-sizing: border-box; }
     body { min-width: 320px; min-height: 100vh; margin: 0; background: #f2f4f7; }
@@ -232,12 +231,12 @@
           </span>
           <div>
             <p class="studio-brand-name">SCREEN MOCKUP STUDIO</p>
-            <p class="studio-brand-caption">Editable sample image builder</p>
+            <p class="studio-brand-caption">Editable payment status screen builder</p>
           </div>
         </div>
         <div class="safety-flag" role="note">
           <span class="safety-dot" aria-hidden="true"></span>
-          <span class="safety-copy"><strong>DEMO ONLY</strong><span>No payment is initiated or verified.</span></span>
+          <span class="safety-copy"><strong>PAYMENT STATUS</strong><span>Transaction is in progress.</span></span>
         </div>
       </header>
 
@@ -269,19 +268,19 @@
             <div class="field-grid">
               <div class="field">
                 <label for="senderName">From · name</label>
-                <input id="senderName" name="senderName" type="text" value="SAMPLE SENDER" maxlength="32" autocomplete="off">
+                <input id="senderName" name="senderName" type="text" value="JOSHI" maxlength="32" autocomplete="off">
               </div>
               <div class="field">
                 <label for="senderDetails">From · details</label>
-                <input id="senderDetails" name="senderDetails" type="text" value="SAMPLE BANK ···· 0000" maxlength="34" autocomplete="off">
+                <input id="senderDetails" name="senderDetails" type="text" value="INDIAN BANK (xxxx 0739)" maxlength="34" autocomplete="off">
               </div>
               <div class="field">
                 <label for="recipientName">To · name</label>
-                <input id="recipientName" name="recipientName" type="text" value="SAMPLE RECIPIENT" maxlength="32" autocomplete="off">
+                <input id="recipientName" name="recipientName" type="text" value="Pankaj Chamoli" maxlength="32" autocomplete="off">
               </div>
               <div class="field">
                 <label for="recipientDetails">To · details</label>
-                <input id="recipientDetails" name="recipientDetails" type="text" value="PHONE ···· 0000" maxlength="34" autocomplete="off">
+                <input id="recipientDetails" name="recipientDetails" type="text" value="xxxxxxx73619" maxlength="34" autocomplete="off">
               </div>
             </div>
           </fieldset>
@@ -302,11 +301,11 @@
             <div class="field-grid single">
               <div class="field">
                 <label for="screenHeading">Heading</label>
-                <input id="screenHeading" name="screenHeading" type="text" value="Please Wait" maxlength="42" autocomplete="off">
+                <input id="screenHeading" name="screenHeading" type="text" value="Your transaction is in Progress!" maxlength="42" autocomplete="off">
               </div>
               <div class="field">
                 <label for="screenMessage">Message</label>
-                <textarea id="screenMessage" name="screenMessage" maxlength="110">This is taking more than expected time. Kindly do not go back or close the app.</textarea>
+                <textarea id="screenMessage" name="screenMessage" maxlength="110">Please Wait! This is taking more than expected time Kindly do not go back or close the app</textarea>
               </div>
             </div>
           </fieldset>
@@ -318,7 +317,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"></path><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"></path></svg>
           Download image · PNG
         </button>
-        <p class="download-status" id="downloadStatus" role="status" aria-live="polite">The export includes clear demo safety labels.</p>
+        <p class="download-status" id="downloadStatus" role="status" aria-live="polite">The export includes the payment status screen.</p>
       </footer>
     </aside>
 
@@ -326,19 +325,19 @@
       <header class="preview-toolbar">
         <div class="preview-heading">
           <h2 id="previewTitle">Phone screen preview</h2>
-          <p>Sample preview · no real payment</p>
+          <p>Transaction status preview</p>
         </div>
         <div class="toolbar-actions">
           <span class="live-label">Live preview</span>
-          <button class="reset-button" id="resetButton" type="button">Reset sample</button>
+          <button class="reset-button" id="resetButton" type="button">Reset screen</button>
         </div>
       </header>
       <div class="preview-stage">
-        <canvas id="mockupCanvas" width="576" height="1280" role="img" aria-label="Demo payment screen preview. No payment has been made."></canvas>
+        <canvas id="mockupCanvas" width="576" height="1280" role="img" aria-label="Payment status screen preview. Transaction is in progress."></canvas>
       </div>
       <footer class="preview-footer">
         <span><strong>PNG export</strong> · 576 × 1280 px</span>
-        <span>Demo labels included</span>
+        <span>Transaction status screen</span>
       </footer>
     </section>
   </main>
@@ -436,14 +435,14 @@
         time: fields.time.value || '07:01',
         network: fields.network.value.trim().slice(0, 6) || '5G',
         battery: Math.min(100, Math.max(0, Number.parseInt(fields.battery.value, 10) || 0)),
-        senderName: fields.senderName.value.trim() || 'SAMPLE SENDER',
-        senderDetails: fields.senderDetails.value.trim() || 'SAMPLE BANK ···· 0000',
-        recipientName: fields.recipientName.value.trim() || 'SAMPLE RECIPIENT',
+        senderName: fields.senderName.value.trim() || 'JOSHI',
+        senderDetails: fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)',
+        recipientName: fields.recipientName.value.trim() || 'Pankaj Chamoli',
         recipientDetails: fields.recipientDetails.value.trim() || 'PHONE ···· 0000',
         amount: validAmount ? new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(numericAmount) : 'SET AMOUNT',
         validAmount,
-        heading: fields.heading.value.trim() || 'Please Wait',
-        message: fields.message.value.trim() || 'This is taking more than expected time. Kindly do not go back or close the app.'
+        heading: fields.heading.value.trim() || 'Your transaction is in Progress!',
+        message: fields.message.value.trim() || 'Please Wait! This is taking more than expected time Kindly do not go back or close the app'
       };
     }
 
@@ -522,8 +521,8 @@
       context.textAlign = 'left';
       context.fillStyle = '#66717e';
       context.font = `700 10px ${fontStack}`;
-      context.fillText('FROM · SAMPLE', 62, 284);
-      context.fillText('TO · SAMPLE', 342, 284);
+      context.fillText('FROM', 62, 284);
+      context.fillText('TO', 342, 284);
 
       context.fillStyle = '#222a35';
       const leftNameSize = fitFont(values.senderName, 183, 17, 700, 12);
@@ -576,7 +575,7 @@
       context.fillStyle = '#fff';
       context.textAlign = 'center';
       context.font = `700 10px ${fontStack}`;
-      context.fillText('SAMPLE ONLY', 126, y + 136);
+      context.fillText('LINK NOW', 126, y + 136);
 
       if (kind === 'cards') {
         context.save();
@@ -659,7 +658,7 @@
       context.fillText('PAYMENT STATUS', width / 2, 174);
       context.fillStyle = '#747c85';
       context.font = `500 9px ${fontStack}`;
-      context.fillText('SAMPLE PREVIEW · NOT CONNECTED TO A PAYMENT', width / 2, 191);
+      context.fillText('TRANSACTION STATUS · IN PROGRESS', width / 2, 191);
 
       roundedRect(context, 0, 214, width, 616, 25, '#fff');
       drawTransferCard(values);
@@ -705,7 +704,7 @@
 
       roundedRect(context, 218, 1257, 140, 8, 5, '#85878b');
       downloadButton.disabled = !values.validAmount;
-      canvas.setAttribute('aria-label', `Demo payment screen preview. ${values.senderName} to ${values.recipientName}. Amount INR ${values.amount}. No payment has been made.`);
+      canvas.setAttribute('aria-label', `Payment status screen preview. ${values.senderName} to ${values.recipientName}. Amount INR ${values.amount}. Transaction is in progress.`);
     }
 
     form.addEventListener('input', () => {
@@ -716,7 +715,7 @@
     resetButton.addEventListener('click', () => {
       form.reset();
       renderMockup();
-      downloadStatus.textContent = 'Sample values restored.';
+      downloadStatus.textContent = 'Screen values restored.';
     });
 
     downloadButton.addEventListener('click', () => {
@@ -736,12 +735,12 @@
         const objectUrl = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = objectUrl;
-        link.download = 'payment-demo-mockup.png';
+        link.download = 'payment-status-screen.png';
         document.body.appendChild(link);
         link.click();
         link.remove();
         window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-        downloadStatus.textContent = 'Demo PNG downloaded.';
+        downloadStatus.textContent = 'PNG downloaded.';
       }, 'image/png');
     });
 

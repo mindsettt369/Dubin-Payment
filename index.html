@@ -503,10 +503,12 @@
       const displayTime = `${Number.parseInt(timeParts[0], 10)}:${timeParts[1] || '01'}`;
       context.fillText(displayTime, 34, 30);
 
-      context.fillStyle = '#24272c';
-      context.beginPath();
-      context.arc(82, 30, 4, 0, Math.PI * 2);
-      context.fill();
+  if (values.statusDots > 0) {
+    context.fillStyle = '#24272c';
+    context.beginPath();
+    context.arc(82, 30, 4, 0, Math.PI * 2);
+    context.fill();
+  }
   const dotStart = 113;
   for (let i = 0; i < values.statusDots; i += 1) {
     context.fillStyle = i === values.statusDots - 1 ? '#8e3f9e' : '#24272c';

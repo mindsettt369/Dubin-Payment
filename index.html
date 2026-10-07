@@ -604,8 +604,11 @@
       }
     }
 
-    const realPromoImage = new Image();
-    realPromoImage.src = '/real-upi-promos.png';
+  const realPromoImage = new Image();
+  realPromoImage.src = '/real-upi-promos.png';
+  const freechargeLogo = new Image();
+  freechargeLogo.src = '/freecharge-biz-logo.png';
+  freechargeLogo.addEventListener('load', renderMockup);
     realPromoImage.addEventListener('load', renderMockup);
 
     function drawRealPromoImage() {
@@ -625,12 +628,13 @@
       context.fillRect(0, 0, width, height);
 
       drawStatusBar(values);
-      roundedRect(context, 22, 58, 532, 35, 9, '#fff0ed');
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
-      context.fillStyle = '#962e29';
-      context.font = `800 12px ${fontStack}`;
-      context.fillText('PAYMENT STATUS', width / 2, 76);
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  if (freechargeLogo.complete && freechargeLogo.naturalWidth) {
+    const logoWidth = 142;
+    const logoHeight = 48;
+    context.drawImage(freechargeLogo, 174, 36, 145, 58, (width - logoWidth) / 2, 137, logoWidth, logoHeight);
+  }
 
       context.strokeStyle = '#535b63';
       context.lineWidth = 4;
@@ -642,23 +646,7 @@
       context.lineTo(47, 131);
       context.stroke();
 
-      context.beginPath();
-      context.arc(width / 2, 140, 19, 0, Math.PI * 2);
-      context.fillStyle = '#ed9417';
-      context.fill();
-      for (const dotX of [width / 2 - 7, width / 2, width / 2 + 7]) {
-        context.beginPath();
-        context.arc(dotX, 140, 2.1, 0, Math.PI * 2);
-        context.fillStyle = '#fff';
-        context.fill();
-      }
       context.textAlign = 'center';
-      context.fillStyle = '#a85a20';
-      context.font = `800 12px ${fontStack}`;
-      context.fillText('PAYMENT STATUS', width / 2, 174);
-      context.fillStyle = '#747c85';
-      context.font = `500 9px ${fontStack}`;
-      context.fillText('TRANSACTION STATUS · IN PROGRESS', width / 2, 191);
 
       roundedRect(context, 0, 214, width, 616, 25, '#fff');
       drawTransferCard(values);

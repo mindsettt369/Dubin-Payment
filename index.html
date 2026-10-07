@@ -282,9 +282,9 @@
                 <input id="graphGap" name="graphGap" type="number" min="0" max="50" step="1" value="30" inputmode="numeric">
               </div>
               <div class="field">
-                <label for="barGap">Bar gap</label>
-                <input id="barGap" name="barGap" type="number" min="1" max="20" step="1" value="6" inputmode="numeric">
-                <p class="field-hint">Spacing between every bar in each graph.</p>
+                <label for="graphPosition">Graph position</label>
+                <input id="graphPosition" name="graphPosition" type="number" min="380" max="480" step="1" value="415" inputmode="numeric">
+                <p class="field-hint">Moves the complete signal graph left or right.</p>
               </div>
               <div class="field wide">
                 <label for="graphCount">Signal graphs</label>
@@ -391,7 +391,7 @@
   statusDots: document.querySelector('#statusDots'),
   dotGap: document.querySelector('#dotGap'),
   graphGap: document.querySelector('#graphGap'),
-  barGap: document.querySelector('#barGap'),
+  graphPosition: document.querySelector('#graphPosition'),
   graphCount: document.querySelector('#graphCount'),
       senderName: document.querySelector('#senderName'),
       senderDetails: document.querySelector('#senderDetails'),
@@ -479,7 +479,7 @@
   statusDots: Math.min(3, Math.max(0, Number.parseInt(fields.statusDots.value, 10) || 0)),
   dotGap: Math.min(40, Math.max(4, Number.parseInt(fields.dotGap.value, 10) || 18)),
   graphGap: Math.min(50, Math.max(0, Number.parseInt(fields.graphGap.value, 10) || 30)),
-  barGap: Math.min(20, Math.max(1, Number.parseInt(fields.barGap.value, 10) || 6)),
+  graphPosition: Math.min(480, Math.max(380, Number.parseInt(fields.graphPosition.value, 10) || 415)),
   graphCount: Number(fields.graphCount.value) === 2 ? 2 : 1,
         senderName: fields.senderName.value.trim() || 'JOSHI',
         senderDetails: fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)',
@@ -538,11 +538,11 @@
       context.font = `700 11px ${fontStack}`;
       context.fillText('5G', 397, 24);
 
-      const graphPositions = values.graphCount === 2 ? [415, 415 + values.graphGap] : [415];
+      const graphPositions = values.graphCount === 2 ? [values.graphPosition, values.graphPosition + values.graphGap] : [values.graphPosition];
       for (const graphX of graphPositions) {
         for (let i = 0; i < 4; i += 1) {
           const barHeight = 7 + i * 4;
-          context.fillRect(graphX + i * values.barGap, 38 - barHeight, 4, barHeight);
+          context.fillRect(graphX + i * 6, 38 - barHeight, 4, barHeight);
         }
       }
       context.font = `600 11px ${fontStack}`;

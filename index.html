@@ -242,7 +242,7 @@
       </header>
 
       <div class="editor-body">
-        <h1 class="editor-title" id="editorTitle">Customize your demo</h1>
+        <h1 class="editor-title" id="editorTitle">Customize your payment screen</h1>
         <p class="editor-description">Changes appear instantly in the phone preview. Safety labels remain on the exported image.</p>
 
         <form class="editor-form" id="editorForm">
@@ -302,11 +302,11 @@
             <div class="field-grid single">
               <div class="field">
                 <label for="screenHeading">Heading</label>
-                <input id="screenHeading" name="screenHeading" type="text" value="Payment preview only" maxlength="42" autocomplete="off">
+                <input id="screenHeading" name="screenHeading" type="text" value="Please Wait" maxlength="42" autocomplete="off">
               </div>
               <div class="field">
                 <label for="screenMessage">Message</label>
-                <textarea id="screenMessage" name="screenMessage" maxlength="110">This is a demo screen. No payment has been initiated.</textarea>
+                <textarea id="screenMessage" name="screenMessage" maxlength="110">This is taking more than expected time. Kindly do not go back or close the app.</textarea>
               </div>
             </div>
           </fieldset>
@@ -316,7 +316,7 @@
       <footer class="editor-footer">
         <button class="download-button" id="downloadButton" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"></path><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"></path></svg>
-          Download demo image · PNG
+          Download image · PNG
         </button>
         <p class="download-status" id="downloadStatus" role="status" aria-live="polite">The export includes clear demo safety labels.</p>
       </footer>
@@ -442,8 +442,8 @@
         recipientDetails: fields.recipientDetails.value.trim() || 'PHONE ···· 0000',
         amount: validAmount ? new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(numericAmount) : 'SET AMOUNT',
         validAmount,
-        heading: fields.heading.value.trim() || 'Payment preview only',
-        message: fields.message.value.trim() || 'This is a demo screen. No payment has been initiated.'
+        heading: fields.heading.value.trim() || 'Please Wait',
+        message: fields.message.value.trim() || 'This is taking more than expected time. Kindly do not go back or close the app.'
       };
     }
 
@@ -631,7 +631,7 @@
       context.textBaseline = 'middle';
       context.fillStyle = '#962e29';
       context.font = `800 12px ${fontStack}`;
-      context.fillText('DEMO ONLY · NOT A PAYMENT', width / 2, 76);
+      context.fillText('PAYMENT STATUS', width / 2, 76);
 
       context.strokeStyle = '#535b63';
       context.lineWidth = 4;
@@ -656,7 +656,7 @@
       context.textAlign = 'center';
       context.fillStyle = '#a85a20';
       context.font = `800 12px ${fontStack}`;
-      context.fillText('PAYMENT SCREEN DEMO', width / 2, 174);
+      context.fillText('PAYMENT STATUS', width / 2, 174);
       context.fillStyle = '#747c85';
       context.font = `500 9px ${fontStack}`;
       context.fillText('SAMPLE PREVIEW · NOT CONNECTED TO A PAYMENT', width / 2, 191);
@@ -696,16 +696,12 @@
       context.textAlign = 'center';
       context.fillStyle = '#636c76';
       context.font = `600 11px ${fontStack}`;
-      context.fillText('SAMPLE AMOUNT · INR', width / 2, 701);
+      context.fillText('AMOUNT · INR', width / 2, 701);
       const messageLines = wrapText(values.message, 438, 2, `500 15px ${fontStack}`);
       context.fillStyle = '#424850';
       context.font = `500 15px ${fontStack}`;
       messageLines.forEach((line, index) => context.fillText(line, width / 2, 745 + index * 22));
-      context.fillStyle = '#922d28';
-      context.font = `800 11px ${fontStack}`;
-      context.fillText('NO PAYMENT HAS BEEN MADE OR VERIFIED', width / 2, 795);
-
-      drawRealPromoImage();
+  drawRealPromoImage();
 
       roundedRect(context, 218, 1257, 140, 8, 5, '#85878b');
       downloadButton.disabled = !values.validAmount;

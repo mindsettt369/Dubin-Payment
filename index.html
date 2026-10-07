@@ -605,6 +605,20 @@
       }
     }
 
+    const realPromoImage = new Image();
+    realPromoImage.src = '/real-upi-promos.png';
+    realPromoImage.addEventListener('load', renderMockup);
+
+    function drawRealPromoImage() {
+      if (!realPromoImage.complete || !realPromoImage.naturalWidth) return;
+      context.save();
+      context.beginPath();
+      roundedPath(context, 31, 860, 514, 390, 22);
+      context.clip();
+      context.drawImage(realPromoImage, 31, 860, 514, 390);
+      context.restore();
+    }
+
     function renderMockup() {
       const values = readValues();
       context.clearRect(0, 0, width, height);
@@ -691,8 +705,7 @@
       context.font = `800 11px ${fontStack}`;
       context.fillText('NO PAYMENT HAS BEEN MADE OR VERIFIED', width / 2, 795);
 
-      drawPromoCard(860, '#fff2d5', 'GENERIC SAMPLE BANNER', 'Example offer tile', 'Not a real offer, bank or issuer', 'cards');
-      drawPromoCard(1053, '#dff4ec', 'GENERIC SAMPLE PANEL', 'Demo screen content', 'No funds are sent or received', 'phone');
+      drawRealPromoImage();
 
       roundedRect(context, 218, 1257, 140, 8, 5, '#85878b');
       downloadButton.disabled = !values.validAmount;

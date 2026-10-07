@@ -4,6 +4,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Payment Services</title>
 <style>
 :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111;background:#fff}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#fff}.app{min-height:100vh;display:grid;grid-template-columns:260px 1fr;padding:28px;gap:28px}.sidebar{border-right:1px solid #e5e7eb;padding:12px 22px 12px 0}.menu{display:grid;gap:8px}.service{width:100%;display:flex;align-items:center;gap:13px;padding:13px 14px;border:1px solid transparent;border-radius:12px;background:#fff;color:#111;text-align:left;font:inherit;font-weight:600;cursor:pointer;transition:.2s ease}.service:hover{background:#f7f7f7;border-color:#e5e7eb}.service.active{background:#f0f0f0;border-color:#e1e1e1}.service:focus-visible{outline:2px solid #111;outline-offset:2px}.icon{width:52px;height:36px;display:grid;place-items:center;flex:none}.service-logo{display:block;width:100%;height:100%;object-fit:contain}.name{font-size:15px}.detail{min-width:0;display:flex;align-items:center;justify-content:center;padding:12px 0}.panel{width:min(680px,100%);min-height:360px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;box-shadow:0 12px 32px rgba(17,17,17,.07);display:grid;place-items:center;padding:48px;animation:enter .28s ease both}.panel[hidden]{display:none}.panel-inner{text-align:center;display:grid;justify-items:center;gap:18px}.panel-logo{width:54px;height:54px;object-fit:contain}.panel-name{margin:0;font-size:16px;font-weight:600;color:#555}.panel-title{margin:0;font-size:38px;letter-spacing:-1.4px;line-height:1.05}@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@media(max-width:680px){.app{display:flex;flex-direction:column;padding:18px;gap:18px}.sidebar{border-right:0;border-bottom:1px solid #e5e7eb;padding:0 0 18px}.menu{grid-template-columns:repeat(3,1fr);gap:7px}.service{flex-direction:column;justify-content:center;gap:7px;padding:12px 6px;text-align:center}.name{font-size:12px}.detail{padding:0}.panel{min-height:300px;padding:30px}.panel-title{font-size:32px}}
+
+.payment-panel{width:min(720px,100%);min-height:0;display:block;padding:32px}.payment-step{width:100%;display:grid;gap:18px}.payment-header{display:flex;align-items:center;justify-content:space-between;gap:16px}.brand-lockup{display:flex;align-items:center;gap:12px;min-width:0}.payment-panel .panel-logo{width:48px;height:48px;object-fit:contain;flex:none}.brand-copy{display:grid;gap:3px;text-align:left}.brand-name{margin:0;color:#202833;font-size:15px;font-weight:800;letter-spacing:.03em}.brand-subtitle{margin:0;color:#667085;font-size:13px}.step-pill{flex:none;padding:7px 10px;border-radius:999px;background:#fff2e8;color:#a54a20;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.step-intro{display:grid;gap:5px;text-align:left}.step-title{margin:0;color:#202833;font-size:24px;line-height:1.2;letter-spacing:-.5px}.step-description{margin:0;color:#667085;font-size:13px;line-height:1.5}.transfer-card{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);align-items:center;gap:14px;padding:19px 21px;border-radius:20px;background:#f1f5f7}.transfer-party{display:grid;gap:6px;min-width:0;text-align:left}.transfer-label{color:#667085;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.transfer-value{color:#252a34;font-size:15px;font-weight:700;line-height:1.3;overflow-wrap:anywhere}.transfer-meta{color:#667085;font-size:12px;line-height:1.4}.transfer-arrow{display:grid;width:34px;height:34px;place-items:center;border-radius:50%;background:#fff;color:#98a2b3;font-size:19px}.amount-form{display:grid;gap:10px}.amount-label-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.amount-label{color:#344054;font-size:13px;font-weight:700}.amount-editable{color:#667085;font-size:12px}.amount-input-wrap{display:flex;align-items:center;gap:8px;min-height:74px;padding:13px 17px;border:1px solid #d0d5dd;border-radius:15px;background:#fff;transition:border-color .2s ease,box-shadow .2s ease}.amount-input-wrap:focus-within{border-color:#e9772d;box-shadow:0 0 0 4px rgba(233,119,45,.13)}.amount-currency{display:block;width:30px;height:34px;flex:none;color:#252a34}.amount-input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#101828;font:inherit;font-size:40px;font-weight:700;letter-spacing:-1.5px;line-height:1.1;appearance:textfield}.amount-input::-webkit-inner-spin-button,.amount-input::-webkit-outer-spin-button{margin:0;appearance:none}.amount-input:focus-visible{outline:none}.amount-hint{margin:0;color:#667085;font-size:12px;line-height:1.5}.payment-update{width:100%;min-height:48px;border:0;border-radius:12px;background:#e9772d;color:#fff;font:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s ease}.payment-update:hover{background:#d86720}.payment-update:focus-visible{outline:2px solid #202833;outline-offset:3px}.amount-status{margin:0;color:#2e6c48;font-size:12px;line-height:1.5}.amount-status:empty{display:none}.payment-demo-note{margin:0;padding:11px 13px;border-left:3px solid #e9a16c;border-radius:4px 10px 10px 4px;background:#f8fafc;color:#52606d;font-size:11px;line-height:1.5}.coming-soon{display:grid;width:100%;min-height:300px;place-items:center;text-align:center}.coming-soon[hidden],.payment-step[hidden]{display:none!important}.coming-soon .panel-inner{max-width:100%}.coming-soon .panel-title{font-size:34px}@media(max-width:680px){.payment-panel{padding:19px}.payment-step{gap:15px}.payment-header{gap:10px}.brand-lockup{gap:9px}.payment-panel .panel-logo{width:42px;height:42px}.brand-name{font-size:14px}.brand-subtitle{font-size:11px}.step-pill{padding:6px 8px;font-size:9px}.step-title{font-size:21px}.transfer-card{grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr);gap:8px;padding:15px 12px;border-radius:17px}.transfer-value{font-size:13px}.transfer-meta{font-size:10px}.transfer-arrow{width:28px;height:28px;font-size:16px}.amount-input-wrap{min-height:66px}.amount-input{font-size:36px}}@media(max-width:380px){.amount-editable{font-size:10px}.transfer-card{gap:6px;padding:13px 9px}.transfer-label{font-size:9px}.transfer-value{font-size:12px}.transfer-meta{font-size:9px}}@media(prefers-reduced-motion:reduce){.panel{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -13,12 +15,57 @@
 <button class="service" type="button" aria-pressed="false" data-brand="Paytm"><span class="icon" aria-hidden="true"><img class="service-logo" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-EOexTDXf3I7EUVoY4N3BXnldn8XRiO.png" alt=""></span><span class="name">Paytm</span></button>
 <button class="service" type="button" aria-pressed="false" data-brand="MobiKwik"><span class="icon" aria-hidden="true"><img class="service-logo" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-etbO56OdCAxJNUOAaxcbq4WCxDFNTb.png" alt=""></span><span class="name">MobiKwik</span></button>
 </nav></aside>
-<section class="detail" aria-live="polite"><article class="panel" id="panel"><div class="panel-inner"><img class="panel-logo" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-j2QQI2l5tXUMkv7Mvce6JTP7GSsTrU.png" alt="" aria-hidden="true"><p class="panel-name" id="brand">Freecharge</p><h1 class="panel-title">Coming Soon</h1></div></article></section>
+<section class="detail" aria-live="polite"><article class="panel payment-panel" id="panel"><div class="payment-step" id="freechargeStep" aria-labelledby="stepTitle"><header class="payment-header"><div class="brand-lockup"><img class="panel-logo" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-j2QQI2l5tXUMkv7Mvce6JTP7GSsTrU.png" alt="" aria-hidden="true"><div class="brand-copy"><p class="brand-name">Freecharge</p><p class="brand-subtitle">Payment preview</p></div></div><span class="step-pill">Step 1</span></header><div class="step-intro"><h1 class="step-title" id="stepTitle">Review your payment</h1><p class="step-description">Check the transfer details and enter the amount you want to preview.</p></div><div class="transfer-card" aria-label="Transfer summary"><div class="transfer-party"><span class="transfer-label">From</span><strong class="transfer-value">Your account</strong><span class="transfer-meta">Bank details hidden</span></div><span class="transfer-arrow" aria-hidden="true">→</span><div class="transfer-party"><span class="transfer-label">To</span><strong class="transfer-value">Recipient</strong><span class="transfer-meta">Transfer details</span></div></div><form class="amount-form" id="amountForm"><div class="amount-label-row"><label class="amount-label" for="paymentAmount">Amount</label><span class="amount-editable">You can change this</span></div><div class="amount-input-wrap"><svg class="amount-currency" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12"></path><path d="M6 8h12"></path><path d="M6 13h3"></path><path d="M9 13c6.667 0 6.667-10 0-10"></path><path d="m6 13 8.5 8"></path></svg><input class="amount-input" id="paymentAmount" name="amount" type="number" inputmode="numeric" min="1" step="1" value="2000" required aria-describedby="amountHint"></div><p class="amount-hint" id="amountHint">Enter a positive whole amount in Indian rupees.</p><button class="payment-update" type="submit">Update preview</button><p class="amount-status" id="amountStatus" role="status" aria-live="polite"></p></form><p class="payment-demo-note">Demo preview only. No payment has been initiated or processed.</p></div><div class="coming-soon" id="comingSoon" hidden><div class="panel-inner"><img class="panel-logo" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-j2QQI2l5tXUMkv7Mvce6JTP7GSsTrU.png" alt="" aria-hidden="true"><p class="panel-name" id="brand">Freecharge</p><h1 class="panel-title">Coming Soon</h1></div></div></article></section>
 </main>
 <script>
-const buttons=[...document.querySelectorAll('.service')],panel=document.querySelector('#panel'),brand=document.querySelector('#brand');
-const logos={Freecharge:'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-j2QQI2l5tXUMkv7Mvce6JTP7GSsTrU.png',Paytm:'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-EOexTDXf3I7EUVoY4N3BXnldn8XRiO.png',MobiKwik:'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-etbO56OdCAxJNUOAaxcbq4WCxDFNTb.png'};
-buttons.forEach(button=>button.addEventListener('click',()=>{buttons.forEach(item=>{item.classList.toggle('active',item===button);item.setAttribute('aria-pressed',item===button)});const selected=button.dataset.brand;brand.textContent=selected;panel.querySelector('.panel-logo').src=logos[selected];panel.classList.remove('panel');void panel.offsetWidth;panel.classList.add('panel');}));
+const buttons = [...document.querySelectorAll('.service')];
+const panel = document.querySelector('#panel');
+const freechargeStep = document.querySelector('#freechargeStep');
+const comingSoon = document.querySelector('#comingSoon');
+const brand = document.querySelector('#brand');
+const amountForm = document.querySelector('#amountForm');
+const amountInput = document.querySelector('#paymentAmount');
+const amountStatus = document.querySelector('#amountStatus');
+const logos = {
+  Freecharge: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-j2QQI2l5tXUMkv7Mvce6JTP7GSsTrU.png',
+  Paytm: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-EOexTDXf3I7EUVoY4N3BXnldn8XRiO.png',
+  MobiKwik: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-etbO56OdCAxJNUOAaxcbq4WCxDFNTb.png'
+};
+
+buttons.forEach(button => button.addEventListener('click', () => {
+  buttons.forEach(item => {
+    item.classList.toggle('active', item === button);
+    item.setAttribute('aria-pressed', item === button);
+  });
+
+  const selected = button.dataset.brand;
+  const isFreecharge = selected === 'Freecharge';
+  freechargeStep.hidden = !isFreecharge;
+  comingSoon.hidden = isFreecharge;
+
+  if (!isFreecharge) {
+    brand.textContent = selected;
+    comingSoon.querySelector('.panel-logo').src = logos[selected];
+  }
+
+  panel.classList.remove('panel');
+  void panel.offsetWidth;
+  panel.classList.add('panel');
+}));
+
+amountForm.addEventListener('submit', event => {
+  event.preventDefault();
+  if (!amountForm.reportValidity()) return;
+
+  const formattedAmount = new Intl.NumberFormat('en-IN', {
+    maximumFractionDigits: 0
+  }).format(Number(amountInput.value));
+  amountStatus.textContent = `Preview amount updated to INR ${formattedAmount}. No payment was processed.`;
+});
+
+amountInput.addEventListener('input', () => {
+  amountStatus.textContent = '';
+});
 </script>
 </body>
 </html>

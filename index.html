@@ -470,7 +470,7 @@
         time: fields.time.value || '07:01',
         network: fields.network.value.trim().slice(0, 6) || '5G',
   battery: Math.min(100, Math.max(0, Number.parseInt(fields.battery.value, 10) || 0)),
-  temperature: fields.temperature.value.trim() || '30°',
+  temperature: fields.temperature.value.trim(),
   statusDots: Math.min(3, Math.max(0, Number.parseInt(fields.statusDots.value, 10) || 0)),
   dotGap: Math.min(40, Math.max(4, Number.parseInt(fields.dotGap.value, 10) || 18)),
   graphGap: Math.min(50, Math.max(0, Number.parseInt(fields.graphGap.value, 10) || 30)),
@@ -508,9 +508,11 @@
     context.arc(dotStart + i * values.dotGap, 30, 5, 0, Math.PI * 2);
     context.fill();
   }
-  context.fillStyle = '#24272c';
-  context.font = `700 12px ${fontStack}`;
-  context.fillText(values.temperature, dotStart + values.statusDots * values.dotGap + 11, 30);
+  if (values.temperature && values.statusDots > 0) {
+    context.fillStyle = '#24272c';
+    context.font = `700 12px ${fontStack}`;
+    context.fillText(values.temperature, dotStart + (values.statusDots - 1) * values.dotGap + 11, 30);
+  }
 
       context.beginPath();
       context.arc(340, 25, 6, 0, Math.PI * 2);

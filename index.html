@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Edit and download a clearly watermarked sample payment screen mockup. No payments are processed.">
+  <meta name="description" content="Edit and download a sample payment screen mockup. No payments are processed.">
   <meta name="theme-color" content="#f2f4f7">
   <title>Payment Demo Mockup Studio</title>
   <style>
@@ -243,7 +243,7 @@
 
       <div class="editor-body">
         <h1 class="editor-title" id="editorTitle">Customize your demo</h1>
-        <p class="editor-description">Changes appear in the phone preview. The DEMO watermark and safety labels stay on the exported image.</p>
+        <p class="editor-description">Changes appear instantly in the phone preview. Safety labels remain on the exported image.</p>
 
         <form class="editor-form" id="editorForm">
           <fieldset class="editor-section">
@@ -318,7 +318,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"></path><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"></path></svg>
           Download demo image · PNG
         </button>
-        <p class="download-status" id="downloadStatus" role="status" aria-live="polite">The export always includes a visible demo watermark.</p>
+        <p class="download-status" id="downloadStatus" role="status" aria-live="polite">The export includes clear demo safety labels.</p>
       </footer>
     </aside>
 
@@ -326,7 +326,7 @@
       <header class="preview-toolbar">
         <div class="preview-heading">
           <h2 id="previewTitle">Phone screen preview</h2>
-          <p>Watermarked sample · no real payment</p>
+          <p>Sample preview · no real payment</p>
         </div>
         <div class="toolbar-actions">
           <span class="live-label">Live preview</span>
@@ -338,7 +338,7 @@
       </div>
       <footer class="preview-footer">
         <span><strong>PNG export</strong> · 576 × 1280 px</span>
-        <span>DEMO watermark included</span>
+        <span>Demo labels included</span>
       </footer>
     </section>
   </main>
@@ -605,20 +605,6 @@
       }
     }
 
-    function drawWatermark() {
-      context.save();
-      context.translate(width / 2, height / 2);
-      context.rotate(-Math.PI / 7);
-      context.fillStyle = 'rgba(158, 43, 39, .17)';
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
-      context.font = `900 39px ${fontStack}`;
-      context.fillText('DEMO ONLY · NOT A PAYMENT', 0, -210);
-      context.fillText('DEMO ONLY · NOT A PAYMENT', 0, 0);
-      context.fillText('DEMO ONLY · NOT A PAYMENT', 0, 210);
-      context.restore();
-    }
-
     function renderMockup() {
       const values = readValues();
       context.clearRect(0, 0, width, height);
@@ -709,14 +695,13 @@
       drawPromoCard(1053, '#dff4ec', 'GENERIC SAMPLE PANEL', 'Demo screen content', 'No funds are sent or received', 'phone');
 
       roundedRect(context, 218, 1257, 140, 8, 5, '#85878b');
-      drawWatermark();
       downloadButton.disabled = !values.validAmount;
       canvas.setAttribute('aria-label', `Demo payment screen preview. ${values.senderName} to ${values.recipientName}. Amount INR ${values.amount}. No payment has been made.`);
     }
 
     form.addEventListener('input', () => {
       renderMockup();
-      downloadStatus.textContent = 'Preview updated. The demo watermark stays on the image.';
+      downloadStatus.textContent = 'Preview updated.';
     });
 
     resetButton.addEventListener('click', () => {
@@ -747,7 +732,7 @@
         link.click();
         link.remove();
         window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-        downloadStatus.textContent = 'Demo PNG downloaded with the watermark included.';
+        downloadStatus.textContent = 'Demo PNG downloaded.';
       }, 'image/png');
     });
 

@@ -784,18 +784,18 @@
     function drawCurrencyMark(x, y) {
       context.save();
       context.strokeStyle = '#111';
-      context.lineWidth = 3.5;
+      context.lineWidth = 3;
       context.lineCap = 'round';
       context.lineJoin = 'round';
       context.beginPath();
-      context.moveTo(x + 4, y - 17);
-      context.lineTo(x + 34, y - 17);
-      context.moveTo(x + 4, y - 7);
-      context.lineTo(x + 31, y - 7);
-      context.moveTo(x + 6, y - 7);
-      context.bezierCurveTo(x + 27, y - 7, x + 29, y - 18, x + 16, y - 18);
-      context.moveTo(x + 7, y - 7);
-      context.lineTo(x + 31, y + 25);
+      context.moveTo(x + 3, y - 14);
+      context.lineTo(x + 31, y - 14);
+      context.moveTo(x + 3, y - 4);
+      context.lineTo(x + 29, y - 4);
+      context.moveTo(x + 5, y - 4);
+      context.bezierCurveTo(x + 25, y - 4, x + 27, y - 15, x + 14, y - 15);
+      context.moveTo(x + 6, y - 4);
+      context.lineTo(x + 29, y + 22);
       context.stroke();
       context.restore();
     }
@@ -1003,13 +1003,14 @@
       const amountSize = fitFont(amountText, 190, 48, 700, 30);
       context.font = `700 ${amountSize}px ${fontStack}`;
       const amountWidth = context.measureText(amountText).width;
-      const amountStart = (width - amountWidth - 54) / 2;
-      drawCurrencyMark(amountStart, 332);
+      const amountGroupWidth = 50 + amountWidth + 34 + 44;
+      const amountStart = (width - amountGroupWidth) / 2;
+      drawCurrencyMark(amountStart, 356);
       context.fillStyle = '#111';
       context.textAlign = 'left';
       context.fillText(amountText, amountStart + 50, 356);
       context.textAlign = 'center';
-      const warningX = Math.min(width - 48, amountStart + 50 + amountWidth + 34);
+      const warningX = amountStart + 50 + amountWidth + 34;
       context.fillStyle = '#f7a900';
       context.beginPath();
       context.arc(warningX, 355, 22, 0, Math.PI * 2);

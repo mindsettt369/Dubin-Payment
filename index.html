@@ -7,7 +7,8 @@
   <meta name="theme-color" content="#f2f4f7">
   <title>Payment Screen Studio</title>
   <style>
-    :root {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700;800&display=swap');
+  :root {
       color-scheme: light;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #222a35;
@@ -586,7 +587,7 @@
   };
     const width = canvas.width;
     const height = canvas.height;
-    const fontStack = 'Inter, Arial, sans-serif';
+    const fontStack = 'Inter, "Noto Sans", "DejaVu Sans", Roboto, Arial, sans-serif';
 
     const providerState = {
       freecharge: null,
@@ -781,26 +782,8 @@
       context.fillRect(545, 25, 3, 7);
     }
 
-  function drawCurrencyMark(x, y, size) {
-  const scale = size / 52;
-  context.save();
-  context.strokeStyle = '#111';
-  context.lineWidth = 4 * scale;
-  context.lineCap = 'square';
-  context.lineJoin = 'round';
-  context.beginPath();
-  context.moveTo(x + 3 * scale, y - 20 * scale);
-  context.lineTo(x + 36 * scale, y - 20 * scale);
-  context.moveTo(x + 3 * scale, y - 10 * scale);
-  context.lineTo(x + 33 * scale, y - 10 * scale);
-  context.moveTo(x + 8 * scale, y - 10 * scale);
-  context.bezierCurveTo(x + 27 * scale, y - 10 * scale, x + 30 * scale, y - 20 * scale, x + 15 * scale, y - 20 * scale);
-  context.moveTo(x + 8 * scale, y - 10 * scale);
-  context.lineTo(x + 8 * scale, y + 19 * scale);
-  context.moveTo(x + 8 * scale, y - 10 * scale);
-  context.lineTo(x + 34 * scale, y + 23 * scale);
-  context.stroke();
-  context.restore();
+  function formatInr(amount) {
+  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
   }
 
     function drawTransferCard(values) {
@@ -1002,16 +985,15 @@
       context.textAlign = 'center';
       context.fillText('i', 365, 276);
 
-      const amountText = values.amount === 'SET AMOUNT' ? '522' : values.amount;
-      const amountSize = fitFont(amountText, 190, 48, 700, 30);
-      context.font = `700 ${amountSize}px ${fontStack}`;
-      const amountWidth = context.measureText(amountText).width;
-      const amountGroupWidth = 50 + amountWidth + 34 + 44;
-      const amountStart = (width - amountGroupWidth) / 2;
-      drawCurrencyMark(amountStart, 356, amountSize);
-      context.fillStyle = '#111';
-      context.textAlign = 'left';
-      context.fillText(amountText, amountStart + 50, 356);
+  const amountText = values.amount === 'SET AMOUNT' ? formatInr(522) : formatInr(Number(values.amount.replace(/,/g, '')));
+  const amountSize = fitFont(amountText, 240, 48, 700, 30);
+  context.font = `700 ${amountSize}px ${fontStack}`;
+  const amountWidth = context.measureText(amountText).width;
+  const amountGroupWidth = amountWidth + 34 + 44;
+  const amountStart = (width - amountGroupWidth) / 2;
+  context.fillStyle = '#111';
+  context.textAlign = 'left';
+  context.fillText(amountText, amountStart, 356);
       context.textAlign = 'center';
       const warningX = amountStart + 50 + amountWidth + 34;
       context.fillStyle = '#f7a900';
@@ -1140,16 +1122,14 @@
       context.font = `500 ${headingSize}px ${fontStack}`;
       context.fillText(values.heading, width / 2, 574);
 
-      const amountText = values.amount;
-      const amountFontSize = amountText === 'SET AMOUNT' ? 36 : fitFont(amountText, 350, 61, 750, 27);
-      context.font = `750 ${amountFontSize}px ${fontStack}`;
+      const amountText = values.amount === 'SET AMOUNT' ? formatInr(522) : formatInr(Number(values.amount.replace(/,/g, '')));
+      const amountFontSize = fitFont(amountText, 350, 61, 700, 27);
+      context.font = `700 ${amountFontSize}px ${fontStack}`;
       const amountWidth = context.measureText(amountText).width;
-      const groupWidth = 37 + 13 + amountWidth;
-      const amountX = (width - groupWidth) / 2;
-      drawCurrencyMark(amountX, 652, amountFontSize);
+      const amountX = (width - amountWidth) / 2;
       context.textAlign = 'left';
       context.fillStyle = '#20232a';
-      context.fillText(amountText, amountX + 50, 652);
+      context.fillText(amountText, amountX, 652);
 
       context.textAlign = 'center';
       context.fillStyle = '#636c76';

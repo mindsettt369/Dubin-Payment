@@ -470,7 +470,7 @@
               <legend class="section-title">Payment summary</legend>
               <div class="field-grid">
                 <div class="field"><label for="stepTwoTitleField">Page title</label><input id="stepTwoTitleField" value="Paid To Ms Isha Marjara" maxlength="36"></div>
-                <div class="field"><label for="stepTwoHelp">Help label</label><input id="stepTwoHelp" value="NEED HELP?" maxlength="18"></div>
+                <div class="field"><label for="stepTwoHelp">Help label</label><input id="stepTwoHelp" value="NEED HELP?" readonly aria-readonly="true"><p class="field-hint">Fixed label shown on the payment screen.</p></div>
                 <div class="field"><label for="stepTwoRecipient">Recipient</label><input id="stepTwoRecipient" value="To Ms Isha Marjara" maxlength="32"></div>
                 <div class="field"><label for="stepTwoAmount">Amount</label><input id="stepTwoAmount" value="₹400" maxlength="16"></div>
                 <div class="field"><label for="stepTwoUpi">UPI ID</label><input id="stepTwoUpi" value="XXXXXXXXXX1555@SBIN0003631.ifsc.npci" maxlength="42"></div>
@@ -480,7 +480,7 @@
             <fieldset class="editor-section">
               <legend class="section-title">Payment information</legend>
               <div class="field-grid single">
-                <div class="field"><label for="stepTwoNotice">Progress notice</label><textarea id="stepTwoNotice" maxlength="180">Payment is in progress. Don’t worry — If it fails, any debited amount will be auto-reversed; if successful, it will be credited to the recipient. The transaction will get updated within 3-8 days.</textarea></div>
+                <div class="field"><label for="stepTwoNotice">Progress notice</label><textarea id="stepTwoNotice" rows="5" maxlength="280" aria-describedby="stepTwoNoticeHint">Payment is in progress. Don’t worry — If it fails, any debited amount will be auto-reversed; if successful, it will be credited to the recipient. The transaction will get updated within 3-8 days.</textarea><p class="field-hint" id="stepTwoNoticeHint">Edit this message to update the notice in the Step 2 preview.</p></div>
                 <div class="field"><label for="stepTwoBank">Bank account</label><input id="stepTwoBank" value="xxxx 7675" maxlength="20"></div>
                 <div class="field"><label for="stepTwoTransaction">UPI Transaction ID</label><input id="stepTwoTransaction" value="861174512796" maxlength="24"></div>
                 <div class="field"><label for="stepTwoComments">Comments</label><input id="stepTwoComments" value="UPI" maxlength="24"></div>

@@ -780,15 +780,17 @@
       context.beginPath(); context.arc(62, 178, 31, 0, Math.PI * 2); context.stroke();
       context.fillStyle = '#64666b'; context.font = `700 21px ${fontStack}`; context.textAlign = 'center'; context.fillText('MI', 62, 178);
       context.textAlign = 'left'; context.fillStyle = '#1e2025'; context.font = `700 22px ${fontStack}`; context.fillText(values.stepTwoRecipient, 112, 154);
-      context.font = `500 18px ${fontStack}`; context.fillText(values.stepTwoUpi, 112, 188);
-      context.fillStyle = '#777b82'; context.font = `500 17px ${fontStack}`; context.fillText('Today, 12:07 AM', 112, 222);
+      context.font = `500 18px ${fontStack}`;
+      wrapText(values.stepTwoUpi, 285, 2, `500 18px ${fontStack}`).forEach((line, index) => context.fillText(line, 112, 188 + index * 24));
+      context.fillStyle = '#777b82'; context.font = `500 17px ${fontStack}`; context.fillText('Today, 12:07 AM', 112, 236);
       context.fillStyle = '#20232a'; context.font = `700 22px ${fontStack}`; context.textAlign = 'right'; context.fillText(values.stepTwoAmount, 542, 154);
       roundedRect(context, 456, 190, 92, 42, 22, '#f7a51a'); context.fillStyle = '#ffffff'; context.font = `700 16px ${fontStack}`; context.textAlign = 'center'; context.fillText(values.stepTwoStatus, 502, 211);
 
-      roundedRect(context, 31, 270, 514, 155, 20, '#fff4eb');
+      roundedRect(context, 31, 270, 514, 184, 20, '#fff4eb');
       context.fillStyle = '#f5a51b'; context.beginPath(); context.arc(78, 310, 13, 0, Math.PI * 2); context.fill();
       context.fillStyle = '#3e3d3c'; context.textAlign = 'left'; context.font = `500 18px ${fontStack}`;
-      wrapText(values.stepTwoNotice, 425, 4, `500 18px ${fontStack}`).forEach((line, index) => context.fillText(line, 108, 310 + index * 27));
+      const noticeLines = wrapText(values.stepTwoNotice, 425, 5, `500 18px ${fontStack}`);
+      noticeLines.forEach((line, index) => context.fillText(line, 108, 310 + index * 27));
 
       context.fillStyle = '#111318'; context.font = `700 24px ${fontStack}`; context.fillText('Paid From', 30, 500);
       context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('Freecharge UPI', 30, 550);

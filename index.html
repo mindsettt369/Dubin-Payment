@@ -464,10 +464,10 @@
         </section>
         <section class="step-view" id="stepTwoView" hidden aria-labelledby="stepTwoTitle">
           <h1 class="editor-title" id="stepTwoTitle">Edit payment details</h1>
-          <p class="editor-description">Customize the pending UPI transaction screen shown in Step 2.</p>
+          <p class="editor-description" id="stepTwoDescription">Customize the pending UPI transaction screen shown in Step 2.</p>
           <form class="editor-form" id="stepTwoForm">
-            <fieldset class="editor-section">
-              <legend class="section-title">Payment summary</legend>
+<fieldset class="editor-section freecharge-step-two-only">
+  <legend class="section-title">Payment summary</legend>
               <div class="field-grid">
                 <div class="field"><label for="stepTwoTitleField">Page title</label><input id="stepTwoTitleField" value="Paid To Ms Isha Marjara" maxlength="36"></div>
                 <div class="field"><label for="stepTwoHelp">Help label</label><input id="stepTwoHelp" value="NEED HELP?" readonly aria-readonly="true"><p class="field-hint">Fixed label shown on the payment screen.</p></div>
@@ -477,8 +477,8 @@
                 <div class="field"><label for="stepTwoStatus">Status</label><input id="stepTwoStatus" value="Pending" maxlength="14"></div>
               </div>
             </fieldset>
-            <fieldset class="editor-section">
-              <legend class="section-title">Payment information</legend>
+<fieldset class="editor-section freecharge-step-two-only">
+  <legend class="section-title">Payment information</legend>
               <div class="field-grid single">
                 <div class="field"><label for="stepTwoNotice">Progress notice</label><textarea id="stepTwoNotice" rows="5" maxlength="280" aria-describedby="stepTwoNoticeHint">Payment is in progress. Don’t worry — If it fails, any debited amount will be auto-reversed; if successful, it will be credited to the recipient. The transaction will get updated within 3-8 days.</textarea><p class="field-hint" id="stepTwoNoticeHint">Edit this message to update the notice in the Step 2 preview.</p></div>
                 <div class="field"><label for="stepTwoBank">Bank account</label><input id="stepTwoBank" value="xxxx 7675" maxlength="20"></div>
@@ -545,6 +545,10 @@
     const editorTitle = document.querySelector('#stepOneView .editor-title');
     const editorDescription = document.querySelector('#stepOneView .editor-description');
     const freechargeTextSection = document.querySelector('#freechargeTextSection');
+    const paytmStepOneForm = document.querySelector('#editorForm');
+    const paytmStepTwoForm = document.querySelector('#stepTwoForm');
+    const freechargeStepTwoSections = [...document.querySelectorAll('.freecharge-step-two-only')];
+    const stepTwoDescription = document.querySelector('#stepTwoDescription');
     const senderRecipientSection = document.querySelector('#senderRecipientSection');
     const senderNameField = document.querySelector('#senderNameField');
     const senderDetailsField = document.querySelector('#senderDetailsField');
@@ -1260,6 +1264,14 @@
       stepTwoButton.classList.toggle('active', !isStepOne);
       stepOneButton.setAttribute('aria-selected', String(isStepOne));
       stepTwoButton.setAttribute('aria-selected', String(!isStepOne));
+      const paytmStepActive = activeProvider === 'paytm';
+      if (paytmStepActive) {
+        if (isStepOne) paytmStepOneForm.appendChild(paytmDetailsSection);
+        else paytmStepTwoForm.insertBefore(paytmDetailsSection, paytmStepTwoForm.firstElementChild);
+      }
+      paytmDetailsSection.hidden = !paytmStepActive;
+      freechargeStepTwoSections.forEach(section => { section.hidden = paytmStepActive; });
+      if (paytmStepActive) stepTwoDescription.textContent = 'Edit only Paytm transfer details. Freecharge payment fields are hidden for this screen.';
       renderMockup();
     }
 

@@ -87,6 +87,15 @@
     .safety-copy strong { font-size: 10px; letter-spacing: .075em; }
     .safety-copy span { font-size: 10px; }
     .editor-body { flex: 1; overflow-y: auto; padding: 20px 22px 24px; scrollbar-color: #c8ced7 transparent; scrollbar-width: thin; }
+    .step-navigation { display: flex; gap: 8px; margin-bottom: 18px; }
+    .step-button { flex: 1; min-height: 34px; border: 1px solid #dce1e7; border-radius: 9px; background: #fff; color: #667181; font-size: 11px; font-weight: 750; }
+    .step-button.active { border-color: #ed9417; background: #fff3e1; color: #9d5018; }
+    .step-view[hidden] { display: none; }
+    .coming-soon { min-height: 420px; display: grid; place-items: center; padding: 30px 10px; text-align: center; }
+    .coming-soon-card { max-width: 260px; }
+    .coming-soon-badge { display: inline-flex; padding: 7px 10px; border-radius: 999px; background: #fff2df; color: #9d5018; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .coming-soon h2 { margin: 16px 0 8px; font-size: 25px; }
+    .coming-soon p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
     .editor-title { margin: 0; font-size: 22px; line-height: 1.2; letter-spacing: -.55px; }
     .editor-description { margin: 7px 0 19px; color: var(--muted); font-size: 12px; line-height: 1.55; }
     .editor-form { display: grid; gap: 20px; }
@@ -241,6 +250,11 @@
       </header>
 
       <div class="editor-body">
+        <nav class="step-navigation" aria-label="Builder steps">
+          <button class="step-button active" id="stepOneButton" type="button" aria-selected="true">Step 1 · Customize</button>
+          <button class="step-button" id="stepTwoButton" type="button" aria-selected="false">Step 2 · Coming soon</button>
+        </nav>
+        <section class="step-view" id="stepOneView" aria-labelledby="editorTitle">
         <h1 class="editor-title" id="editorTitle">Customize your payment screen</h1>
         <p class="editor-description">Changes appear instantly in the phone preview. Safety labels remain on the exported image.</p>
 
@@ -348,6 +362,16 @@
             </div>
           </fieldset>
         </form>
+        </section>
+        <section class="step-view" id="stepTwoView" hidden aria-labelledby="comingSoonTitle">
+          <div class="coming-soon">
+            <div class="coming-soon-card">
+              <span class="coming-soon-badge">Step 2</span>
+              <h2 id="comingSoonTitle">Coming soon</h2>
+              <p>This next step is being prepared. Your payment screen customization is available in Step 1.</p>
+            </div>
+          </div>
+        </section>
       </div>
 
       <footer class="editor-footer">
@@ -386,6 +410,10 @@
     const form = document.querySelector('#editorForm');
     const downloadButton = document.querySelector('#downloadButton');
     const downloadStatus = document.querySelector('#downloadStatus');
+    const stepOneButton = document.querySelector('#stepOneButton');
+    const stepTwoButton = document.querySelector('#stepTwoButton');
+    const stepOneView = document.querySelector('#stepOneView');
+    const stepTwoView = document.querySelector('#stepTwoView');
     const resetButton = document.querySelector('#resetButton');
     const fields = {
       time: document.querySelector('#statusTime'),
@@ -767,6 +795,19 @@
       downloadButton.disabled = !values.validAmount;
       canvas.setAttribute('aria-label', `Payment status screen preview. ${values.senderName} to ${values.recipientName}. Amount INR ${values.amount}. Transaction is in progress.`);
     }
+
+    function showStep(step) {
+      const isStepOne = step === 1;
+      stepOneView.hidden = !isStepOne;
+      stepTwoView.hidden = isStepOne;
+      stepOneButton.classList.toggle('active', isStepOne);
+      stepTwoButton.classList.toggle('active', !isStepOne);
+      stepOneButton.setAttribute('aria-selected', String(isStepOne));
+      stepTwoButton.setAttribute('aria-selected', String(!isStepOne));
+    }
+
+    stepOneButton.addEventListener('click', () => showStep(1));
+    stepTwoButton.addEventListener('click', () => showStep(2));
 
     form.addEventListener('input', () => {
       renderMockup();

@@ -781,24 +781,25 @@
       context.fillRect(545, 25, 3, 7);
     }
 
-    function drawCurrencyMark(x, y) {
-      context.save();
-      context.strokeStyle = '#111';
-      context.lineWidth = 3;
-      context.lineCap = 'round';
-      context.lineJoin = 'round';
-      context.beginPath();
-      context.moveTo(x + 3, y - 14);
-      context.lineTo(x + 31, y - 14);
-      context.moveTo(x + 3, y - 4);
-      context.lineTo(x + 29, y - 4);
-      context.moveTo(x + 5, y - 4);
-      context.bezierCurveTo(x + 25, y - 4, x + 27, y - 15, x + 14, y - 15);
-      context.moveTo(x + 6, y - 4);
-      context.lineTo(x + 29, y + 22);
-      context.stroke();
-      context.restore();
-    }
+  function drawCurrencyMark(x, y) {
+  context.save();
+  context.strokeStyle = '#111';
+  context.lineWidth = 3.5;
+  context.lineCap = 'square';
+  context.lineJoin = 'miter';
+  context.beginPath();
+  // Paytm's compact rupee mark: two crisp bars, a rounded bowl, and the long diagonal leg.
+  context.moveTo(x + 2, y - 16);
+  context.lineTo(x + 31, y - 16);
+  context.moveTo(x + 2, y - 7);
+  context.lineTo(x + 29, y - 7);
+  context.moveTo(x + 5, y - 7);
+  context.bezierCurveTo(x + 24, y - 7, x + 28, y - 16, x + 14, y - 16);
+  context.moveTo(x + 5, y - 7);
+  context.lineTo(x + 30, y + 22);
+  context.stroke();
+  context.restore();
+  }
 
     function drawTransferCard(values) {
       roundedRect(context, 31, 260, 514, 128, 23, '#eff3f5');

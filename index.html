@@ -75,6 +75,9 @@
     .provider-button:focus-visible, .back-button:focus-visible { outline: 2px solid #c76722; outline-offset: 3px; }
     .provider-button[aria-disabled="true"] { color: #667181; }
     .back-button {
+      position: relative;
+      z-index: 2;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -325,7 +328,7 @@
       </header>
 
       <div class="editor-body">
-        <button class="back-button" id="backButton" type="button" aria-label="Back to payment app selection">← Back</button>
+        <button class="back-button" id="backButton" type="button" aria-label="Back to payment app selection" onclick="document.querySelector('#providerScreen').hidden = false; document.querySelector('#studioScreen').hidden = true;">← Back</button>
         <nav class="step-navigation" aria-label="Builder steps">
           <button class="step-button active" id="stepOneButton" type="button" aria-selected="true">Step 1 · Customize</button>
           <button class="step-button" id="stepTwoButton" type="button" aria-selected="false">Step 2 · Edit payment details</button>

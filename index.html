@@ -297,7 +297,7 @@
       <div class="provider-options">
         <button class="provider-button" id="freechargeButton" type="button">Freecharge<small>Open editor</small></button>
         <button class="provider-button" id="paytmButton" type="button">Paytm<small>Open editor</small></button>
-        <button class="provider-button" id="mobikwikButton" type="button">Mobikwik<small>Coming soon</small></button>
+        <button class="provider-button" id="mobikwikButton" type="button">Mobikwik<small>Open editor</small></button>
       </div>
     </section>
   </main>
@@ -902,11 +902,30 @@
       context.fillStyle = '#222'; context.font = `700 27px ${fontStack}`; context.fillText('To', 52, 220); context.font = `800 32px ${fontStack}`; context.fillText(values.recipientName || 'Mr ABHILASH REDDY PANDIRI', 52, 270); context.font = `500 22px ${fontStack}`; context.fillText('State Bank Of India - 9271', 52, 320); context.strokeStyle = '#245d91'; context.lineWidth = 2; roundedRect(context, 52, 390, 185, 55, 28, '#fff', '#245d91'); context.fillStyle = '#245d91'; context.textAlign = 'center'; context.font = `500 18px ${fontStack}`; context.fillText('View History', 145, 418); context.textAlign = 'left'; context.fillStyle = '#222'; context.font = `700 27px ${fontStack}`; context.fillText('From', 52, 555); context.font = `800 32px ${fontStack}`; context.fillText(values.senderName || 'Krishna Rani', 52, 610); context.font = `500 20px ${fontStack}`; context.fillText('UPI ID: ******4155@ptyes', 52, 665); context.fillText('Yes Bank - 8016', 52, 710); context.fillText('01:00 PM, 05 Oct 2026', 52, 790); context.fillText('UPI Ref No: 316196573640  Copy', 52, 840); context.font = `700 23px ${fontStack}`; context.fillText('Status: Pending', 52, 895); context.fillStyle = '#24b978'; context.font = `600 19px ${fontStack}`; context.fillText('✓  Payment Started by Krishna Rani', 52, 950); context.fillText('✓  Money transferred from Krishna Rani\'s Yes Bank A/c - 8016', 52, 1005); context.fillText('✓  Money sent to receiver\'s bank', 52, 1060); context.fillStyle = '#888'; context.fillText('◷  Depositing money in receiver\'s A/c', 52, 1115); canvas.setAttribute('aria-label', 'Paytm transfer in progress screen'); downloadButton.disabled = false;
     }
 
+    function drawMobikwikStepOne(values) {
+      context.fillStyle = '#fff'; context.fillRect(0, 0, width, height); drawStatusBar(values);
+      context.fillStyle = '#1557ad'; context.fillRect(0, 58, width, 430); context.textAlign = 'left'; context.fillStyle = '#fff'; context.font = `500 48px ${fontStack}`; context.fillText('‹', 30, 112); context.textAlign = 'right'; context.font = `500 20px ${fontStack}`; context.fillText('⌯', 548, 108);
+      context.textAlign = 'center'; context.strokeStyle = '#fff'; context.lineWidth = 4; context.beginPath(); context.arc(width / 2, 175, 36, 0, Math.PI * 2); context.stroke(); context.fillStyle = '#ffd22e'; context.font = `700 38px ${fontStack}`; context.fillText('ϟ', width / 2, 188);
+      context.fillStyle = '#fff'; context.font = `500 23px ${fontStack}`; context.fillText('Pending Transfer', width / 2, 250); context.font = `750 52px ${fontStack}`; context.fillText(`₹${values.amount === 'SET AMOUNT' ? '738' : values.amount}`, width / 2, 326); context.font = `500 21px ${fontStack}`; context.fillText(`to ${values.recipientName || 'Dnyaneshwar Suravase'}`, width / 2, 382);
+      roundedRect(context, 22, 420, 532, 165, 14, '#fff', '#e0e0e0'); context.textAlign = 'left'; context.fillStyle = '#555'; context.font = `500 18px ${fontStack}`; context.fillText('Received By', 44, 462); context.fillText('Payment Mode', 44, 505); context.textAlign = 'right'; context.fillStyle = '#333'; context.font = `600 18px ${fontStack}`; context.fillText('XXXX-XXX8-141', 532, 462); context.fillText('INDIAN BANK 8737', 532, 505); context.textAlign = 'center'; context.fillStyle = '#28609a'; context.font = `500 16px ${fontStack}`; context.fillText('View more details⌄', 450, 548); context.fillStyle = '#235fae'; context.font = `700 25px ${fontStack}`; context.fillText('MobiKwik', width / 2, 1190); canvas.setAttribute('aria-label', 'Mobikwik pending transfer screen'); downloadButton.disabled = false;
+    }
+
+    function drawMobikwikStepTwo(values) {
+      context.fillStyle = '#f7f8fa'; context.fillRect(0, 0, width, height); drawStatusBar(values); context.textAlign = 'left'; context.fillStyle = '#273340'; context.font = `700 50px ${fontStack}`; context.fillText('×', 30, 125); context.textAlign = 'right'; context.font = `500 18px ${fontStack}`; context.fillText('◉ Share   ? Help', 548, 115); context.textAlign = 'left'; context.fillStyle = '#35404c'; context.font = `750 52px ${fontStack}`; context.fillText(`₹${values.amount === 'SET AMOUNT' ? '2,000' : values.amount}`, 46, 202); context.fillStyle = '#f4c83d'; context.font = `500 35px ${fontStack}`; context.fillText('◷', 248, 202); context.font = `500 20px ${fontStack}`; context.fillStyle = '#555'; context.fillText('▱  NA', 46, 252); context.font = `600 22px ${fontStack}`; context.fillText('Payment Pending', 46, 302); context.font = `500 18px ${fontStack}`; context.fillText('5 Oct \'26 at 7:00PM', 46, 342); roundedRect(context, 46, 372, 175, 48, 25, '#35404c'); context.fillStyle = '#fff'; context.textAlign = 'center'; context.font = `700 17px ${fontStack}`; context.fillText('Need Help?', 134, 397);
+      roundedRect(context, 18, 450, 540, 230, 24, '#fff'); context.textAlign = 'left'; context.fillStyle = '#36414d'; context.font = `500 17px ${fontStack}`; context.fillText('●   Payment initiated from JIO PAYMENTS', 50, 500); context.fillText('     BANK LTD - 2682', 50, 532); context.fillStyle = '#e5b932'; context.fillText('●   Payment in pending state', 50, 580); context.fillStyle = '#a1aab3'; context.fillText('●   Amount credited to the beneficiary account', 50, 632);
+      roundedRect(context, 18, 704, 540, 285, 24, '#fff'); context.fillStyle = '#8a959f'; context.font = `500 16px ${fontStack}`; context.fillText('To', 50, 752); context.fillStyle = '#36414d'; context.font = `750 25px ${fontStack}`; context.fillText(values.recipientName || 'Rahul Dindure', 50, 797); context.font = `500 20px ${fontStack}`; context.fillText('SBIN0012485', 50, 842); context.fillText('XXXXXXX2247', 50, 887); roundedRect(context, 50, 920, 174, 45, 23, '#fff', '#e5e8eb'); roundedRect(context, 240, 920, 174, 45, 23, '#fff', '#e5e8eb'); context.fillStyle = '#1260a9'; context.textAlign = 'center'; context.font = `600 16px ${fontStack}`; context.fillText('View History', 137, 947); context.fillText('Pay Again', 327, 947);
+      roundedRect(context, 18, 1015, 540, 220, 24, '#fff'); context.textAlign = 'left'; context.fillStyle = '#8a959f'; context.font = `500 16px ${fontStack}`; context.fillText('From', 50, 1062); context.fillStyle = '#36414d'; context.font = `750 25px ${fontStack}`; context.fillText(values.senderName || 'Santanu Roy', 50, 1108); context.font = `500 20px ${fontStack}`; context.fillText('8293293132@mbkns', 50, 1153); context.fillText('JIO PAYMENTS BANK LTD - 2682', 50, 1198); canvas.setAttribute('aria-label', 'Mobikwik payment pending details screen'); downloadButton.disabled = false;
+    }
+
     function renderMockup() {
       const values = readValues();
       context.clearRect(0, 0, width, height);
       if (activeProvider === 'paytm') {
         if (!stepOneView.hidden) drawPaytmStepOne(values); else drawPaytmStepTwo(values);
+        return;
+      }
+      if (activeProvider === 'mobikwik') {
+        if (!stepOneView.hidden) drawMobikwikStepOne(values); else drawMobikwikStepTwo(values);
         return;
       }
       if (!stepOneView.hidden) {
@@ -1020,11 +1039,18 @@
     showStep(1);
     }
 
+    function showMobikwikEditor() {
+    activeProvider = 'mobikwik';
+    providerScreen.hidden = true;
+    studioScreen.hidden = false;
+    stepOneButton.textContent = 'Step 1 · Pending transfer';
+    stepTwoButton.textContent = 'Step 2 · Payment pending details';
+    showStep(1);
+    }
+
     freechargeButton.addEventListener('click', showFreechargeEditor);
     paytmButton.addEventListener('click', showPaytmEditor);
-    mobikwikButton.addEventListener('click', () => {
-      window.alert('Mobikwik is coming soon.');
-    });
+    mobikwikButton.addEventListener('click', showMobikwikEditor);
     backButton.addEventListener('click', showProviderSelection);
     stepOneButton.addEventListener('click', () => showStep(1));
     stepTwoButton.addEventListener('click', () => showStep(2));

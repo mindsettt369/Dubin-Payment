@@ -903,17 +903,107 @@
     }
 
     function drawPaytmStepOne(values) {
-      context.fillStyle = '#fff'; context.fillRect(0, 0, width, height); drawStatusBar(values);
-      context.fillStyle = '#163b82'; context.textAlign = 'center'; context.font = `800 46px ${fontStack}`; context.fillText('Pay', 245, 126);
-      context.fillStyle = '#10a9dc'; context.fillText('tm', 332, 126);
-      context.fillStyle = '#222'; context.font = `500 29px ${fontStack}`; context.textAlign = 'left'; context.fillText('‹', 30, 126); context.fillStyle = '#10a9dc'; context.font = `700 21px ${fontStack}`; context.fillText('Help', 474, 126);
-      roundedRect(context, 22, 180, 532, 580, 20, '#fff9df'); context.textAlign = 'center'; context.fillStyle = '#111'; context.font = `700 48px ${fontStack}`; context.fillText(`₹${values.amount === 'SET AMOUNT' ? '522' : values.amount}`, width / 2, 350);
-      context.fillStyle = '#f7a900'; context.beginPath(); context.arc(340, 350, 22, 0, Math.PI * 2); context.fill(); context.fillStyle = '#fff'; context.font = `700 26px ${fontStack}`; context.fillText('!', 340, 350);
-      context.fillStyle = '#252525'; context.font = `700 21px ${fontStack}`; context.fillText('PAYMENT UNDER PROCESS', width / 2, 438); context.font = `500 18px ${fontStack}`; context.fillText('05 Oct, 06:33 PM', width / 2, 482);
-      context.font = `500 18px ${fontStack}`; wrapText('It is taking time to confirm the status of your payment. We are continuously checking the status of your payment.', 450, 4, `500 18px ${fontStack}`).forEach((line, i) => context.fillText(line, width / 2, 545 + i * 28));
-      roundedRect(context, 176, 688, 224, 52, 28, '#10afe2'); context.fillStyle = '#fff'; context.font = `700 16px ${fontStack}`; context.fillText('Check Passbook', width / 2, 714);
-      roundedRect(context, 22, 805, 532, 205, 18, '#fff', '#dedede'); context.textAlign = 'left'; context.fillStyle = '#202020'; context.font = `600 18px ${fontStack}`; context.fillText('Status: Pending', 44, 850); context.fillText('Transaction ID: PTM0e1812ad5dd1484f925d77', 44, 916); context.fillStyle = '#10a9dc'; context.fillText('Copy', 460, 916); context.fillStyle = '#888'; context.font = `500 16px ${fontStack}`; context.fillText('05 Oct 2026, 06:33 PM', 44, 972);
-      canvas.setAttribute('aria-label', 'Paytm payment under process screen'); downloadButton.disabled = false;
+      context.fillStyle = '#fff';
+      context.fillRect(0, 0, width, height);
+      drawStatusBar(values);
+      context.textBaseline = 'middle';
+
+      context.fillStyle = '#153d82';
+      context.textAlign = 'center';
+      context.font = `800 46px ${fontStack}`;
+      context.fillText('Pay', 238, 105);
+      context.fillStyle = '#10a9dc';
+      context.fillText('tm', 326, 105);
+      context.fillStyle = '#20232a';
+      context.font = `500 34px ${fontStack}`;
+      context.textAlign = 'left';
+      context.fillText('‹', 30, 105);
+      context.fillStyle = '#10a9dc';
+      context.font = `700 21px ${fontStack}`;
+      context.fillText('Help', 478, 105);
+
+      roundedRect(context, 22, 182, 532, 578, 20, '#fff9df');
+      context.textAlign = 'left';
+      context.fillStyle = '#f6b3d5';
+      context.beginPath();
+      context.arc(144, 254, 32, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = '#ad3c82';
+      context.font = `600 24px ${fontStack}`;
+      context.textAlign = 'center';
+      context.fillText('MM', 144, 254);
+      context.textAlign = 'left';
+      context.fillStyle = '#202124';
+      context.font = `600 ${fitFont(values.recipientName || 'Mr Kinny L Maw nai', 300, 26, 600, 18)}px ${fontStack}`;
+      context.fillText(values.recipientName || 'Mr Kinny L Maw nai', 205, 243);
+      context.fillStyle = '#353535';
+      context.font = `500 19px ${fontStack}`;
+      context.fillText('SBI Bank - 8063', 205, 276);
+      context.fillStyle = '#168ed0';
+      context.beginPath();
+      context.arc(365, 276, 9, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = '#fff';
+      context.font = `700 12px ${fontStack}`;
+      context.textAlign = 'center';
+      context.fillText('i', 365, 276);
+
+      const amountText = values.amount === 'SET AMOUNT' ? '522' : values.amount;
+      const amountSize = fitFont(amountText, 190, 48, 700, 30);
+      context.font = `700 ${amountSize}px ${fontStack}`;
+      const amountWidth = context.measureText(amountText).width;
+      const amountStart = (width - amountWidth - 54) / 2;
+      drawCurrencyMark(amountStart, 332);
+      context.fillStyle = '#111';
+      context.textAlign = 'left';
+      context.fillText(amountText, amountStart + 50, 356);
+      context.textAlign = 'center';
+      context.fillStyle = '#f7a900';
+      context.beginPath();
+      context.arc(326, 355, 22, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = '#fff';
+      context.font = `700 25px ${fontStack}`;
+      context.fillText('!', 326, 355);
+
+      context.fillStyle = '#252525';
+      context.font = `700 20px ${fontStack}`;
+      context.fillText('PAYMENT UNDER PROCESS', width / 2, 435);
+      context.font = `500 18px ${fontStack}`;
+      context.fillText('05 Oct, 06:33 PM', width / 2, 479);
+      context.font = `500 18px ${fontStack}`;
+      wrapText('It is taking time to confirm the status of your payment. We are continuously checking the status of your payment. Meanwhile you can come back later to your UPI passbook and view the latest status of the payment', 452, 5, `500 18px ${fontStack}`).forEach((line, i) => context.fillText(line, width / 2, 539 + i * 27));
+
+      roundedRect(context, 198, 688, 180, 52, 28, '#10afe2');
+      context.fillStyle = '#fff';
+      context.font = `700 16px ${fontStack}`;
+      context.fillText('Check Passbook', width / 2, 714);
+
+      roundedRect(context, 22, 806, 532, 228, 18, '#fff', '#dedede');
+      context.textAlign = 'left';
+      context.fillStyle = '#202020';
+      context.font = `600 18px ${fontStack}`;
+      context.fillText('Status: Pending', 44, 846);
+      context.font = `500 18px ${fontStack}`;
+      context.fillText('Transaction ID: PTM0e1812ad5dd1484f925d77', 44, 918);
+      context.fillText('5ff1663395', 188, 946);
+      context.fillStyle = '#10a9dc';
+      context.font = `600 18px ${fontStack}`;
+      context.fillText('Copy', 484, 918);
+      context.fillStyle = '#888';
+      context.font = `500 16px ${fontStack}`;
+      context.fillText('05 Oct 2026, 06:33 PM', 44, 1004);
+
+      context.textAlign = 'center';
+      context.fillStyle = '#7e8084';
+      context.font = `800 18px ${fontStack}`;
+      context.fillText('Paytm', 178, 1084);
+      context.font = `500 9px ${fontStack}`;
+      context.fillText('|  Powered by', 238, 1084);
+      context.font = `700 17px ${fontStack}`;
+      context.fillText('UPI  ✓ YES BANK', 360, 1084);
+      canvas.setAttribute('aria-label', 'Paytm payment under process screen');
+      downloadButton.disabled = false;
     }
 
     function drawPaytmStepTwo(values) {

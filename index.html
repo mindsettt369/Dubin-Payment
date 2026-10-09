@@ -544,6 +544,7 @@
     const editorTitle = document.querySelector('#stepOneView .editor-title');
     const editorDescription = document.querySelector('#stepOneView .editor-description');
     const freechargeTextSection = document.querySelector('#freechargeTextSection');
+    const senderRecipientSection = document.querySelector('#senderRecipientSection');
     const senderNameField = document.querySelector('#senderNameField');
     const senderDetailsField = document.querySelector('#senderDetailsField');
     const recipientNameField = document.querySelector('#recipientNameField');
@@ -1202,6 +1203,7 @@
       editorDescription.textContent = providerCopy.description;
       freechargeTextSection.hidden = provider !== 'freecharge';
       paytmDetailsSection.hidden = provider !== 'paytm';
+      senderRecipientSection.hidden = provider === 'paytm';
       const needsSender = provider === 'freecharge' || provider === 'mobikwik';
       senderNameField.hidden = !needsSender;
       senderDetailsField.hidden = !needsSender;

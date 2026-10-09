@@ -34,12 +34,11 @@
     }
     .provider-card {
       width: 100%;
-      padding: 42px;
+      padding: 12px 16px;
       border: 1px solid var(--line);
-      border-radius: 24px;
+      border-radius: 16px;
       background: #fff;
       box-shadow: 0 12px 36px rgba(22, 32, 48, .08);
-      text-align: center;
     }
     .provider-mark {
       width: 54px;
@@ -55,7 +54,7 @@
     }
     .provider-card h1 { margin: 0; font-size: 28px; letter-spacing: -.6px; }
     .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
-    .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
     .provider-button {
       min-height: 78px;
       padding: 12px;
@@ -266,8 +265,8 @@
 
     @media (max-width: 760px) {
       .provider-screen { width: min(100% - 20px, 560px); margin: 10px auto 0; }
-      .provider-card { padding: 30px 20px; }
-      .provider-options { grid-template-columns: 1fr; }
+      .provider-card { padding: 12px; }
+      .provider-options { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
       .studio-shell { width: min(100% - 20px, 560px); min-height: 0; margin: 10px auto 20px; grid-template-columns: 1fr; gap: 13px; }
       .editor-panel { position: static; height: auto; min-height: 0; }
       .editor-body { overflow: visible; padding: 19px 18px 22px; }
@@ -294,10 +293,7 @@
 </head>
 <body>
   <main class="provider-screen" id="providerScreen">
-    <section class="provider-card" aria-labelledby="providerTitle">
-      <div class="provider-mark" aria-hidden="true">₹</div>
-      <h1 id="providerTitle">Choose your payment app</h1>
-      <p>Select a payment provider to open its editable transaction screen.</p>
+    <section class="provider-card" aria-label="Payment app selection">
       <div class="provider-options">
         <button class="provider-button" id="freechargeButton" type="button">Freecharge<small>Open editor</small></button>
         <button class="provider-button" id="paytmButton" type="button">Paytm<small>Coming soon</small></button>

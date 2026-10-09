@@ -402,14 +402,14 @@
             </div>
           </fieldset>
 
-          <fieldset class="editor-section">
-            <legend class="section-title">Sender and recipient</legend>
+          <fieldset class="editor-section" id="senderRecipientSection">
+            <legend class="section-title" id="senderRecipientLegend">Sender and recipient</legend>
             <div class="field-grid">
-              <div class="field">
+              <div class="field" id="senderNameField">
                 <label for="senderName">From · name</label>
                 <input id="senderName" name="senderName" type="text" value="JOSHI" maxlength="32" autocomplete="off">
               </div>
-              <div class="field">
+              <div class="field" id="senderDetailsField">
                 <label for="senderDetails">From · details</label>
                 <input id="senderDetails" name="senderDetails" type="text" value="INDIAN BANK (xxxx 0739)" maxlength="34" autocomplete="off">
               </div>
@@ -435,7 +435,7 @@
             </div>
           </fieldset>
 
-          <fieldset class="editor-section">
+          <fieldset class="editor-section" id="freechargeTextSection">
             <legend class="section-title">Screen text</legend>
             <div class="field-grid single">
               <div class="field">
@@ -530,6 +530,12 @@
     const stepOneView = document.querySelector('#stepOneView');
     const stepTwoView = document.querySelector('#stepTwoView');
     const resetButton = document.querySelector('#resetButton');
+    const editorTitle = document.querySelector('#stepOneView .editor-title');
+    const editorDescription = document.querySelector('#stepOneView .editor-description');
+    const freechargeTextSection = document.querySelector('#freechargeTextSection');
+    const senderNameField = document.querySelector('#senderNameField');
+    const senderDetailsField = document.querySelector('#senderDetailsField');
+    const senderRecipientLegend = document.querySelector('#senderRecipientLegend');
     const fields = {
       time: document.querySelector('#statusTime'),
       network: document.querySelector('#networkType'),
@@ -1157,6 +1163,27 @@
       ensureProviderState(activeProvider);
       applyProviderState(providerState[activeProvider]);
       studioScreen.hidden = false;
+      const providerCopy = {
+        freecharge: {
+          title: 'Customize your payment screen',
+          description: 'Changes appear instantly in the phone preview. Safety labels remain on the exported image.'
+        },
+        paytm: {
+          title: 'Customize your Paytm pending screen',
+          description: 'Edit only Paytm-specific recipient and amount details. Paytm status copy is fixed to match the reference screen.'
+        },
+        mobikwik: {
+          title: 'Customize your MobiKwik pending screen',
+          description: 'Edit only MobiKwik-specific transfer details. MobiKwik status copy is fixed to match its reference screen.'
+        }
+      }[provider];
+      editorTitle.textContent = providerCopy.title;
+      editorDescription.textContent = providerCopy.description;
+      freechargeTextSection.hidden = provider !== 'freecharge';
+      const needsSender = provider === 'freecharge' || provider === 'mobikwik';
+      senderNameField.hidden = !needsSender;
+      senderDetailsField.hidden = !needsSender;
+      senderRecipientLegend.textContent = provider === 'paytm' ? 'Recipient' : 'Sender and recipient';
       Object.entries(providerButtons).forEach(([name, button]) => {
         const isActive = name === provider;
         button.classList.toggle('active', isActive);

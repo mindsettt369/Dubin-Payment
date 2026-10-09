@@ -1129,10 +1129,10 @@
     }
 
 function drawPaytmVerifiedBadge(context, x, baselineY) {
-      const svg = `<svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg" aria-label="Verified"><path fill="#1D9BF0" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.4.33-3.04-.7-4.2-1.03-1.17-2.6-1.62-4.06-1.2C14.8 2.2 13.5 1.4 12 1.4s-2.8.8-3.56 1.98c-1.46-.42-3.03.03-4.06 1.2-1.03 1.16-1.24 2.8-.7 4.2C2.38 9.55 1.5 10.92 1.5 12.5s.88 2.95 2.18 3.66c-.54 1.4-.33 3.04.7 4.2 1.03 1.17 2.6 1.62 4.06 1.2C9.2 22.8 10.5 23.6 12 23.6s2.8-.8 3.56-1.98c1.46.42 3.03.03 4.06-1.2 1.03-1.16 1.24-2.8.7-4.2 1.3-.71 2.18-2.08 2.18-3.66z"/><path fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M7.2 12.6l3.2 3.2 6.4-6.8"/></svg>`;
+      const svg = `<svg viewBox="0 0 24 24" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-label="Verified"><path fill="#1D9BF0" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.4.33-3.04-.7-4.2-1.03-1.17-2.6-1.62-4.06-1.2C14.8 2.2 13.5 1.4 12 1.4s-2.8.8-3.56 1.98c-1.46-.42-3.03.03-4.06 1.2-1.03 1.16-1.24 2.8-.7 4.2C2.38 9.55 1.5 10.92 1.5 12.5s.88 2.95 2.18 3.66c-.54 1.4-.33 3.04.7 4.2 1.03 1.17 2.6 1.62 4.06 1.2C9.2 22.8 10.5 23.6 12 23.6s2.8-.8 3.56-1.98c1.46.42 3.03.03 4.06-1.2 1.03-1.16 1.24-2.8.7-4.2 1.3-.71 2.18-2.08 2.18-3.66z"/><path fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="M7.2 12.6l3.2 3.2 6.4-6.8"/></svg>`;
       const image = new Image();
       image.crossOrigin = 'anonymous';
-      image.onload = () => context.drawImage(image, x, baselineY, 24, 24);
+      image.onload = () => context.drawImage(image, x, baselineY, 30, 30);
       image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
     }
 
@@ -1213,8 +1213,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       prefixLines.forEach((line, index) => context.fillText(line, 52, 270 + index * 31));
       const lastLineY = 270 + prefixLines.length * 31;
       context.fillText(recipientLastWord, 52, lastLineY);
-      const verifiedX = 52 + context.measureText(recipientLastWord).width + 6;
-      drawPaytmVerifiedBadge(context, verifiedX, lastLineY - 20);
+      const verifiedX = 52 + context.measureText(recipientLastWord).width + 8;
+      drawPaytmVerifiedBadge(context, verifiedX, lastLineY - 27);
       context.font = `500 22px ${fontStack}`;
       context.fillStyle = '#222';
       context.fillText(recipientBank, 52, lastLineY + 49);

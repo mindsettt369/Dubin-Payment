@@ -26,7 +26,6 @@
         }
 
     * { box-sizing: border-box; }
-    [hidden] { display: none !important; }
     body { min-width: 320px; min-height: 100vh; margin: 0; background: #f2f4f7; }
     button, input, textarea { font: inherit; }
     button { cursor: pointer; }
@@ -351,34 +350,6 @@
           <fieldset class="editor-section">
             <legend class="section-title">Phone status bar</legend>
             <div class="field-grid">
-              <div class="field wide">
-                <label for="statusStyle">Status bar style</label>
-                <select id="statusStyle" name="statusStyle">
-                  <option value="light">Style 1 – Light Minimal</option>
-                  <option value="amber">Style 2 – Amber Colorful</option>
-                  <option value="navy">Style 3 – Dark Navy</option>
-                  <option value="island">Style 4 – iPhone Island</option>
-                  <option value="custom">Custom</option>
-                </select>
-              </div>
-              <div class="field wide status-style-actions">
-                <button class="secondary-button" id="randomStatusStyle" type="button">Random style</button>
-                <button class="secondary-button" id="editStatusStyle" type="button">Edit selected style</button>
-                <button class="secondary-button" id="resetStatusStyle" type="button" hidden>Reset to preset</button>
-              </div>
-              <div class="field-grid wide status-style-editor" id="statusStyleEditor" hidden>
-                <div class="field"><label for="statusTimeText">Time text</label><input id="statusTimeText" type="text" value="7:04 PM"></div>
-                <div class="field"><label for="statusSpeed">Network speed</label><input id="statusSpeed" type="text" value="4.8KB/s"></div>
-                <div class="field"><label for="statusNetworkKind">Network type</label><select id="statusNetworkKind"><option>4G</option><option>5G</option><option>5G+</option><option>LTE</option><option>Wi-Fi only</option></select></div>
-                <div class="field"><label for="statusWifi">Wi-Fi</label><select id="statusWifi"><option value="on">Show Wi-Fi</option><option value="off">Hide Wi-Fi</option></select></div>
-                <div class="field"><label for="statusBatteryNumber">Battery number</label><select id="statusBatteryNumber"><option value="on">Show percentage</option><option value="off">Hide percentage</option></select></div>
-                <div class="field"><label for="statusBatteryStyle">Battery style</label><select id="statusBatteryStyle"><option value="outline">Outline</option><option value="solid">Solid</option><option value="number">Number inside</option></select></div>
-                <div class="field"><label for="statusBackground">Background color</label><input id="statusBackground" type="color" value="#ffffff"></div>
-                <div class="field"><label for="statusTextColor">Text/icon color</label><input id="statusTextColor" type="color" value="#20232a"></div>
-                <div class="field"><label for="statusIsland">Dynamic Island</label><select id="statusIsland"><option value="on">Show</option><option value="off">Hide</option></select></div>
-              </div>
-              <div class="field-grid wide">
-
               <div class="field">
                 <label for="statusTime">Time</label>
                 <input id="statusTime" name="statusTime" type="time" value="07:01">
@@ -428,7 +399,6 @@
                   <option value="2" selected>2 graphs</option>
                 </select>
                 <p class="field-hint">Choose one or two editable signal graph icons.</p>
-              </div>
               </div>
             </div>
           </fieldset>
@@ -572,9 +542,6 @@
     const stepOneView = document.querySelector('#stepOneView');
     const stepTwoView = document.querySelector('#stepTwoView');
     const resetButton = document.querySelector('#resetButton');
-    const statusStyleFields = {
-      style: document.querySelector('#statusStyle'), random: document.querySelector('#randomStatusStyle'), edit: document.querySelector('#editStatusStyle'), reset: document.querySelector('#resetStatusStyle'), editor: document.querySelector('#statusStyleEditor'), timeText: document.querySelector('#statusTimeText'), speed: document.querySelector('#statusSpeed'), networkKind: document.querySelector('#statusNetworkKind'), wifi: document.querySelector('#statusWifi'), batteryNumber: document.querySelector('#statusBatteryNumber'), batteryStyle: document.querySelector('#statusBatteryStyle'), background: document.querySelector('#statusBackground'), textColor: document.querySelector('#statusTextColor'), island: document.querySelector('#statusIsland')
-    };
     const editorTitle = document.querySelector('#stepOneView .editor-title');
     const editorDescription = document.querySelector('#stepOneView .editor-description');
     const freechargeTextSection = document.querySelector('#freechargeTextSection');
@@ -621,32 +588,6 @@
     const width = canvas.width;
     const height = canvas.height;
     const fontStack = 'Inter, "Noto Sans", "DejaVu Sans", Roboto, Arial, sans-serif';
-    const statusPresets = {
-      light: { timeText: '7:04 PM', speed: '4.8KB/s', networkKind: '4G', background: '#ffffff', textColor: '#20232a', batteryStyle: 'number', batteryNumber: 'on', wifi: 'off', island: 'off' },
-      amber: { timeText: '1:17', speed: '', networkKind: '5G+', background: '#FFA800', textColor: '#2b2110', batteryStyle: 'solid', batteryNumber: 'off', wifi: 'on', island: 'off' },
-      navy: { timeText: '12:05', speed: '25.84 KB/s', networkKind: 'LTE', background: '#0F1B2D', textColor: '#ffffff', batteryStyle: 'outline', batteryNumber: 'on', wifi: 'on', island: 'off' },
-      island: { timeText: '12:15', speed: '', networkKind: '5G', background: '#f8f8f8', textColor: '#111111', batteryStyle: 'outline', batteryNumber: 'off', wifi: 'off', island: 'on' }
-    };
-    let selectedStatusStyle = 'light';
-    let editingStatusStyle = false;
-    function applyStatusPreset(style) {
-      const preset = statusPresets[style];
-      if (!preset) return;
-      selectedStatusStyle = style;
-      Object.entries(preset).forEach(([key, value]) => { if (statusStyleFields[key]) statusStyleFields[key].value = value; });
-      statusStyleFields.style.value = style;
-      fields.time.value = preset.timeText.includes(':') ? preset.timeText.slice(0, 5) : '07:01';
-      fields.network.value = preset.networkKind;
-      fields.battery.value = style === 'amber' ? '80' : style === 'navy' ? '52' : style === 'light' ? '61' : '67';
-      editingStatusStyle = false;
-      statusStyleFields.editor.hidden = true;
-      statusStyleFields.reset.hidden = true;
-      renderMockup();
-    }
-    function statusStyleValues() {
-      const preset = statusPresets[selectedStatusStyle] || statusPresets.light;
-      return { ...preset, timeText: editingStatusStyle ? statusStyleFields.timeText.value : preset.timeText, speed: editingStatusStyle ? statusStyleFields.speed.value : preset.speed, networkKind: editingStatusStyle ? statusStyleFields.networkKind.value : preset.networkKind, background: editingStatusStyle ? statusStyleFields.background.value : preset.background, textColor: editingStatusStyle ? statusStyleFields.textColor.value : preset.textColor, batteryStyle: editingStatusStyle ? statusStyleFields.batteryStyle.value : preset.batteryStyle, batteryNumber: editingStatusStyle ? statusStyleFields.batteryNumber.value : preset.batteryNumber, wifi: editingStatusStyle ? statusStyleFields.wifi.value : preset.wifi, island: editingStatusStyle ? statusStyleFields.island.value : preset.island };
-    }
 
     const providerState = {
       freecharge: null,
@@ -743,8 +684,6 @@
       return {
         time: fields.time.value || '07:01',
         network: fields.network.value.trim().slice(0, 6) || '5G',
-        statusStyle: selectedStatusStyle,
-        statusBar: statusStyleValues(),
   battery: Math.min(100, Math.max(0, Number.parseInt(fields.battery.value, 10) || 0)),
   temperature: fields.temperature.value.trim(),
   statusDots: Math.min(3, Math.max(0, Number.parseInt(fields.statusDots.value, 10) || 0)),
@@ -777,40 +716,16 @@
     }
 
     function drawStatusBar(values) {
-      const bar = values.statusBar;
-      context.fillStyle = bar.background;
+      context.fillStyle = '#ffffff';
       context.fillRect(0, 0, width, 58);
       context.textBaseline = 'middle';
       context.textAlign = 'left';
-      context.fillStyle = bar.textColor;
-      context.font = `700 18px ${fontStack}`;
-      context.fillText(bar.timeText, 24, 30);
-      if (values.statusStyle === 'island' && bar.island === 'on') {
-        roundedRect(context, 210, 10, 150, 36, 18, '#000');
-        context.fillStyle = '#25d366'; context.font = `700 19px ${fontStack}`; context.fillText('∞', 232, 29);
-      }
-      if (values.statusStyle === 'amber') {
-        context.fillStyle = '#bd2740'; context.font = `700 17px ${fontStack}`; context.fillText('★', 86, 30);
-        context.fillStyle = '#4f3020'; context.font = `700 15px ${fontStack}`; context.fillText('● ✉ ◆', 104, 30);
-      } else if (values.statusStyle !== 'island') {
-        context.fillStyle = bar.textColor; context.font = `700 12px ${fontStack}`; context.fillText(bar.speed ? `▰ ${bar.speed}` : '●', 86, 30);
-      }
-      const rightX = values.statusStyle === 'island' ? 410 : 365;
-      context.fillStyle = bar.textColor; context.font = `700 11px ${fontStack}`;
-      context.fillText(bar.networkKind, rightX, 22);
-      context.font = `700 15px ${fontStack}`;
-      context.fillText('▂▅▇█', rightX + 32, 31);
-      if (bar.wifi === 'on') { context.font = `700 16px ${fontStack}`; context.fillText('⌁', rightX + 82, 27); }
-      const batteryX = values.statusStyle === 'island' ? 510 : 518;
-      context.strokeStyle = bar.textColor; context.lineWidth = 1.5;
-      roundedPath(context, batteryX, 20, 27, 16, 3); context.stroke();
-      context.fillStyle = bar.textColor;
-      if (bar.batteryStyle === 'solid') context.fillRect(batteryX + 3, 23, 19, 10);
-      else context.fillRect(batteryX + 3, 23, Math.max(3, 19 * values.battery / 100), 10);
-      context.fillRect(batteryX + 28, 25, 3, 6);
-      if (bar.batteryNumber === 'on') { context.font = `600 9px ${fontStack}`; context.fillText(`${values.battery}`, batteryX - 28, 29); }
-      if (values.statusStyle === 'navy') { context.fillStyle = bar.textColor; context.font = `600 9px ${fontStack}`; context.fillText('25.84 KB/s', 370, 45); }
-      return;
+      context.fillStyle = '#20232a';
+      context.font = `500 18px ${fontStack}`;
+      const timeParts = values.time.split(':');
+      const displayTime = `${Number.parseInt(timeParts[0], 10)}:${timeParts[1] || '01'}`;
+      context.fillText(displayTime, 34, 30);
+
   if (values.statusDots > 0) {
     // Solid message bubble icon.
     context.fillStyle = '#333333';
@@ -1329,27 +1244,8 @@
     stepOneButton.addEventListener('click', () => showStep(1));
     stepTwoButton.addEventListener('click', () => showStep(2));
 
-  statusStyleFields.style.addEventListener('change', () => {
-    if (statusStyleFields.style.value === 'custom') { editingStatusStyle = true; statusStyleFields.editor.hidden = false; statusStyleFields.reset.hidden = false; renderMockup(); return; }
-    applyStatusPreset(statusStyleFields.style.value);
-    localStorage.setItem('statusBarStyle', statusStyleFields.style.value);
-  });
-  statusStyleFields.random.addEventListener('click', () => {
-    const options = Object.keys(statusPresets).filter(style => style !== selectedStatusStyle);
-    applyStatusPreset(options[Math.floor(Math.random() * options.length)]);
-    localStorage.setItem('statusBarStyle', selectedStatusStyle);
-  });
-  statusStyleFields.edit.addEventListener('click', () => {
-    editingStatusStyle = true; statusStyleFields.editor.hidden = false; statusStyleFields.reset.hidden = false; statusStyleFields.style.value = 'custom'; renderMockup();
-  });
-  statusStyleFields.reset.addEventListener('click', () => applyStatusPreset(selectedStatusStyle));
-  Object.values(statusStyleFields).forEach(field => { if (field && field.addEventListener && field !== statusStyleFields.style && field !== statusStyleFields.random && field !== statusStyleFields.edit && field !== statusStyleFields.reset && field !== statusStyleFields.editor) field.addEventListener('input', () => { editingStatusStyle = true; statusStyleFields.style.value = 'custom'; localStorage.setItem('statusBarEdits', JSON.stringify(Object.fromEntries(Object.entries(statusStyleFields).filter(([key, value]) => value && value.value !== undefined && !['style'].includes(key)).map(([key, value]) => [key, value.value])))); renderMockup(); }); });
-  const savedStatusStyle = localStorage.getItem('statusBarStyle');
-  const savedStatusEdits = localStorage.getItem('statusBarEdits');
-  if (savedStatusStyle && statusPresets[savedStatusStyle]) { applyStatusPreset(savedStatusStyle); if (savedStatusEdits) { try { Object.entries(JSON.parse(savedStatusEdits)).forEach(([key, value]) => { if (statusStyleFields[key]) statusStyleFields[key].value = value; }); editingStatusStyle = true; statusStyleFields.style.value = 'custom'; statusStyleFields.editor.hidden = false; statusStyleFields.reset.hidden = false; } catch {} } }
-
-  form.addEventListener('input', () => {
-  providerState[activeProvider] = captureProviderState();
+    form.addEventListener('input', () => {
+      providerState[activeProvider] = captureProviderState();
       renderMockup();
       downloadStatus.textContent = `${activeProvider} preview updated.`;
     });

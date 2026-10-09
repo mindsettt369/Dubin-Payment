@@ -730,21 +730,19 @@
 
     function drawCurrencyMark(x, y) {
       context.save();
-      context.translate(x, y);
-      context.strokeStyle = '#20232a';
-      context.lineWidth = 3.2;
+      context.strokeStyle = '#111';
+      context.lineWidth = 3.5;
       context.lineCap = 'round';
       context.lineJoin = 'round';
       context.beginPath();
-      context.moveTo(5, 5);
-      context.lineTo(35, 5);
-      context.moveTo(5, 15);
-      context.lineTo(35, 15);
-      context.moveTo(7, 15);
-      context.lineTo(17, 15);
-      context.bezierCurveTo(32, 15, 32, 3, 18, 3);
-      context.moveTo(7, 15);
-      context.lineTo(29, 40);
+      context.moveTo(x + 4, y - 17);
+      context.lineTo(x + 34, y - 17);
+      context.moveTo(x + 4, y - 7);
+      context.lineTo(x + 31, y - 7);
+      context.moveTo(x + 6, y - 7);
+      context.bezierCurveTo(x + 27, y - 7, x + 29, y - 18, x + 16, y - 18);
+      context.moveTo(x + 7, y - 7);
+      context.lineTo(x + 31, y + 25);
       context.stroke();
       context.restore();
     }
@@ -958,13 +956,14 @@
       context.textAlign = 'left';
       context.fillText(amountText, amountStart + 50, 356);
       context.textAlign = 'center';
+      const warningX = Math.min(width - 48, amountStart + 50 + amountWidth + 34);
       context.fillStyle = '#f7a900';
       context.beginPath();
-      context.arc(326, 355, 22, 0, Math.PI * 2);
+      context.arc(warningX, 355, 22, 0, Math.PI * 2);
       context.fill();
       context.fillStyle = '#fff';
       context.font = `700 25px ${fontStack}`;
-      context.fillText('!', 326, 355);
+      context.fillText('!', warningX, 355);
 
       context.fillStyle = '#252525';
       context.font = `700 20px ${fontStack}`;

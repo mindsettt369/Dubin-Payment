@@ -859,7 +859,7 @@
   const realPromoImage = new Image();
   realPromoImage.src = '/real-upi-promos.png';
   const freechargeLogo = new Image();
-  freechargeLogo.src = '/freecharge-logo.png';
+  freechargeLogo.src = '/freecharge-biz-logo.png';
   freechargeLogo.addEventListener('load', renderMockup);
     realPromoImage.addEventListener('load', renderMockup);
 
@@ -975,7 +975,7 @@
   if (freechargeLogo.complete && freechargeLogo.naturalWidth) {
     const logoWidth = 142;
     const logoHeight = 48;
-    context.drawImage(freechargeLogo, 0, 0, freechargeLogo.naturalWidth, freechargeLogo.naturalHeight, (width - logoWidth) / 2, 137, logoWidth, logoHeight);
+    context.drawImage(freechargeLogo, 174, 36, 145, 58, (width - logoWidth) / 2, 137, logoWidth, logoHeight);
   }
 
       context.strokeStyle = '#535b63';

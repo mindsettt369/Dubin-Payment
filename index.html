@@ -413,11 +413,11 @@
                 <label for="senderDetails">From · details</label>
                 <input id="senderDetails" name="senderDetails" type="text" value="INDIAN BANK (xxxx 0739)" maxlength="34" autocomplete="off">
               </div>
-              <div class="field">
+              <div class="field" id="recipientNameField">
                 <label for="recipientName">To · name</label>
                 <input id="recipientName" name="recipientName" type="text" value="Pankaj Chamoli" maxlength="32" autocomplete="off">
               </div>
-              <div class="field">
+              <div class="field" id="recipientDetailsField">
                 <label for="recipientDetails">To · details</label>
                 <input id="recipientDetails" name="recipientDetails" type="text" value="xxxxxxx73619" maxlength="34" autocomplete="off">
               </div>
@@ -433,6 +433,17 @@
                 <p class="field-hint" id="amountHint">Whole numbers only · maximum INR 999,999,999.</p>
               </div>
             </div>
+          </fieldset>
+
+          <fieldset class="editor-section" id="paytmDetailsSection" hidden>
+            <legend class="section-title">Paytm payment details</legend>
+            <div class="field-grid">
+              <div class="field"><label for="paytmRecipient">Recipient name</label><input id="paytmRecipient" type="text" value="Mr Kinny L Mawnai" maxlength="36" autocomplete="off"></div>
+              <div class="field"><label for="paytmBank">Bank and account</label><input id="paytmBank" type="text" value="SBI Bank - 8063" maxlength="28" autocomplete="off"></div>
+              <div class="field"><label for="paytmTransaction">Transaction ID</label><input id="paytmTransaction" type="text" value="PTM0e1812ad5dd1484f925d775ff1663395" maxlength="42" autocomplete="off"></div>
+              <div class="field"><label for="paytmTimestamp">Payment date and time</label><input id="paytmTimestamp" type="text" value="05 Oct, 06:33 PM" maxlength="24" autocomplete="off"></div>
+            </div>
+            <p class="field-hint">Status, warning icon, passbook button and footer stay fixed to match the Paytm reference.</p>
           </fieldset>
 
           <fieldset class="editor-section" id="freechargeTextSection">
@@ -535,7 +546,10 @@
     const freechargeTextSection = document.querySelector('#freechargeTextSection');
     const senderNameField = document.querySelector('#senderNameField');
     const senderDetailsField = document.querySelector('#senderDetailsField');
+    const recipientNameField = document.querySelector('#recipientNameField');
+    const recipientDetailsField = document.querySelector('#recipientDetailsField');
     const senderRecipientLegend = document.querySelector('#senderRecipientLegend');
+    const paytmDetailsSection = document.querySelector('#paytmDetailsSection');
     const fields = {
       time: document.querySelector('#statusTime'),
       network: document.querySelector('#networkType'),
@@ -552,6 +566,10 @@
       recipientName: document.querySelector('#recipientName'),
       recipientDetails: document.querySelector('#recipientDetails'),
       amount: document.querySelector('#amount'),
+      paytmRecipient: document.querySelector('#paytmRecipient'),
+      paytmBank: document.querySelector('#paytmBank'),
+      paytmTransaction: document.querySelector('#paytmTransaction'),
+      paytmTimestamp: document.querySelector('#paytmTimestamp'),
       heading: document.querySelector('#screenHeading'),
   message: document.querySelector('#screenMessage'),
   stepTwoTitle: document.querySelector('#stepTwoTitleField'),
@@ -575,7 +593,7 @@
       mobikwik: null
     };
 
-    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'amount', 'heading', 'message'];
+    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
     const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments'];
 
     function captureProviderState() {
@@ -674,8 +692,10 @@
   graphCount: Number(fields.graphCount.value) === 2 ? 2 : 1,
         senderName: fields.senderName.value.trim() || 'JOSHI',
         senderDetails: fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)',
-        recipientName: fields.recipientName.value.trim() || 'Pankaj Chamoli',
-        recipientDetails: fields.recipientDetails.value.trim() || 'PHONE ···· 0000',
+        recipientName: activeProvider === 'paytm' ? (fields.paytmRecipient.value.trim() || 'Mr Kinny L Mawnai') : (fields.recipientName.value.trim() || 'Pankaj Chamoli'),
+        recipientDetails: activeProvider === 'paytm' ? (fields.paytmBank.value.trim() || 'SBI Bank - 8063') : (fields.recipientDetails.value.trim() || 'PHONE ···· 0000'),
+        paytmTransaction: fields.paytmTransaction.value.trim() || 'PTM0e1812ad5dd1484f925d775ff1663395',
+        paytmTimestamp: fields.paytmTimestamp.value.trim() || '05 Oct, 06:33 PM',
         amount: validAmount ? new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(numericAmount) : 'SET AMOUNT',
         validAmount,
         heading: fields.heading.value.trim() || 'Your transaction is in Progress!',
@@ -1001,7 +1021,7 @@
       context.font = `700 20px ${fontStack}`;
       context.fillText('PAYMENT UNDER PROCESS', width / 2, 435);
       context.font = `500 18px ${fontStack}`;
-      context.fillText('05 Oct, 06:33 PM', width / 2, 479);
+      context.fillText(values.paytmTimestamp, width / 2, 479);
       context.font = `500 18px ${fontStack}`;
       wrapText('It is taking time to confirm the status of your payment. We are continuously checking the status of your payment. Meanwhile you can come back later to your UPI passbook and view the latest status of the payment', 452, 5, `500 18px ${fontStack}`).forEach((line, i) => context.fillText(line, width / 2, 539 + i * 27));
 
@@ -1016,8 +1036,9 @@
       context.font = `600 18px ${fontStack}`;
       context.fillText('Status: Pending', 44, 846);
       context.font = `500 18px ${fontStack}`;
-      context.fillText('Transaction ID: PTM0e1812ad5dd1484f925d77', 44, 918);
-      context.fillText('5ff1663395', 188, 946);
+      const transactionId = values.paytmTransaction;
+      context.fillText(`Transaction ID: ${transactionId.slice(0, 31)}`, 44, 918);
+      context.fillText(transactionId.slice(31), 188, 946);
       context.fillStyle = '#10a9dc';
       context.font = `600 18px ${fontStack}`;
       context.fillText('Copy', 484, 918);
@@ -1180,9 +1201,12 @@
       editorTitle.textContent = providerCopy.title;
       editorDescription.textContent = providerCopy.description;
       freechargeTextSection.hidden = provider !== 'freecharge';
+      paytmDetailsSection.hidden = provider !== 'paytm';
       const needsSender = provider === 'freecharge' || provider === 'mobikwik';
       senderNameField.hidden = !needsSender;
       senderDetailsField.hidden = !needsSender;
+      recipientNameField.hidden = provider === 'paytm';
+      recipientDetailsField.hidden = provider === 'paytm';
       senderRecipientLegend.textContent = provider === 'paytm' ? 'Recipient' : 'Sender and recipient';
       Object.entries(providerButtons).forEach(([name, button]) => {
         const isActive = name === provider;

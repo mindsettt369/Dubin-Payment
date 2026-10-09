@@ -252,7 +252,7 @@
       <div class="editor-body">
         <nav class="step-navigation" aria-label="Builder steps">
           <button class="step-button active" id="stepOneButton" type="button" aria-selected="true">Step 1 · Customize</button>
-          <button class="step-button" id="stepTwoButton" type="button" aria-selected="false">Step 2 · Coming soon</button>
+          <button class="step-button" id="stepTwoButton" type="button" aria-selected="false">Step 2 · Edit payment details</button>
         </nav>
         <section class="step-view" id="stepOneView" aria-labelledby="editorTitle">
         <h1 class="editor-title" id="editorTitle">Customize your payment screen</h1>
@@ -363,14 +363,31 @@
           </fieldset>
         </form>
         </section>
-        <section class="step-view" id="stepTwoView" hidden aria-labelledby="comingSoonTitle">
-          <div class="coming-soon">
-            <div class="coming-soon-card">
-              <span class="coming-soon-badge">Step 2</span>
-              <h2 id="comingSoonTitle">Coming soon</h2>
-              <p>This next step is being prepared. Your payment screen customization is available in Step 1.</p>
-            </div>
-          </div>
+        <section class="step-view" id="stepTwoView" hidden aria-labelledby="stepTwoTitle">
+          <h1 class="editor-title" id="stepTwoTitle">Edit payment details</h1>
+          <p class="editor-description">Customize the pending UPI transaction screen shown in Step 2.</p>
+          <form class="editor-form" id="stepTwoForm">
+            <fieldset class="editor-section">
+              <legend class="section-title">Payment summary</legend>
+              <div class="field-grid">
+                <div class="field"><label for="stepTwoTitleField">Page title</label><input id="stepTwoTitleField" value="Paid To Ms Isha Marjara" maxlength="36"></div>
+                <div class="field"><label for="stepTwoHelp">Help label</label><input id="stepTwoHelp" value="NEED HELP?" maxlength="18"></div>
+                <div class="field"><label for="stepTwoRecipient">Recipient</label><input id="stepTwoRecipient" value="To Ms Isha Marjara" maxlength="32"></div>
+                <div class="field"><label for="stepTwoAmount">Amount</label><input id="stepTwoAmount" value="₹400" maxlength="16"></div>
+                <div class="field"><label for="stepTwoUpi">UPI ID</label><input id="stepTwoUpi" value="XXXXXXXXXX1555@SBIN0003631.ifsc.npci" maxlength="42"></div>
+                <div class="field"><label for="stepTwoStatus">Status</label><input id="stepTwoStatus" value="Pending" maxlength="14"></div>
+              </div>
+            </fieldset>
+            <fieldset class="editor-section">
+              <legend class="section-title">Payment information</legend>
+              <div class="field-grid single">
+                <div class="field"><label for="stepTwoNotice">Progress notice</label><textarea id="stepTwoNotice" maxlength="180">Payment is in progress. Don’t worry — If it fails, any debited amount will be auto-reversed; if successful, it will be credited to the recipient. The transaction will get updated within 3-8 days.</textarea></div>
+                <div class="field"><label for="stepTwoBank">Bank account</label><input id="stepTwoBank" value="xxxx 7675" maxlength="20"></div>
+                <div class="field"><label for="stepTwoTransaction">UPI Transaction ID</label><input id="stepTwoTransaction" value="861174512796" maxlength="24"></div>
+                <div class="field"><label for="stepTwoComments">Comments</label><input id="stepTwoComments" value="UPI" maxlength="24"></div>
+              </div>
+            </fieldset>
+          </form>
         </section>
       </div>
 
@@ -432,8 +449,18 @@
       recipientDetails: document.querySelector('#recipientDetails'),
       amount: document.querySelector('#amount'),
       heading: document.querySelector('#screenHeading'),
-      message: document.querySelector('#screenMessage')
-    };
+  message: document.querySelector('#screenMessage'),
+  stepTwoTitle: document.querySelector('#stepTwoTitleField'),
+  stepTwoHelp: document.querySelector('#stepTwoHelp'),
+  stepTwoRecipient: document.querySelector('#stepTwoRecipient'),
+  stepTwoAmount: document.querySelector('#stepTwoAmount'),
+  stepTwoUpi: document.querySelector('#stepTwoUpi'),
+  stepTwoStatus: document.querySelector('#stepTwoStatus'),
+  stepTwoNotice: document.querySelector('#stepTwoNotice'),
+  stepTwoBank: document.querySelector('#stepTwoBank'),
+  stepTwoTransaction: document.querySelector('#stepTwoTransaction'),
+  stepTwoComments: document.querySelector('#stepTwoComments')
+  };
     const width = canvas.width;
     const height = canvas.height;
     const fontStack = 'Inter, Arial, sans-serif';
@@ -522,7 +549,17 @@
         amount: validAmount ? new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(numericAmount) : 'SET AMOUNT',
         validAmount,
         heading: fields.heading.value.trim() || 'Your transaction is in Progress!',
-        message: fields.message.value.trim() || 'Please Wait! This is taking more than expected time Kindly do not go back or close the app'
+        message: fields.message.value.trim() || 'Please Wait! This is taking more than expected time Kindly do not go back or close the app',
+        stepTwoTitle: fields.stepTwoTitle.value.trim() || 'Paid To Ms Isha Marjara',
+        stepTwoHelp: fields.stepTwoHelp.value.trim() || 'NEED HELP?',
+        stepTwoRecipient: fields.stepTwoRecipient.value.trim() || 'To Ms Isha Marjara',
+        stepTwoAmount: fields.stepTwoAmount.value.trim() || '₹400',
+        stepTwoUpi: fields.stepTwoUpi.value.trim() || 'XXXXXXXXXX1555@SBIN0003631.ifsc.npci',
+        stepTwoStatus: fields.stepTwoStatus.value.trim() || 'Pending',
+        stepTwoNotice: fields.stepTwoNotice.value.trim() || 'Payment is in progress.',
+        stepTwoBank: fields.stepTwoBank.value.trim() || 'xxxx 7675',
+        stepTwoTransaction: fields.stepTwoTransaction.value.trim() || '861174512796',
+        stepTwoComments: fields.stepTwoComments.value.trim() || 'UPI'
       };
     }
 
@@ -720,12 +757,58 @@
       context.restore();
     }
 
+    function drawStepTwo(values) {
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, width, height);
+      drawStatusBar(values);
+      context.textAlign = 'left';
+      context.textBaseline = 'middle';
+      context.fillStyle = '#1e2025';
+      context.font = `500 25px ${fontStack}`;
+      context.fillText('‹', 34, 92);
+      context.font = `700 ${fitFont(values.stepTwoTitle, 340, 22, 700, 15)}px ${fontStack}`;
+      context.fillText(values.stepTwoTitle, 82, 92);
+      context.fillStyle = '#e88754';
+      context.font = `700 15px ${fontStack}`;
+      context.fillText(values.stepTwoHelp, 430, 92);
+      context.fillStyle = '#20232a';
+      context.font = `700 28px ${fontStack}`;
+      context.fillText('⋮', 540, 92);
+
+      context.strokeStyle = '#e4e5e7';
+      context.lineWidth = 2;
+      context.beginPath(); context.arc(62, 178, 31, 0, Math.PI * 2); context.stroke();
+      context.fillStyle = '#64666b'; context.font = `700 21px ${fontStack}`; context.textAlign = 'center'; context.fillText('MI', 62, 178);
+      context.textAlign = 'left'; context.fillStyle = '#1e2025'; context.font = `700 22px ${fontStack}`; context.fillText(values.stepTwoRecipient, 112, 154);
+      context.font = `500 18px ${fontStack}`; context.fillText(values.stepTwoUpi, 112, 188);
+      context.fillStyle = '#777b82'; context.font = `500 17px ${fontStack}`; context.fillText('Today, 12:07 AM', 112, 222);
+      context.fillStyle = '#20232a'; context.font = `700 22px ${fontStack}`; context.textAlign = 'right'; context.fillText(values.stepTwoAmount, 542, 154);
+      roundedRect(context, 456, 190, 92, 42, 22, '#f7a51a'); context.fillStyle = '#ffffff'; context.font = `700 16px ${fontStack}`; context.textAlign = 'center'; context.fillText(values.stepTwoStatus, 502, 211);
+
+      roundedRect(context, 31, 270, 514, 155, 20, '#fff4eb');
+      context.fillStyle = '#f5a51b'; context.beginPath(); context.arc(78, 310, 13, 0, Math.PI * 2); context.fill();
+      context.fillStyle = '#3e3d3c'; context.textAlign = 'left'; context.font = `500 18px ${fontStack}`;
+      wrapText(values.stepTwoNotice, 425, 4, `500 18px ${fontStack}`).forEach((line, index) => context.fillText(line, 108, 310 + index * 27));
+
+      context.fillStyle = '#111318'; context.font = `700 24px ${fontStack}`; context.fillText('Paid From', 30, 500);
+      context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('Freecharge UPI', 30, 550);
+      context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoAmount, 30, 588);
+      context.strokeStyle = '#eeeeef'; context.beginPath(); context.moveTo(30, 625); context.lineTo(546, 625); context.stroke();
+      context.fillStyle = '#111318'; context.font = `700 24px ${fontStack}`; context.fillText('Payment Information', 30, 680);
+      context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('Bank Account', 30, 735); context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoBank, 30, 775);
+      context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('UPI Transaction ID', 30, 835); context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoTransaction, 30, 875);
+      context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('Comments', 30, 935); context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoComments, 30, 975);
+      roundedRect(context, 32, 1050, 245, 62, 15, '#ffffff', '#e99a70'); roundedRect(context, 299, 1050, 245, 62, 15, '#ffffff', '#e99a70'); context.fillStyle = '#e28b60'; context.font = `700 16px ${fontStack}`; context.textAlign = 'center'; context.fillText('CHECK STATUS', 154, 1081); context.fillText('SHARE', 421, 1081);
+      canvas.setAttribute('aria-label', `Editable payment details screen for ${values.stepTwoRecipient}, ${values.stepTwoAmount}`);
+    }
+
     function renderMockup() {
       const values = readValues();
       context.clearRect(0, 0, width, height);
+      if (!stepOneView.hidden) {
       context.fillStyle = '#ffffff';
       context.fillRect(0, 0, width, height);
-
+  
       drawStatusBar(values);
   context.textAlign = 'center';
   context.textBaseline = 'middle';
@@ -794,6 +877,9 @@
       roundedRect(context, 218, 1257, 140, 8, 5, '#85878b');
       downloadButton.disabled = !values.validAmount;
       canvas.setAttribute('aria-label', `Payment status screen preview. ${values.senderName} to ${values.recipientName}. Amount INR ${values.amount}. Transaction is in progress.`);
+      } else {
+        drawStepTwo(values);
+      }
     }
 
     function showStep(step) {
@@ -804,6 +890,7 @@
       stepTwoButton.classList.toggle('active', !isStepOne);
       stepOneButton.setAttribute('aria-selected', String(isStepOne));
       stepTwoButton.setAttribute('aria-selected', String(!isStepOne));
+      renderMockup();
     }
 
     stepOneButton.addEventListener('click', () => showStep(1));
@@ -812,6 +899,11 @@
     form.addEventListener('input', () => {
       renderMockup();
       downloadStatus.textContent = 'Preview updated.';
+    });
+
+    document.querySelector('#stepTwoForm').addEventListener('input', () => {
+      renderMockup();
+      downloadStatus.textContent = 'Step 2 preview updated.';
     });
 
     resetButton.addEventListener('click', () => {

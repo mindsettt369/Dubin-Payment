@@ -97,7 +97,7 @@
     .field { min-width: 0; display: grid; align-content: start; gap: 6px; }
     .field.wide { grid-column: 1 / -1; }
     .field label { color: #475161; font-size: 11px; font-weight: 650; }
-    .field input, .field textarea {
+    .field input, .field textarea, .field select {
       width: 100%;
       min-height: 40px;
       padding: 9px 10px;
@@ -260,6 +260,44 @@
                 <label for="batteryLevel">Battery %</label>
                 <input id="batteryLevel" name="batteryLevel" type="number" min="0" max="100" step="1" value="67" inputmode="numeric">
               </div>
+              <div class="field">
+                <label for="temperature">Temperature</label>
+                <input id="temperature" name="temperature" type="text" value="30°" maxlength="8" autocomplete="off">
+              </div>
+              <div class="field">
+                <label for="statusDots">Weather dots</label>
+                <select id="statusDots" name="statusDots">
+                  <option value="0">No dots</option>
+                  <option value="1">1 dot</option>
+                  <option value="2" selected>2 dots</option>
+                  <option value="3">3 dots</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="dotGap">Dot gap</label>
+                <input id="dotGap" name="dotGap" type="number" min="4" max="40" step="1" value="18" inputmode="numeric">
+              </div>
+              <div class="field">
+                <label for="graphGap">Graph gap</label>
+                <input id="graphGap" name="graphGap" type="number" min="0" max="50" step="1" value="30" inputmode="numeric">
+              </div>
+              <div class="field">
+                <label for="graphPosition">Graph position</label>
+                <input id="graphPosition" name="graphPosition" type="number" min="380" max="480" step="1" value="415" inputmode="numeric">
+              </div>
+              <div class="field">
+                <label for="statusGroupPosition">Network group position</label>
+                <input id="statusGroupPosition" name="statusGroupPosition" type="number" min="0" max="100" step="1" value="0" inputmode="numeric">
+                <p class="field-hint">Moves network labels and graphs together.</p>
+              </div>
+              <div class="field wide">
+                <label for="graphCount">Signal graphs</label>
+                <select id="graphCount" name="graphCount">
+                  <option value="1">1 graph</option>
+                  <option value="2" selected>2 graphs</option>
+                </select>
+                <p class="field-hint">Choose one or two editable signal graph icons.</p>
+              </div>
             </div>
           </fieldset>
 
@@ -352,7 +390,14 @@
     const fields = {
       time: document.querySelector('#statusTime'),
       network: document.querySelector('#networkType'),
-      battery: document.querySelector('#batteryLevel'),
+  battery: document.querySelector('#batteryLevel'),
+  temperature: document.querySelector('#temperature'),
+  statusDots: document.querySelector('#statusDots'),
+  dotGap: document.querySelector('#dotGap'),
+  graphGap: document.querySelector('#graphGap'),
+  graphPosition: document.querySelector('#graphPosition'),
+  statusGroupPosition: document.querySelector('#statusGroupPosition'),
+  graphCount: document.querySelector('#graphCount'),
       senderName: document.querySelector('#senderName'),
       senderDetails: document.querySelector('#senderDetails'),
       recipientName: document.querySelector('#recipientName'),
@@ -434,7 +479,14 @@
       return {
         time: fields.time.value || '07:01',
         network: fields.network.value.trim().slice(0, 6) || '5G',
-        battery: Math.min(100, Math.max(0, Number.parseInt(fields.battery.value, 10) || 0)),
+  battery: Math.min(100, Math.max(0, Number.parseInt(fields.battery.value, 10) || 0)),
+  temperature: fields.temperature.value.trim(),
+  statusDots: Math.min(3, Math.max(0, Number.parseInt(fields.statusDots.value, 10) || 0)),
+  dotGap: Math.min(40, Math.max(4, Number.parseInt(fields.dotGap.value, 10) || 18)),
+  graphGap: Math.min(50, Math.max(0, Number.parseInt(fields.graphGap.value, 10) || 30)),
+  graphPosition: Math.min(480, Math.max(380, Number.parseInt(fields.graphPosition.value, 10) || 415)),
+  statusGroupPosition: Math.min(100, Math.max(0, Number.parseInt(fields.statusGroupPosition.value, 10) || 0)),
+  graphCount: Number(fields.graphCount.value) === 2 ? 2 : 1,
         senderName: fields.senderName.value.trim() || 'JOSHI',
         senderDetails: fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)',
         recipientName: fields.recipientName.value.trim() || 'Pankaj Chamoli',
@@ -457,17 +509,24 @@
       const displayTime = `${Number.parseInt(timeParts[0], 10)}:${timeParts[1] || '01'}`;
       context.fillText(displayTime, 34, 30);
 
-      context.fillStyle = '#24272c';
-      context.beginPath();
-      context.arc(82, 30, 4, 0, Math.PI * 2);
-      context.fill();
-      context.fillStyle = '#8e3f9e';
-      context.beginPath();
-      context.arc(113, 30, 5, 0, Math.PI * 2);
-      context.fill();
-      context.fillStyle = '#24272c';
-      context.font = `700 12px ${fontStack}`;
-      context.fillText('30°', 124, 30);
+  if (values.statusDots > 0) {
+    context.fillStyle = '#24272c';
+    context.beginPath();
+    context.arc(82, 30, 4, 0, Math.PI * 2);
+    context.fill();
+  }
+  const dotStart = 113;
+  for (let i = 0; i < values.statusDots; i += 1) {
+    context.fillStyle = i === values.statusDots - 1 ? '#8e3f9e' : '#24272c';
+    context.beginPath();
+    context.arc(dotStart + i * values.dotGap, 30, 5, 0, Math.PI * 2);
+    context.fill();
+  }
+  if (values.temperature && values.statusDots > 0) {
+    context.fillStyle = '#24272c';
+    context.font = `700 12px ${fontStack}`;
+    context.fillText(values.temperature, dotStart + (values.statusDots - 1) * values.dotGap + 11, 30);
+  }
 
       context.beginPath();
       context.arc(340, 25, 6, 0, Math.PI * 2);
@@ -478,28 +537,32 @@
       context.fill();
       context.fillStyle = '#24272c';
       context.font = `700 8px ${fontStack}`;
-      context.fillText('0.08 Vo', 353, 24);
+      const groupOffset = values.statusGroupPosition;
+      context.fillText('0.08 Vo', 366 + groupOffset, 24);
       context.font = `700 7px ${fontStack}`;
-      context.fillText('KB/S', 353, 34);
-      context.fillText('LTE2', 383, 34);
+      context.fillText('KB/S', 366 + groupOffset, 34);
+      context.fillText('LTE2', 380 + groupOffset, 34);
       context.font = `700 11px ${fontStack}`;
-      context.fillText('5G', 383, 24);
-
-      const barX = 414;
-      for (let i = 0; i < 4; i += 1) {
-        const barHeight = 7 + i * 4;
-        context.fillRect(barX + i * 8, 38 - barHeight, 5, barHeight);
+      context.fillText('5G', 397 + groupOffset, 24);
+  
+  const graphBase = values.graphPosition + groupOffset;
+  const graphPositions = values.graphCount === 2 ? [graphBase, graphBase + values.graphGap] : [graphBase];
+      for (const graphX of graphPositions) {
+        for (let i = 0; i < 4; i += 1) {
+          const barHeight = 7 + i * 4;
+          context.fillRect(graphX + i * 6, 38 - barHeight, 4, barHeight);
+        }
       }
       context.font = `600 11px ${fontStack}`;
       context.textAlign = 'right';
-      context.fillText(`${values.battery}%`, 515, 29);
-      roundedPath(context, 521, 21, 28, 15, 3);
+      context.fillText(`${values.battery}%`, 510, 29);
+      roundedPath(context, 516, 21, 28, 15, 3);
       context.strokeStyle = '#3b4149';
       context.lineWidth = 1.5;
       context.stroke();
       context.fillStyle = '#e3ad28';
-      context.fillRect(525, 24, Math.max(2, 20 * values.battery / 100), 9);
-      context.fillRect(550, 25, 3, 7);
+      context.fillRect(520, 24, Math.max(2, 20 * values.battery / 100), 9);
+      context.fillRect(545, 25, 3, 7);
     }
 
     function drawCurrencyMark(x, y) {
@@ -692,10 +755,12 @@
       context.fillStyle = '#636c76';
       context.font = `600 11px ${fontStack}`;
       context.fillText('AMOUNT · INR', width / 2, 701);
-      const messageLines = wrapText(values.message, 438, 2, `500 15px ${fontStack}`);
-      context.fillStyle = '#424850';
-      context.font = `500 15px ${fontStack}`;
-      messageLines.forEach((line, index) => context.fillText(line, width / 2, 745 + index * 22));
+      const messageFont = '500 16px ' + fontStack;
+      const messageParts = values.message.split(/\s+(?=Kindly\b)/i);
+      const messageLines = messageParts.length === 2 ? messageParts : wrapText(values.message, 480, 2, messageFont);
+      context.fillStyle = '#24272c';
+      context.font = messageFont;
+      messageLines.forEach((line, index) => context.fillText(line, width / 2, 732 + index * 25));
   drawRealPromoImage();
 
       roundedRect(context, 218, 1257, 140, 8, 5, '#85878b');

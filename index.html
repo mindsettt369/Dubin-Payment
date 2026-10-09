@@ -727,22 +727,38 @@
       context.fillText(displayTime, 34, 30);
 
   if (values.statusDots > 0) {
-    context.fillStyle = '#24272c';
-    context.beginPath();
-    context.arc(82, 30, 4, 0, Math.PI * 2);
+    // Solid message bubble icon.
+    context.fillStyle = '#333333';
+    roundedPath(context, 78, 24, 13, 10, 4);
     context.fill();
-  }
-  const dotStart = 113;
-  for (let i = 0; i < values.statusDots; i += 1) {
-    context.fillStyle = i === values.statusDots - 1 ? '#8e3f9e' : '#24272c';
     context.beginPath();
-    context.arc(dotStart + i * values.dotGap, 30, 5, 0, Math.PI * 2);
+    context.moveTo(81, 33);
+    context.lineTo(80, 36);
+    context.lineTo(85, 33);
+    context.closePath();
     context.fill();
+
+    // Lavender rounded bank/app notification icon with a lighter inner mark.
+    context.fillStyle = '#B57EDC';
+    roundedPath(context, 98, 23, 14, 14, 3);
+    context.fill();
+    context.fillStyle = '#EADCF5';
+    context.beginPath();
+    context.moveTo(101, 28);
+    context.lineTo(105, 25);
+    context.lineTo(109, 28);
+    context.lineTo(109, 34);
+    context.lineTo(101, 34);
+    context.closePath();
+    context.fill();
+    context.fillStyle = '#B57EDC';
+    context.fillRect(103, 29, 1.5, 5);
+    context.fillRect(106, 29, 1.5, 5);
   }
   if (values.temperature && values.statusDots > 0) {
     context.fillStyle = '#24272c';
-    context.font = `700 12px ${fontStack}`;
-    context.fillText(values.temperature, dotStart + (values.statusDots - 1) * values.dotGap + 11, 30);
+    context.font = `500 12px ${fontStack}`;
+    context.fillText(values.temperature, 120, 30);
   }
 
       context.beginPath();

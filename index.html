@@ -1208,10 +1208,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       context.fillText('To', 52, 220);
       drawPaytmRecipientAvatar(values, width - 116, 238);
       context.font = `800 26px ${fontStack}`;
-      const nameMaxWidth = width - 52 - 116 - 16;
-      const prefixLines = wrapText(recipientPrefix, nameMaxWidth, 1, `800 26px ${fontStack}`);
-      prefixLines.forEach((line, index) => context.fillText(line, 52, 270 + index * 31));
-      const lastLineY = 270 + prefixLines.length * 31;
+      context.fillText(recipientPrefix, 52, 270);
+      const lastLineY = 301;
       context.fillText(recipientLastWord, 52, lastLineY);
       const verifiedX = 52 + context.measureText(recipientLastWord).width + 8;
       drawPaytmVerifiedBadge(context, verifiedX, lastLineY - 27);

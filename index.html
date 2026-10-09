@@ -563,6 +563,32 @@
     const height = canvas.height;
     const fontStack = 'Inter, Arial, sans-serif';
 
+    const providerState = {
+      freecharge: null,
+      paytm: null,
+      mobikwik: null
+    };
+
+    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'amount', 'heading', 'message'];
+    const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments'];
+
+    function captureProviderState() {
+      const capture = keys => Object.fromEntries(keys.map(key => [key, fields[key].value]));
+      return { stepOne: capture(stepOneFieldKeys), stepTwo: capture(stepTwoFieldKeys) };
+    }
+
+    function applyProviderState(state) {
+      if (!state) return;
+      [...stepOneFieldKeys, ...stepTwoFieldKeys].forEach(key => {
+        if (state.stepOne[key] !== undefined) fields[key].value = state.stepOne[key];
+        if (state.stepTwo[key] !== undefined) fields[key].value = state.stepTwo[key];
+      });
+    }
+
+    function ensureProviderState(provider) {
+      if (!providerState[provider]) providerState[provider] = captureProviderState();
+    }
+
     function roundedPath(ctx, x, y, w, h, radius) {
       const r = Math.min(radius, w / 2, h / 2);
       ctx.beginPath();
@@ -1125,7 +1151,11 @@
     }
 
     function selectProvider(provider) {
+      ensureProviderState(activeProvider);
+      providerState[activeProvider] = captureProviderState();
       activeProvider = provider;
+      ensureProviderState(activeProvider);
+      applyProviderState(providerState[activeProvider]);
       studioScreen.hidden = false;
       Object.entries(providerButtons).forEach(([name, button]) => {
         const isActive = name === provider;
@@ -1162,19 +1192,23 @@
     stepTwoButton.addEventListener('click', () => showStep(2));
 
     form.addEventListener('input', () => {
+      providerState[activeProvider] = captureProviderState();
       renderMockup();
-      downloadStatus.textContent = 'Preview updated.';
+      downloadStatus.textContent = `${activeProvider} preview updated.`;
     });
 
     document.querySelector('#stepTwoForm').addEventListener('input', () => {
+      providerState[activeProvider] = captureProviderState();
       renderMockup();
-      downloadStatus.textContent = 'Step 2 preview updated.';
+      downloadStatus.textContent = `${activeProvider} payment details updated.`;
     });
 
     resetButton.addEventListener('click', () => {
       form.reset();
+      document.querySelector('#stepTwoForm').reset();
+      providerState[activeProvider] = captureProviderState();
       renderMockup();
-      downloadStatus.textContent = 'Screen values restored.';
+      downloadStatus.textContent = `${activeProvider} screen values restored.`;
     });
 
     downloadButton.addEventListener('click', () => {

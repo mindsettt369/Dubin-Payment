@@ -1062,8 +1062,93 @@
     }
 
     function drawPaytmStepTwo(values) {
-      context.fillStyle = '#fff'; context.fillRect(0, 0, width, height); drawStatusBar(values); context.fillStyle = '#ffb000'; context.fillRect(0, 58, width, 92); context.textAlign = 'left'; context.fillStyle = '#fff'; context.font = `700 28px ${fontStack}`; context.fillText('‹', 30, 105); context.fillText('Transfer in Progress', 86, 105); context.fillText('Share   Help', 410, 105);
-      context.fillStyle = '#222'; context.font = `700 27px ${fontStack}`; context.fillText('To', 52, 220); context.font = `800 32px ${fontStack}`; context.fillText(values.recipientName || 'Mr ABHILASH REDDY PANDIRI', 52, 270); context.font = `500 22px ${fontStack}`; context.fillText('State Bank Of India - 9271', 52, 320); context.strokeStyle = '#245d91'; context.lineWidth = 2; roundedRect(context, 52, 390, 185, 55, 28, '#fff', '#245d91'); context.fillStyle = '#245d91'; context.textAlign = 'center'; context.font = `500 18px ${fontStack}`; context.fillText('View History', 145, 418); context.textAlign = 'left'; context.fillStyle = '#222'; context.font = `700 27px ${fontStack}`; context.fillText('From', 52, 555); context.font = `800 32px ${fontStack}`; context.fillText(values.senderName || 'Krishna Rani', 52, 610); context.font = `500 20px ${fontStack}`; context.fillText('UPI ID: ******4155@ptyes', 52, 665); context.fillText('Yes Bank - 8016', 52, 710); context.fillText('01:00 PM, 05 Oct 2026', 52, 790); context.fillText('UPI Ref No: 316196573640  Copy', 52, 840); context.font = `700 23px ${fontStack}`; context.fillText('Status: Pending', 52, 895); context.fillStyle = '#24b978'; context.font = `600 19px ${fontStack}`; context.fillText('✓  Payment Started by Krishna Rani', 52, 950); context.fillText('✓  Money transferred from Krishna Rani\'s Yes Bank A/c - 8016', 52, 1005); context.fillText('✓  Money sent to receiver\'s bank', 52, 1060); context.fillStyle = '#888'; context.fillText('◷  Depositing money in receiver\'s A/c', 52, 1115); canvas.setAttribute('aria-label', 'Paytm transfer in progress screen'); downloadButton.disabled = false;
+      context.fillStyle = '#fff';
+      context.fillRect(0, 0, width, height);
+      drawStatusBar(values);
+      context.fillStyle = '#ffb000';
+      context.fillRect(0, 58, width, 92);
+      context.textAlign = 'left';
+      context.fillStyle = '#fff';
+      context.font = `700 28px ${fontStack}`;
+      context.fillText('‹', 30, 105);
+      context.fillText('Transfer in Progress', 86, 105);
+      context.font = `700 21px ${fontStack}`;
+      context.fillText('Share', 410, 105);
+      context.fillText('Help', 500, 105);
+
+      const recipient = values.recipientName || 'Mr ABHILASH REDDY PANDIRI';
+      const recipientBank = values.recipientDetails || 'State Bank Of India - 9271';
+      const sender = values.senderName || 'Krishna Rani';
+      const senderDetails = values.senderDetails || 'Yes Bank - 8016';
+      const timestamp = values.paytmTimestamp || '01:00 PM, 05 Oct 2026';
+      const reference = values.paytmTransaction || '316196573640';
+      const recipientLines = wrapText(recipient, 440, 2, `800 32px ${fontStack}`);
+
+      context.fillStyle = '#222';
+      context.font = `700 27px ${fontStack}`;
+      context.fillText('To', 52, 220);
+      context.font = `800 32px ${fontStack}`;
+      recipientLines.forEach((line, index) => context.fillText(line, 52, 270 + index * 38));
+      context.font = `500 22px ${fontStack}`;
+      context.fillText(recipientBank, 52, 350);
+      context.strokeStyle = '#245d91';
+      context.lineWidth = 2;
+      roundedRect(context, 52, 390, 185, 55, 28, '#fff', '#245d91');
+      context.fillStyle = '#245d91';
+      context.textAlign = 'center';
+      context.font = `500 18px ${fontStack}`;
+      context.fillText('View History', 145, 418);
+
+      context.textAlign = 'left';
+      context.fillStyle = '#222';
+      context.font = `700 27px ${fontStack}`;
+      context.fillText('From', 52, 555);
+      context.font = `800 32px ${fontStack}`;
+      context.fillText(sender, 52, 610);
+      context.font = `500 20px ${fontStack}`;
+      context.fillText('UPI ID: ******4155@ptyes', 52, 665);
+      context.fillText(senderDetails, 52, 710);
+      context.fillText(timestamp, 52, 790);
+      context.fillText(`UPI Ref No: ${reference}`, 52, 840);
+      context.fillStyle = '#245d91';
+      context.font = `600 18px ${fontStack}`;
+      context.fillText('Copy', 430, 840);
+      context.fillStyle = '#222';
+      context.font = `700 23px ${fontStack}`;
+      context.fillText(`Status: ${values.stepTwoStatus || 'Pending'}`, 52, 895);
+
+      const timeline = [
+        `Payment Started by ${sender}`,
+        `Money transferred from ${sender}'s ${senderDetails}`,
+        'Money sent to recipient\'s bank',
+        `Depositing money in ${recipient}'s A/c`
+      ];
+      context.font = `600 19px ${fontStack}`;
+      timeline.forEach((label, index) => {
+        const y = 950 + index * 55;
+        context.fillStyle = index < 3 ? '#24b978' : '#888';
+        context.beginPath();
+        context.arc(65, y, 12, 0, Math.PI * 2);
+        context.fill();
+        context.fillStyle = '#fff';
+        context.font = `700 15px ${fontStack}`;
+        context.textAlign = 'center';
+        context.fillText(index < 3 ? '✓' : '◷', 65, y + 1);
+        context.textAlign = 'left';
+        context.fillStyle = index < 3 ? '#3a3a3a' : '#666';
+        context.font = `600 19px ${fontStack}`;
+        wrapText(label, 440, 2, `600 19px ${fontStack}`).forEach((line, lineIndex) => context.fillText(line, 98, y + lineIndex * 25));
+        if (index < timeline.length - 1) {
+          context.strokeStyle = '#d8d8d8';
+          context.lineWidth = 2;
+          context.beginPath();
+          context.moveTo(65, y + 13);
+          context.lineTo(65, y + 42);
+          context.stroke();
+        }
+      });
+      canvas.setAttribute('aria-label', 'Paytm transfer in progress screen');
+      downloadButton.disabled = false;
     }
 
     function drawMobikwikStepOne(values) {

@@ -329,7 +329,7 @@
   <main class="provider-screen" id="providerScreen">
     <section class="provider-card" aria-label="Payment app selection">
       <div class="provider-options">
-        <button class="provider-button" id="freechargeButton" type="button" aria-pressed="false"><img src="/freecharge-biz-logo.png" alt="Freecharge"><small>Open editor</small></button>
+        <button class="provider-button" id="freechargeButton" type="button" aria-pressed="false"><img src="/freecharge-logo.png" alt="Freecharge"><small>Open editor</small></button>
         <button class="provider-button" id="paytmButton" type="button" aria-pressed="false"><img class="paytm-logo" src="/paytm-logo.png" alt="Paytm"><small>Open editor</small></button>
         <button class="provider-button" id="mobikwikButton" type="button" aria-pressed="false"><img src="/mobikwik-logo.png" alt="Mobikwik"><small>Open editor</small></button>
       </div>
@@ -859,7 +859,7 @@
   const realPromoImage = new Image();
   realPromoImage.src = '/real-upi-promos.png';
   const freechargeLogo = new Image();
-  freechargeLogo.src = '/freecharge-biz-logo.png';
+  freechargeLogo.src = '/freecharge-logo.png';
   freechargeLogo.addEventListener('load', renderMockup);
     realPromoImage.addEventListener('load', renderMockup);
 
@@ -975,7 +975,7 @@
   if (freechargeLogo.complete && freechargeLogo.naturalWidth) {
     const logoWidth = 142;
     const logoHeight = 48;
-    context.drawImage(freechargeLogo, 174, 36, 145, 58, (width - logoWidth) / 2, 137, logoWidth, logoHeight);
+    context.drawImage(freechargeLogo, 0, 0, freechargeLogo.naturalWidth, freechargeLogo.naturalHeight, (width - logoWidth) / 2, 137, logoWidth, logoHeight);
   }
 
       context.strokeStyle = '#535b63';

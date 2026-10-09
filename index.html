@@ -781,22 +781,24 @@
       context.fillRect(545, 25, 3, 7);
     }
 
-  function drawCurrencyMark(x, y) {
+  function drawCurrencyMark(x, y, size) {
+  const scale = size / 52;
   context.save();
   context.strokeStyle = '#111';
-  context.lineWidth = 3.5;
+  context.lineWidth = 4 * scale;
   context.lineCap = 'square';
-  context.lineJoin = 'miter';
+  context.lineJoin = 'round';
   context.beginPath();
-  // Paytm's compact rupee mark: two crisp bars, a rounded bowl, and the long diagonal leg.
-  context.moveTo(x + 2, y - 16);
-  context.lineTo(x + 31, y - 16);
-  context.moveTo(x + 2, y - 7);
-  context.lineTo(x + 29, y - 7);
-  context.moveTo(x + 5, y - 7);
-  context.bezierCurveTo(x + 24, y - 7, x + 28, y - 16, x + 14, y - 16);
-  context.moveTo(x + 5, y - 7);
-  context.lineTo(x + 30, y + 22);
+  context.moveTo(x + 3 * scale, y - 20 * scale);
+  context.lineTo(x + 36 * scale, y - 20 * scale);
+  context.moveTo(x + 3 * scale, y - 10 * scale);
+  context.lineTo(x + 33 * scale, y - 10 * scale);
+  context.moveTo(x + 8 * scale, y - 10 * scale);
+  context.bezierCurveTo(x + 27 * scale, y - 10 * scale, x + 30 * scale, y - 20 * scale, x + 15 * scale, y - 20 * scale);
+  context.moveTo(x + 8 * scale, y - 10 * scale);
+  context.lineTo(x + 8 * scale, y + 19 * scale);
+  context.moveTo(x + 8 * scale, y - 10 * scale);
+  context.lineTo(x + 34 * scale, y + 23 * scale);
   context.stroke();
   context.restore();
   }
@@ -1006,7 +1008,7 @@
       const amountWidth = context.measureText(amountText).width;
       const amountGroupWidth = 50 + amountWidth + 34 + 44;
       const amountStart = (width - amountGroupWidth) / 2;
-      drawCurrencyMark(amountStart, 356);
+      drawCurrencyMark(amountStart, 356, amountSize);
       context.fillStyle = '#111';
       context.textAlign = 'left';
       context.fillText(amountText, amountStart + 50, 356);
@@ -1144,7 +1146,7 @@
       const amountWidth = context.measureText(amountText).width;
       const groupWidth = 37 + 13 + amountWidth;
       const amountX = (width - groupWidth) / 2;
-      drawCurrencyMark(amountX, 618);
+      drawCurrencyMark(amountX, 652, amountFontSize);
       context.textAlign = 'left';
       context.fillStyle = '#20232a';
       context.fillText(amountText, amountX + 50, 652);

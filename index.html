@@ -466,7 +466,21 @@
           <h1 class="editor-title" id="stepTwoTitle">Edit payment details</h1>
           <p class="editor-description" id="stepTwoDescription">Customize the pending UPI transaction screen shown in Step 2.</p>
           <form class="editor-form" id="stepTwoForm">
-<fieldset class="editor-section freecharge-step-two-only">
+  <fieldset class="editor-section paytm-step-two-only" hidden>
+  <legend class="section-title">Paytm transfer details</legend>
+  <div class="field-grid">
+  <div class="field"><label for="paytmStepTwoRecipient">To · name</label><input id="paytmStepTwoRecipient" value="Mr ABHILASH REDDY PANDIRI" maxlength="42"></div>
+  <div class="field"><label for="paytmStepTwoBank">To · bank</label><input id="paytmStepTwoBank" value="State Bank Of India - 9271" maxlength="36"></div>
+  <div class="field"><label for="paytmStepTwoSender">From · name</label><input id="paytmStepTwoSender" value="Krishna Rani" maxlength="32"></div>
+  <div class="field"><label for="paytmStepTwoSenderBank">From · bank</label><input id="paytmStepTwoSenderBank" value="Yes Bank - 8016" maxlength="36"></div>
+  <div class="field"><label for="paytmStepTwoUpi">UPI ID</label><input id="paytmStepTwoUpi" value="******4155@ptyes" maxlength="32"></div>
+  <div class="field"><label for="paytmStepTwoDate">Date and time</label><input id="paytmStepTwoDate" value="01:00 PM, 05 Oct 2026" maxlength="28"></div>
+  <div class="field"><label for="paytmStepTwoReference">UPI Ref No.</label><input id="paytmStepTwoReference" value="316196573640" maxlength="24"></div>
+  <div class="field"><label for="paytmStepTwoStatus">Status</label><input id="paytmStepTwoStatus" value="Pending" maxlength="14"></div>
+  </div>
+  <p class="field-hint">Only these fields control the Paytm transfer screen. Freecharge fields are not used here.</p>
+  </fieldset>
+  <fieldset class="editor-section freecharge-step-two-only">
   <legend class="section-title">Payment summary</legend>
               <div class="field-grid">
                 <div class="field"><label for="stepTwoTitleField">Page title</label><input id="stepTwoTitleField" value="Paid To Ms Isha Marjara" maxlength="36"></div>
@@ -548,6 +562,7 @@
     const paytmStepOneForm = document.querySelector('#editorForm');
     const paytmStepTwoForm = document.querySelector('#stepTwoForm');
     const freechargeStepTwoSections = [...document.querySelectorAll('.freecharge-step-two-only')];
+    const paytmStepTwoSections = [...document.querySelectorAll('.paytm-step-two-only')];
     const stepTwoDescription = document.querySelector('#stepTwoDescription');
     const senderRecipientSection = document.querySelector('#senderRecipientSection');
     const senderNameField = document.querySelector('#senderNameField');
@@ -587,7 +602,16 @@
   stepTwoNotice: document.querySelector('#stepTwoNotice'),
   stepTwoBank: document.querySelector('#stepTwoBank'),
   stepTwoTransaction: document.querySelector('#stepTwoTransaction'),
-  stepTwoComments: document.querySelector('#stepTwoComments')
+      stepTwoComments: document.querySelector('#stepTwoComments'),
+      paytmStepTwoRecipient: document.querySelector('#paytmStepTwoRecipient'),
+      paytmStepTwoBank: document.querySelector('#paytmStepTwoBank'),
+      paytmStepTwoSender: document.querySelector('#paytmStepTwoSender'),
+      paytmStepTwoSenderBank: document.querySelector('#paytmStepTwoSenderBank'),
+      paytmStepTwoUpi: document.querySelector('#paytmStepTwoUpi'),
+      paytmStepTwoDate: document.querySelector('#paytmStepTwoDate'),
+      paytmStepTwoReference: document.querySelector('#paytmStepTwoReference'),
+      paytmStepTwoStatus: document.querySelector('#paytmStepTwoStatus')
+
   };
     const width = canvas.width;
     const height = canvas.height;
@@ -600,7 +624,7 @@
     };
 
     const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
-    const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments'];
+    const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments', 'paytmStepTwoRecipient', 'paytmStepTwoBank', 'paytmStepTwoSender', 'paytmStepTwoSenderBank', 'paytmStepTwoUpi', 'paytmStepTwoDate', 'paytmStepTwoReference', 'paytmStepTwoStatus'];
 
     function captureProviderState() {
       const capture = keys => Object.fromEntries(keys.map(key => [key, fields[key].value]));
@@ -1080,12 +1104,13 @@
       context.fillText('Share', 410, 105);
       context.fillText('Help', 500, 105);
 
-      const recipient = values.recipientName || 'Mr ABHILASH REDDY PANDIRI';
-      const recipientBank = values.recipientDetails || 'State Bank Of India - 9271';
-      const sender = values.senderName || 'Krishna Rani';
-      const senderDetails = values.senderDetails || 'Yes Bank - 8016';
-      const timestamp = values.paytmTimestamp || '01:00 PM, 05 Oct 2026';
-      const reference = values.paytmTransaction || '316196573640';
+      const recipient = values.paytmStepTwoRecipient || 'Mr ABHILASH REDDY PANDIRI';
+      const recipientBank = values.paytmStepTwoBank || 'State Bank Of India - 9271';
+      const sender = values.paytmStepTwoSender || 'Krishna Rani';
+      const senderDetails = values.paytmStepTwoSenderBank || 'Yes Bank - 8016';
+      const upiId = values.paytmStepTwoUpi || '******4155@ptyes';
+      const timestamp = values.paytmStepTwoDate || '01:00 PM, 05 Oct 2026';
+      const reference = values.paytmStepTwoReference || '316196573640';
       const recipientLines = wrapText(recipient, 440, 2, `800 32px ${fontStack}`);
 
       context.fillStyle = '#222';
@@ -1110,7 +1135,7 @@
       context.font = `800 32px ${fontStack}`;
       context.fillText(sender, 52, 610);
       context.font = `500 20px ${fontStack}`;
-      context.fillText('UPI ID: ******4155@ptyes', 52, 665);
+      context.fillText(`UPI ID: ${upiId}`, 52, 665);
       context.fillText(senderDetails, 52, 710);
       context.fillText(timestamp, 52, 790);
       context.fillText(`UPI Ref No: ${reference}`, 52, 840);
@@ -1119,7 +1144,7 @@
       context.fillText('Copy', 430, 840);
       context.fillStyle = '#222';
       context.font = `700 23px ${fontStack}`;
-      context.fillText(`Status: ${values.stepTwoStatus || 'Pending'}`, 52, 895);
+      context.fillText(`Status: ${values.paytmStepTwoStatus || 'Pending'}`, 52, 895);
 
       const timeline = [
         `Payment Started by ${sender}`,
@@ -1271,7 +1296,8 @@
       }
       paytmDetailsSection.hidden = !paytmStepActive;
       freechargeStepTwoSections.forEach(section => { section.hidden = paytmStepActive; });
-      if (paytmStepActive) stepTwoDescription.textContent = 'Edit only Paytm transfer details. Freecharge payment fields are hidden for this screen.';
+      paytmStepTwoSections.forEach(section => { section.hidden = !paytmStepActive || isStepOne; });
+      if (paytmStepActive) stepTwoDescription.textContent = 'Edit the Paytm transfer screen shown in Step 2. Each Paytm field is separate from Freecharge and MobiKwik.';
       renderMockup();
     }
 

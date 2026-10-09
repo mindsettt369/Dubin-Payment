@@ -507,6 +507,7 @@
     const paytmButton = document.querySelector('#paytmButton');
     const mobikwikButton = document.querySelector('#mobikwikButton');
     const backButton = document.querySelector('#backButton');
+    let activeProvider = 'freecharge';
     const canvas = document.querySelector('#mockupCanvas');
     const context = canvas.getContext('2d');
     const form = document.querySelector('#editorForm');
@@ -889,9 +890,32 @@
       canvas.setAttribute('aria-label', `Editable payment details screen for ${values.stepTwoRecipient}, ${values.stepTwoAmount}`);
     }
 
+    function drawPaytmStepOne(values) {
+      context.fillStyle = '#fff'; context.fillRect(0, 0, width, height); drawStatusBar(values);
+      context.fillStyle = '#163b82'; context.textAlign = 'center'; context.font = `800 46px ${fontStack}`; context.fillText('Pay', 245, 126);
+      context.fillStyle = '#10a9dc'; context.fillText('tm', 332, 126);
+      context.fillStyle = '#222'; context.font = `500 29px ${fontStack}`; context.textAlign = 'left'; context.fillText('‹', 30, 126); context.fillStyle = '#10a9dc'; context.font = `700 21px ${fontStack}`; context.fillText('Help', 474, 126);
+      roundedRect(context, 22, 180, 532, 580, 20, '#fff9df'); context.textAlign = 'center'; context.fillStyle = '#111'; context.font = `700 48px ${fontStack}`; context.fillText(`₹${values.amount === 'SET AMOUNT' ? '522' : values.amount}`, width / 2, 350);
+      context.fillStyle = '#f7a900'; context.beginPath(); context.arc(340, 350, 22, 0, Math.PI * 2); context.fill(); context.fillStyle = '#fff'; context.font = `700 26px ${fontStack}`; context.fillText('!', 340, 350);
+      context.fillStyle = '#252525'; context.font = `700 21px ${fontStack}`; context.fillText('PAYMENT UNDER PROCESS', width / 2, 438); context.font = `500 18px ${fontStack}`; context.fillText('05 Oct, 06:33 PM', width / 2, 482);
+      context.font = `500 18px ${fontStack}`; wrapText('It is taking time to confirm the status of your payment. We are continuously checking the status of your payment.', 450, 4, `500 18px ${fontStack}`).forEach((line, i) => context.fillText(line, width / 2, 545 + i * 28));
+      roundedRect(context, 176, 688, 224, 52, 28, '#10afe2'); context.fillStyle = '#fff'; context.font = `700 16px ${fontStack}`; context.fillText('Check Passbook', width / 2, 714);
+      roundedRect(context, 22, 805, 532, 205, 18, '#fff', '#dedede'); context.textAlign = 'left'; context.fillStyle = '#202020'; context.font = `600 18px ${fontStack}`; context.fillText('Status: Pending', 44, 850); context.fillText('Transaction ID: PTM0e1812ad5dd1484f925d77', 44, 916); context.fillStyle = '#10a9dc'; context.fillText('Copy', 460, 916); context.fillStyle = '#888'; context.font = `500 16px ${fontStack}`; context.fillText('05 Oct 2026, 06:33 PM', 44, 972);
+      canvas.setAttribute('aria-label', 'Paytm payment under process screen'); downloadButton.disabled = false;
+    }
+
+    function drawPaytmStepTwo(values) {
+      context.fillStyle = '#fff'; context.fillRect(0, 0, width, height); drawStatusBar(values); context.fillStyle = '#ffb000'; context.fillRect(0, 58, width, 92); context.textAlign = 'left'; context.fillStyle = '#fff'; context.font = `700 28px ${fontStack}`; context.fillText('‹', 30, 105); context.fillText('Transfer in Progress', 86, 105); context.fillText('Share   Help', 410, 105);
+      context.fillStyle = '#222'; context.font = `700 27px ${fontStack}`; context.fillText('To', 52, 220); context.font = `800 32px ${fontStack}`; context.fillText(values.recipientName || 'Mr ABHILASH REDDY PANDIRI', 52, 270); context.font = `500 22px ${fontStack}`; context.fillText('State Bank Of India - 9271', 52, 320); context.strokeStyle = '#245d91'; context.lineWidth = 2; roundedRect(context, 52, 390, 185, 55, 28, '#fff', '#245d91'); context.fillStyle = '#245d91'; context.textAlign = 'center'; context.font = `500 18px ${fontStack}`; context.fillText('View History', 145, 418); context.textAlign = 'left'; context.fillStyle = '#222'; context.font = `700 27px ${fontStack}`; context.fillText('From', 52, 555); context.font = `800 32px ${fontStack}`; context.fillText(values.senderName || 'Krishna Rani', 52, 610); context.font = `500 20px ${fontStack}`; context.fillText('UPI ID: ******4155@ptyes', 52, 665); context.fillText('Yes Bank - 8016', 52, 710); context.fillText('01:00 PM, 05 Oct 2026', 52, 790); context.fillText('UPI Ref No: 316196573640  Copy', 52, 840); context.font = `700 23px ${fontStack}`; context.fillText('Status: Pending', 52, 895); context.fillStyle = '#24b978'; context.font = `600 19px ${fontStack}`; context.fillText('✓  Payment Started by Krishna Rani', 52, 950); context.fillText('✓  Money transferred from Krishna Rani\'s Yes Bank A/c - 8016', 52, 1005); context.fillText('✓  Money sent to receiver\'s bank', 52, 1060); context.fillStyle = '#888'; context.fillText('◷  Depositing money in receiver\'s A/c', 52, 1115); canvas.setAttribute('aria-label', 'Paytm transfer in progress screen'); downloadButton.disabled = false;
+    }
+
     function renderMockup() {
       const values = readValues();
       context.clearRect(0, 0, width, height);
+      if (activeProvider === 'paytm') {
+        if (!stepOneView.hidden) drawPaytmStepOne(values); else drawPaytmStepTwo(values);
+        return;
+      }
       if (!stepOneView.hidden) {
       context.fillStyle = '#ffffff';
       context.fillRect(0, 0, width, height);
@@ -986,15 +1010,25 @@
     }
 
     function showFreechargeEditor() {
-      providerScreen.hidden = true;
-      studioScreen.hidden = false;
-      showStep(1);
+    activeProvider = 'freecharge';
+    providerScreen.hidden = true;
+    studioScreen.hidden = false;
+    stepOneButton.textContent = 'Step 1 · Customize';
+    stepTwoButton.textContent = 'Step 2 · Edit payment details';
+    showStep(1);
+    }
+
+    function showPaytmEditor() {
+    activeProvider = 'paytm';
+    providerScreen.hidden = true;
+    studioScreen.hidden = false;
+    stepOneButton.textContent = 'Step 1 · Paytm pending screen';
+    stepTwoButton.textContent = 'Step 2 · Transfer in progress';
+    showStep(1);
     }
 
     freechargeButton.addEventListener('click', showFreechargeEditor);
-    paytmButton.addEventListener('click', () => {
-      window.alert('Paytm is coming soon.');
-    });
+    paytmButton.addEventListener('click', showPaytmEditor);
     mobikwikButton.addEventListener('click', () => {
       window.alert('Mobikwik is coming soon.');
     });

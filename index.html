@@ -65,7 +65,9 @@
       font-weight: 800;
     }
     .provider-card h1 { margin: 0; font-size: 28px; letter-spacing: -.6px; }
-  .mascot-zone { position: relative; min-height: 270px; overflow: visible; pointer-events: none; }
+  .mascot-zone { position: relative; height: 220px; margin: 0; padding: 0; overflow: visible; pointer-events: none; opacity: 1; visibility: visible; transition: height .5s cubic-bezier(.4, 0, .2, 1), opacity .3s ease, margin .5s cubic-bezier(.4, 0, .2, 1); }
+  .mascot-zone.is-collapsing { height: 0; margin: 0; padding: 0; overflow: hidden; opacity: 0; pointer-events: none; visibility: hidden; }
+  .mascot-zone.is-collapsed { display: none; }
   .dog-mascot { position: absolute; left: 0; top: 34px; width: 120px; height: 120px; transform: translate3d(0, 0, 0); opacity: 1; transform-origin: 50% 100%; filter: drop-shadow(0 12px 8px rgba(47, 43, 37, .13)); transition: transform 1.2s cubic-bezier(.34, 1.2, .64, 1), opacity .8s ease; }
   .dog-mascot__body { transform-box: fill-box; transform-origin: 50% 100%; animation: dogBreathe 2.5s ease-in-out infinite; }
   .dog-mascot__tail { transform-box: fill-box; transform-origin: 15% 75%; animation: dogTail .5s ease-in-out infinite alternate; }
@@ -87,7 +89,7 @@
   @keyframes dogTap { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-42deg) translateY(-4px); } }
   @keyframes dogBubble { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
   @keyframes dogJump { 0%, 100% { transform: translate3d(var(--dog-x, 0px), var(--dog-y, 0px), 0); } 45% { transform: translate3d(var(--dog-x, 0px), calc(var(--dog-y, 0px) - 20px), 0); } }
-  @media (max-width: 760px) { .mascot-zone { min-height: 220px; } .dog-mascot { width: 90px; height: 90px; } .mascot-shadow { top: 115px; width: 62px; } }
+  @media (max-width: 760px) { .mascot-zone { height: 220px; } .dog-mascot { width: 90px; height: 90px; } .mascot-shadow { top: 115px; width: 62px; } }
   @media (prefers-reduced-motion: reduce) { .dog-mascot__body { animation: dogBreathe 4s ease-in-out infinite; } .dog-mascot__tail { animation-duration: 1.3s; } .dog-mascot__eyes, .dog-mascot.is-tapping .dog-mascot__paw, .dog-mascot.is-tapping .dog-mascot__bubble { animation: none; } .dog-mascot.is-looking .dog-mascot__head { transform: rotate(-8deg); } }
     .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
     .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; overflow: visible; }
@@ -863,6 +865,7 @@
   const dogMascot = document.querySelector('#dogMascot');
   const mascotShadow = mascotZone?.querySelector('.mascot-shadow');
   let mascotTimer = 0;
+  const mascotTimers = new Set();
   let mascotDismissed = false;
   let mascotHoverTarget = null;
   const providerButtons = {
@@ -2216,7 +2219,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   button.classList.remove('mascot-tap-target');
   void button.offsetWidth;
   button.classList.add('mascot-tap-target');
-  window.setTimeout(() => button.classList.remove('mascot-tap-target'), 1200);
+  const tapTimer = window.setTimeout(() => { button.classList.remove('mascot-tap-target'); mascotTimers.delete(tapTimer); }, 1200);
+  mascotTimers.add(tapTimer);
   }
   function startMascotLoop() {
   if (!mascotZone || !dogMascot || mascotDismissed) return;
@@ -2239,15 +2243,37 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   if (mascotShadow) mascotShadow.style.transform = `translate3d(${centerX + 22}px, 146px, 0) scale(1)`;
   mascotTimer = window.setTimeout(cycle, 2000);
   }
-  function dismissMascot() {
-  mascotDismissed = true;
+  function stopMascotResources() {
   window.clearTimeout(mascotTimer);
-  if (!dogMascot) return;
+  mascotTimer = 0;
+  mascotTimers.forEach(timer => window.clearTimeout(timer));
+  mascotTimers.clear();
+  if (dogMascot) {
+    dogMascot.getAnimations().forEach(animation => animation.cancel());
+    dogMascot.querySelectorAll('*').forEach(element => element.getAnimations().forEach(animation => animation.cancel()));
+  }
+  }
+  function collapseMascotZone() {
+  if (!mascotZone) return;
+  const finishCollapse = event => {
+    if (event.propertyName !== 'height') return;
+    mascotZone.removeEventListener('transitionend', finishCollapse);
+    mascotZone.classList.add('is-collapsed');
+    stopMascotResources();
+  };
+  mascotZone.addEventListener('transitionend', finishCollapse);
+  mascotZone.classList.add('is-collapsing');
+  }
+  function dismissMascot() {
+  if (mascotDismissed) return;
+  mascotDismissed = true;
+  stopMascotResources();
+  if (!dogMascot) { collapseMascotZone(); return; }
   dogMascot.classList.remove('is-tapping');
   dogMascot.classList.add('is-jumping');
   window.setTimeout(() => dogMascot.classList.add('is-leaving'), 520);
-  window.setTimeout(() => dogMascot.classList.add('is-dismissed'), 1350);
   if (mascotShadow) mascotShadow.style.opacity = '0';
+  window.setTimeout(collapseMascotZone, 800);
   }
   [freechargeButton, paytmButton, mobikwikButton].forEach(button => {
   button.addEventListener('mouseenter', () => { mascotHoverTarget = button; moveMascotTo(button); });
@@ -2262,7 +2288,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   control.classList.remove('is-rippling');
   void control.offsetWidth;
   control.classList.add('is-rippling');
-  window.setTimeout(() => control.classList.remove('is-rippling'), 520);
+  const fieldRippleTimer = window.setTimeout(() => { control.classList.remove('is-rippling'); mascotTimers.delete(fieldRippleTimer); }, 520);
+  mascotTimers.add(fieldRippleTimer);
   }
   statusBarSection.addEventListener('pointerdown', event => {
   const control = event.target.closest('input, select');
@@ -2275,7 +2302,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   button.classList.remove('is-rippling');
   void button.offsetWidth;
   button.classList.add('is-rippling');
-  window.setTimeout(() => button.classList.remove('is-rippling'), 520);
+  const providerRippleTimer = window.setTimeout(() => { button.classList.remove('is-rippling'); mascotTimers.delete(providerRippleTimer); }, 520);
+  mascotTimers.add(providerRippleTimer);
   }
   freechargeButton.addEventListener('click', event => { addProviderRipple(freechargeButton, event); dismissMascot(); showFreechargeEditor(); });
   paytmButton.addEventListener('click', event => { addProviderRipple(paytmButton, event); dismissMascot(); showPaytmEditor(); });

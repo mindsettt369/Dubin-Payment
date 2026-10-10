@@ -50,6 +50,7 @@
       border-radius: 16px;
       background: #fff;
       box-shadow: 0 12px 36px rgba(22, 32, 48, .08);
+      overflow: visible;
     }
     .provider-mark {
       width: 54px;
@@ -65,11 +66,11 @@
     }
     .provider-card h1 { margin: 0; font-size: 28px; letter-spacing: -.6px; }
     .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
-    .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; overflow: visible; }
     .provider-button {
       position: relative;
       isolation: isolate;
-      overflow: hidden;
+      overflow: visible;
       min-height: 78px;
       padding: 12px;
       border: 1px solid rgba(255, 255, 255, .72);
@@ -81,6 +82,20 @@
       font-size: 14px;
       font-weight: 750;
       transition: border-color .16s ease, background .16s ease, box-shadow .16s ease, transform .16s ease;
+    }
+    .provider-button::before {
+      position: absolute;
+      z-index: -2;
+      inset: -3px;
+      border-radius: 17px;
+      background: linear-gradient(120deg, #ff6a3d, #ff9f0a, #ffd60a, #34c759, #32ade6, #5e5ce6, #bf5af2, #ff6a3d);
+      background-size: 300% 300%;
+      filter: blur(14px);
+      opacity: .35;
+      content: "";
+      pointer-events: none;
+      animation: cardLight 8s linear infinite;
+      transition: opacity .35s ease, filter .35s ease;
     }
     .provider-button::after {
       position: absolute;
@@ -97,9 +112,19 @@
     }
     .provider-button:nth-child(2)::after { animation-delay: 1.1s; }
     .provider-button:nth-child(3)::after { animation-delay: 2.2s; }
-    .provider-button:hover { transform: translateY(-2px); background: rgba(255, 255, 255, .52); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 12px 24px rgba(93, 105, 122, .18); }
+    .provider-button:hover { transform: translateY(-2px); background: rgba(255, 255, 255, .52); border: 1px solid rgba(255, 255, 255, .8); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 12px 24px rgba(93, 105, 122, .18); }
+    .provider-button:hover::before { opacity: .85; filter: blur(18px); animation-duration: 4s; }
     .provider-button:hover::after { animation-duration: 1.7s; }
     .provider-button.active { border-color: rgba(237, 148, 23, .82); background: rgba(255, 244, 225, .68); box-shadow: 0 0 0 2px rgba(237, 148, 23, .14), 0 10px 25px rgba(237, 148, 23, .2), inset 0 1px 0 rgba(255, 255, 255, .88); color: #9d5018; }
+    .provider-button.active::before { opacity: .55; }
+    @supports not (filter: blur(14px)) {
+      .provider-button::before { filter: none; box-shadow: 0 0 18px rgba(255, 159, 10, .35); }
+      .provider-button:hover::before { box-shadow: 0 0 24px rgba(255, 159, 10, .58); }
+    }
+    @keyframes cardLight { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+    @media (prefers-reduced-motion: reduce) {
+      .provider-button, .provider-button::before { transition: none; animation: none; }
+    }
     .provider-button img { display: block; width: auto; height: 30px; max-width: 100%; margin: 0 auto 5px; object-fit: contain; }
     .provider-button .paytm-logo { width: 118px; height: 44px; padding: 0; border-radius: 0; background: #fff; object-fit: contain; }
     .provider-button small { display: block; color: var(--muted); font-size: 10px; font-weight: 500; }

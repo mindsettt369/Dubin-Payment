@@ -1408,10 +1408,10 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       context.fillStyle = '#f7f8fa'; context.fillRect(0, 0, width, height); drawStatusBar(values); context.textAlign = 'left'; context.fillStyle = '#273340'; context.font = `700 50px ${fontStack}`; context.fillText('×', 30, 125); context.textAlign = 'right'; context.font = `500 18px ${fontStack}`; context.fillText('◉ Share   ? Help', 548, 115); context.textAlign = 'left'; context.fillStyle = '#35404c'; context.font = `750 52px ${fontStack}`; context.fillText(`₹${values.amount === 'SET AMOUNT' ? '2,000' : values.amount}`, 46, 202); context.fillStyle = '#f4c83d'; context.font = `500 35px ${fontStack}`; context.fillText('◷', 248, 202); context.font = `500 20px ${fontStack}`; context.fillStyle = '#555'; context.fillText('▱  NA', 46, 252); context.font = `600 22px ${fontStack}`; context.fillText(values.mobikwikStatusLabel || 'Payment Pending', 46, 302); context.font = `500 18px ${fontStack}`; context.fillText(values.mobikwikDateTime || "5 Oct '26 at 7:00PM", 46, 342); roundedRect(context, 46, 372, 175, 48, 25, '#35404c'); context.fillStyle = '#fff'; context.textAlign = 'center'; context.font = `700 17px ${fontStack}`; context.fillText(values.mobikwikHelpLabel || 'Need Help?', 134, 397);
       roundedRect(context, 18, 450, 540, 230, 24, '#fff');
   context.textAlign = 'left'; context.font = `500 17px ${fontStack}`;
-  const timelineX = 50; const labelX = 78; const lineX = timelineX + 6;
-  context.strokeStyle = '#e5e7eb'; context.lineWidth = 2; context.beginPath(); context.moveTo(lineX, 468); context.lineTo(lineX, 642); context.stroke();
+  const timelineX = 50; const labelX = 78;
+  context.strokeStyle = '#EEF0F3'; context.lineWidth = 2; context.beginPath(); context.moveTo(timelineX, 483); context.lineTo(timelineX, 621); context.stroke();
   const timelineRows = [
-    { text: `Payment initiated from ${values.mobikwikInitiatedFrom || 'JIO PAYMENTS BANK LTD - 2682'}`, color: '#36414d', dot: '#22a64a', y: 478, maxWidth: 430 },
+    { text: `Payment initiated from ${values.mobikwikInitiatedFrom || 'JIO PAYMENTS BANK LTD - 2682'}`, color: '#36414d', dot: '#22a64a', y: 478, maxWidth: 430 },
     { text: values.mobikwikPendingState || 'Payment in pending state', color: '#36414d', dot: '#f5a623', y: 560, maxWidth: 430 },
     { text: values.mobikwikCreditedText || 'Amount credited to the beneficiary account', color: '#9ca3af', dot: '#f5a623', y: 616, maxWidth: 430 }
   ];

@@ -1154,12 +1154,15 @@
       drawStatusBar(values);
       context.textBaseline = 'middle';
 
-      context.fillStyle = '#153d82';
-      context.textAlign = 'center';
       context.font = `800 46px ${fontStack}`;
-      context.fillText('Pay', 238, 105);
+      const paytmPayWidth = context.measureText('Pay').width;
+      const paytmTmWidth = context.measureText('tm').width;
+      const paytmLogoStart = (width - paytmPayWidth - paytmTmWidth) / 2;
+      context.textAlign = 'left';
+      context.fillStyle = '#153d82';
+      context.fillText('Pay', paytmLogoStart, 105);
       context.fillStyle = '#10a9dc';
-      context.fillText('tm', 326, 105);
+      context.fillText('tm', paytmLogoStart + paytmPayWidth, 105);
       context.fillStyle = '#20232a';
       context.font = `500 34px ${fontStack}`;
       context.textAlign = 'left';

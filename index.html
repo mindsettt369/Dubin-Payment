@@ -213,19 +213,28 @@
     .field input:focus, .field textarea:focus { border-color: #dd8a22; box-shadow: 0 0 0 3px rgba(237, 148, 23, .15); }
     .field-hint { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
   .paytm-media-cards { display: grid; gap: 16px; }
-  .paytm-media-card { display: grid; gap: 12px; padding: 16px; background: #fff; border: 1px solid #E5E7EB; border-radius: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+  .paytm-media-card { display: grid; gap: 10px; padding: 12px; background: #fff; border: 1px solid #E5E7EB; border-radius: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.04); container-type: inline-size; }
   .paytm-media-card h3 { margin: 0; color: #111827; font-size: 13px; font-weight: 600; }
-  .paytm-media-card .field-hint { margin: -5px 0 0; font-size: 12px; line-height: 1.4; }
+  .paytm-media-card .field-hint { margin: -2px 0 0; font-size: 12px; line-height: 1.35; }
+  .paytm-avatar-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; min-width: 0; }
+  .paytm-control-group { display: flex; flex: 0 1 auto; min-width: 0; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .paytm-control-group > label:first-child { color: #6B7280; font-size: 11px; line-height: 1.2; white-space: nowrap; }
+  .paytm-control-group input:not([type=color]) { width: 56px; min-height: 36px; padding: 7px 8px; }
   .paytm-control-row, .paytm-toggle-row { min-height: 40px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .paytm-control-row label, .paytm-toggle-row span { color: #111827; font-size: 14px; font-weight: 500; }
-  .paytm-control-row input:not([type=color]) { width: 55%; min-height: 40px; }
   .color-swatch { width: 36px !important; height: 36px; padding: 3px !important; border-radius: 9px !important; }
-  .paytm-file-row { display: flex; gap: 8px; align-items: center; }
-  .paytm-file-row .upload-button { flex: 1; }
+  .paytm-file-row { display: flex; width: 100%; gap: 8px; align-items: center; }
+  .paytm-file-row .upload-button { width: 100%; flex: 1; }
   .paytm-media-card .paytm-control-row, .paytm-media-card .paytm-toggle-row, .paytm-media-card .paytm-file-row { flex-wrap: nowrap; }
+  .paytm-control-group .switch { margin-top: 0; }
+  .paytm-control-group .switch input { width: 100%; }
+  .paytm-toggle-group { align-items: center; }
+  .paytm-toggle-group > label:first-child { align-self: flex-start; }
+  .upload-button { height: 36px; white-space: nowrap; overflow: hidden; }
+  @container (max-width: 175px) { .paytm-avatar-controls { gap: 8px; } .paytm-control-group { flex-basis: auto; } }
   .paytm-media-card .destructive, .bank-badge-button, .paytm-media-card .paytm-toggle-row:has(#showPaytmSenderPhoto) { display: none; }
   .paytm-file-row input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-  .upload-button { height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; border: 1.5px dashed #CBD5E1; border-radius: 12px; background: #F9FAFB; color: #374151; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .upload-button { height: 36px; display: flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; white-space: nowrap; border: 1.5px dashed #CBD5E1; border-radius: 12px; background: #F9FAFB; color: #374151; font-size: 14px; font-weight: 500; cursor: pointer; }
   .upload-button:hover { border-color: #2563EB; background: #EFF4FF; color: #2563EB; }
   .icon-button, .secondary-button { min-height: 40px; border: 1px solid #E5E7EB; border-radius: 10px; background: #fff; color: #374151; font-size: 14px; font-weight: 500; cursor: pointer; transition: .15s; }
   .icon-button { width: 40px; padding: 0; font-size: 22px; }
@@ -524,16 +533,20 @@
     <section class="paytm-media-card" aria-labelledby="receiverAvatarTitle">
       <h3 id="receiverAvatarTitle">Receiver avatar</h3>
       <p class="field-hint">Leave empty to generate initials from the recipient name.</p>
-      <div class="paytm-control-row"><label for="paytmRecipientInitials">Avatar initials</label><input id="paytmRecipientInitials" value="MP" maxlength="4"></div>
-      <div class="paytm-control-row"><label for="paytmRecipientAvatarColor">Avatar color</label><input id="paytmRecipientAvatarColor" class="color-swatch" type="color" value="#C9D9A8"></div>
-      <div class="paytm-toggle-row"><span>Show avatar</span><label class="switch"><input id="showPaytmRecipientAvatar" type="checkbox" checked><span class="switch-track"></span></label></div>
+      <div class="paytm-avatar-controls">
+        <div class="paytm-control-group"><label for="paytmRecipientInitials">Initials</label><input id="paytmRecipientInitials" value="MP" maxlength="4"></div>
+        <div class="paytm-control-group"><label for="paytmRecipientAvatarColor">Color</label><input id="paytmRecipientAvatarColor" class="color-swatch" type="color" value="#C9D9A8"></div>
+        <div class="paytm-control-group paytm-toggle-group"><label for="showPaytmRecipientAvatar">Show</label><label class="switch"><input id="showPaytmRecipientAvatar" type="checkbox" checked><span class="switch-track"></span></label></div>
+      </div>
       <div class="paytm-file-row"><label class="upload-button" for="paytmRecipientPhoto"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 20h14"/></svg> Upload photo</label><input id="paytmRecipientPhoto" type="file" accept="image/*"><button class="icon-button destructive" id="removePaytmRecipientPhoto" type="button" title="Remove photo" aria-label="Remove photo">×</button></div>
     </section>
   <section class="paytm-media-card" aria-labelledby="senderPhotoTitle">
   <h3 id="senderPhotoTitle">Sender avatar</h3>
   <p class="field-hint">Use a photo or generate initials for the sender.</p>
-  <div class="paytm-control-row"><label for="paytmSenderInitials">Avatar initials</label><input id="paytmSenderInitials" value="KR" maxlength="4"></div>
-  <div class="paytm-control-row"><label for="paytmSenderAvatarColor">Avatar color</label><input id="paytmSenderAvatarColor" class="color-swatch" type="color" value="#D9C7A8"></div>
+  <div class="paytm-avatar-controls">
+    <div class="paytm-control-group"><label for="paytmSenderInitials">Initials</label><input id="paytmSenderInitials" value="KR" maxlength="4"></div>
+    <div class="paytm-control-group"><label for="paytmSenderAvatarColor">Color</label><input id="paytmSenderAvatarColor" class="color-swatch" type="color" value="#D9C7A8"></div>
+  </div>
   <div class="paytm-file-row"><label class="upload-button" for="paytmSenderPhoto"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 20h14"/></svg> Upload photo</label><input id="paytmSenderPhoto" type="file" accept="image/*"><button class="icon-button destructive" id="removePaytmSenderPhoto" type="button" title="Remove photo" aria-label="Remove sender photo">×</button></div>
   </section>
     <section class="paytm-media-card" aria-labelledby="bankLogoTitle">

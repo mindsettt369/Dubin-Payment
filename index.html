@@ -1224,12 +1224,14 @@
       context.font = `500 18px ${fontStack}`;
       context.fillText(values.paytmTimestamp, width / 2, 479);
       context.font = `500 18px ${fontStack}`;
-      wrapText('It is taking time to confirm the status of your payment. We are continuously checking the status of your payment. Meanwhile you can come back later to your UPI passbook and view the latest status of the payment', 452, 5, `500 18px ${fontStack}`).forEach((line, i) => context.fillText(line, width / 2, 539 + i * 27));
+      const statusMessageLines = wrapText('It is taking time to confirm the status of your payment. We are continuously checking the status of your payment. Meanwhile you can come back later to your UPI passbook and view the latest status of the payment', 490, 5, `500 18px ${fontStack}`);
+      statusMessageLines.forEach((line, i) => context.fillText(line, width / 2, 539 + i * 27));
 
-      roundedRect(context, 198, 688, 180, 52, 28, '#10afe2');
+      const passbookButtonY = 539 + statusMessageLines.length * 27 + 18;
+      roundedRect(context, 198, passbookButtonY, 180, 52, 28, '#10afe2');
       context.fillStyle = '#fff';
       context.font = `700 16px ${fontStack}`;
-      context.fillText('Check Passbook', width / 2, 714);
+      context.fillText('Check Passbook', width / 2, passbookButtonY + 32);
 
       roundedRect(context, 22, 806, 532, 228, 18, '#fff', '#dedede');
       context.textAlign = 'left';

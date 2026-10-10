@@ -486,6 +486,42 @@
     .field textarea { min-height: 66px; resize: vertical; line-height: 1.45; }
     .field input:focus, .field textarea:focus { border-color: #dd8a22; box-shadow: 0 0 0 3px rgba(237, 148, 23, .15); }
     .field-hint { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+  .editor-form .field input, .editor-form .field textarea, .editor-form .field select {
+    border: 1px solid rgba(0, 0, 0, .08);
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, .75);
+    background-image: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(255, 159, 10, .18), transparent 70%);
+    background-repeat: no-repeat;
+    background-size: 0% 0%;
+    color: #1d1d1f;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 -1px 3px rgba(0, 0, 0, .04);
+    transition: transform .6s cubic-bezier(.34, 1.56, .64, 1), box-shadow .45s ease, border-color .25s ease, background-color .25s ease, background-size .5s ease, opacity .25s ease;
+  }
+  .editor-form .field input:hover, .editor-form .field textarea:hover, .editor-form .field select:hover {
+    border-color: rgba(255, 159, 10, .5);
+    background-color: rgba(255, 255, 255, .9);
+    box-shadow: 0 4px 14px rgba(255, 159, 10, .15), inset 0 1px 0 rgba(255, 255, 255, 1);
+  }
+  .editor-form .field input, .editor-form .field textarea { cursor: text; }
+  .editor-form .field select { cursor: pointer; }
+  .editor-form .field input:active, .editor-form .field textarea:active, .editor-form .field select:active,
+  .editor-form .field input.is-rippling, .editor-form .field textarea.is-rippling, .editor-form .field select.is-rippling {
+    transform: scale(.965) translateY(2px);
+    background-size: 140% 140%;
+    box-shadow: inset 0 6px 16px rgba(0, 0, 0, .16), inset 0 -2px 6px rgba(255, 255, 255, .8), 0 1px 2px rgba(0, 0, 0, .06);
+    transition: transform .16s cubic-bezier(.3, 0, .2, 1), box-shadow .16s ease, background-size .5s ease;
+  }
+  .editor-form .field input:focus, .editor-form .field textarea:focus, .editor-form .field select:focus {
+    transform: none;
+    border-color: #ff9f0a;
+    box-shadow: inset 0 3px 10px rgba(0, 0, 0, .096), inset 0 -2px 5px rgba(255, 255, 255, .8), 0 0 0 3px rgba(255, 159, 10, .18);
+  }
+  .editor-form .field input:focus.is-rippling, .editor-form .field textarea:focus.is-rippling, .editor-form .field select:focus.is-rippling { transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .editor-form .field input, .editor-form .field textarea, .editor-form .field select { transition: border-color .01ms, box-shadow .01ms, background-color .01ms, background-size .01ms; }
+    .editor-form .field input:active, .editor-form .field textarea:active, .editor-form .field select:active,
+    .editor-form .field input.is-rippling, .editor-form .field textarea.is-rippling, .editor-form .field select.is-rippling { transform: none; }
+  }
   .paytm-media-cards { display: grid; gap: 16px; }
   .paytm-media-card { display: grid; gap: 10px; padding: 12px; background: #fff; border: 1px solid #E5E7EB; border-radius: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.04); container-type: inline-size; }
   .paytm-media-card h3 { margin: 0; color: #111827; font-size: 13px; font-weight: 600; }
@@ -2394,10 +2430,10 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   const fieldRippleTimer = window.setTimeout(() => { control.classList.remove('is-rippling'); mascotTimers.delete(fieldRippleTimer); }, 520);
   mascotTimers.add(fieldRippleTimer);
   }
-  statusBarSection.addEventListener('pointerdown', event => {
-  const control = event.target.closest('input, select');
-  if (control) addStatusFieldRipple(control, event);
-  });
+  [editorForm, paytmStepTwoForm].forEach(form => form?.addEventListener('pointerdown', event => {
+  const control = event.target.closest('input, textarea, select');
+  if (control && form.contains(control)) addStatusFieldRipple(control, event);
+  }));
   function addProviderRipple(button, event) {
   const rect = button.getBoundingClientRect();
   button.style.setProperty('--ripple-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);

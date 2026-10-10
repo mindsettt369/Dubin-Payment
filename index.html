@@ -83,6 +83,20 @@
       transition: transform .7s cubic-bezier(.34, 1.56, .64, 1), box-shadow .5s ease, background .3s ease;
     }
     .provider-button > * { position: relative; z-index: 1; }
+    .provider-button::before {
+      position: absolute;
+      z-index: -1;
+      inset: -4px;
+      border-radius: inherit;
+      background: conic-gradient(from 0deg, #ff9f0a, #ff6a9d, #bf5af2, #5e5ce6, #32ade6, #34c759, #ffd60a, #ff9f0a);
+      filter: blur(16px);
+      opacity: 0;
+      pointer-events: none;
+      content: "";
+      transform: rotate(0deg);
+      animation: cardHalo 9s linear infinite paused;
+      transition: opacity .5s ease;
+    }
     .provider-button::after {
       position: absolute;
       z-index: 0;
@@ -96,28 +110,23 @@
       pointer-events: none;
     }
     .provider-button:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, .10), inset 0 1px 0 rgba(255, 255, 255, 1); transition: transform .35s ease, box-shadow .35s ease; }
+    .provider-button:hover::before { opacity: .22; animation-play-state: running; }
     .provider-button:hover::after { opacity: 1; animation: selectorShine .8s ease-out 1; }
     .provider-button:active { transform: scale(.93) translateY(4px); background: linear-gradient(145deg, rgba(240, 240, 244, .95), rgba(250, 250, 252, .9)); box-shadow: inset 0 10px 26px rgba(0, 0, 0, .20), inset 0 -3px 10px rgba(255, 255, 255, .8), 0 1px 3px rgba(0, 0, 0, .08); transition: transform .2s cubic-bezier(.3, 0, .2, 1), box-shadow .2s ease; }
+    .provider-button:active::before { opacity: .1; }
     .provider-button.active { border-color: rgba(237, 148, 23, .82); background: #fff7e9; box-shadow: 0 0 0 2px rgba(237, 148, 23, .14), 0 10px 25px rgba(237, 148, 23, .2), inset 0 1px 0 rgba(255, 255, 255, .88); color: #9d5018; }
-    .provider-button.is-rippling::before {
-      position: absolute;
-      z-index: 0;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(0, 0, 0, .06), transparent 70%);
-      content: "";
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0);
-      transform-origin: var(--ripple-x, 50%) var(--ripple-y, 50%);
-      animation: selectorRipple .6s ease-out forwards;
-    }
+    .provider-button.is-rippling::after { background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(0, 0, 0, .06), transparent 70%), linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .7) 50%, transparent 70%); background-size: 140% 140%, 220% 100%; animation: selectorRipple .6s ease-out forwards; }
     @keyframes selectorShine { from { background-position: -140% 0; } to { background-position: 140% 0; } }
     @keyframes selectorRipple { 0% { opacity: .8; transform: scale(0); } 100% { opacity: 0; transform: scale(1.5); } }
+    @keyframes cardHalo { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @supports not (filter: blur(16px)) {
+      .provider-button:hover::before { filter: none; box-shadow: 0 0 18px rgba(255, 159, 10, .18); }
+    }
     @media (prefers-reduced-motion: reduce) {
       .provider-button, .provider-button::after, .provider-button::before { transition: none; animation: none; }
       .provider-button:hover, .provider-button:active { transform: none; }
-      .provider-button.is-rippling::before { opacity: .12; transform: scale(1); }
+      .provider-button:hover::before { opacity: .22; animation: none; }
+      .provider-button:active::before { opacity: .1; }
     }
     .provider-button img { display: block; width: auto; height: 30px; max-width: 100%; margin: 0 auto 5px; object-fit: contain; }
     .provider-button .paytm-logo { width: 118px; height: 44px; padding: 0; border-radius: 0; background: transparent; mix-blend-mode: multiply; object-fit: contain; }

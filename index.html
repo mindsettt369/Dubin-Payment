@@ -570,10 +570,7 @@
   <legend class="section-title">MobiKwik pending details</legend>
   <div class="field-grid">
   <div class="field"><label for="mobikwikDateTime">Payment date and time</label><input id="mobikwikDateTime" value="5 Oct '26 at 7:00PM" maxlength="28"></div>
-  <div class="field"><label for="mobikwikStatusLabel">Status label</label><input id="mobikwikStatusLabel" value="Payment Pending" maxlength="30"></div>
-  <div class="field"><label for="mobikwikHelpLabel">Help button</label><input id="mobikwikHelpLabel" value="Need Help?" maxlength="24"></div>
   <div class="field"><label for="mobikwikInitiatedFrom">Initiated from</label><input id="mobikwikInitiatedFrom" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
-  <div class="field"><label for="mobikwikPendingState">Pending state text</label><input id="mobikwikPendingState" value="Payment in pending state" maxlength="40"></div>
   <div class="field"><label for="mobikwikCreditedText">Credited status text</label><input id="mobikwikCreditedText" value="Amount credited to the beneficiary account" maxlength="52"></div>
   <div class="field"><label for="mobikwikRecipientName">Recipient name</label><input id="mobikwikRecipientName" value="Pankaj Chamoli" maxlength="32"></div>
   <div class="field"><label for="mobikwikSenderName">Sender name</label><input id="mobikwikSenderName" value="Santanu Roy" maxlength="32"></div>
@@ -685,10 +682,7 @@
   mobikwikReceivedBy: document.querySelector('#mobikwikReceivedBy'),
   mobikwikPaymentMode: document.querySelector('#mobikwikPaymentMode'),
   mobikwikDateTime: document.querySelector('#mobikwikDateTime'),
-  mobikwikStatusLabel: document.querySelector('#mobikwikStatusLabel'),
-  mobikwikHelpLabel: document.querySelector('#mobikwikHelpLabel'),
   mobikwikInitiatedFrom: document.querySelector('#mobikwikInitiatedFrom'),
-  mobikwikPendingState: document.querySelector('#mobikwikPendingState'),
   mobikwikCreditedText: document.querySelector('#mobikwikCreditedText'),
   mobikwikRecipientBank: document.querySelector('#mobikwikRecipientBank'),
   mobikwikRecipientAccount: document.querySelector('#mobikwikRecipientAccount'),
@@ -752,7 +746,7 @@
       mobikwik: null
     };
 
-    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'mobikwikReceivedBy', 'mobikwikPaymentMode', 'mobikwikDateTime', 'mobikwikStatusLabel', 'mobikwikHelpLabel', 'mobikwikInitiatedFrom', 'mobikwikPendingState', 'mobikwikCreditedText', 'mobikwikRecipientBank', 'mobikwikRecipientAccount', 'mobikwikSenderUpi', 'mobikwikSenderBank', 'mobikwikRecipientName', 'mobikwikSenderName', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
+    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'mobikwikReceivedBy', 'mobikwikPaymentMode', 'mobikwikDateTime', 'mobikwikInitiatedFrom', 'mobikwikCreditedText', 'mobikwikRecipientBank', 'mobikwikRecipientAccount', 'mobikwikSenderUpi', 'mobikwikSenderBank', 'mobikwikRecipientName', 'mobikwikSenderName', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
     const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments', 'paytmStepTwoRecipient', 'paytmStepTwoBank', 'paytmStepTwoSender', 'paytmStepTwoSenderBank', 'paytmStepTwoUpi', 'paytmStepTwoDate', 'paytmStepTwoReference', 'paytmStepTwoStatus', 'paytmTimelineStarted', 'paytmTimelineTransferred', 'paytmTimelineSent', 'paytmTimelineDepositing', 'paytmRecipientInitials', 'paytmRecipientAvatarColor'];
 
     function captureProviderState() {
@@ -1473,7 +1467,7 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   context.strokeStyle = '#EEF0F3'; context.lineWidth = 2; context.beginPath(); context.moveTo(timelineX, 483); context.lineTo(timelineX, 621); context.stroke();
   const timelineRows = [
     { text: `Payment initiated from ${values.mobikwikInitiatedFrom || 'JIO PAYMENTS BANK LTD - 2682'}`, color: '#36414d', dot: '#22a64a', y: 478, maxWidth: 430 },
-    { text: values.mobikwikPendingState || 'Payment in pending state', color: '#36414d', dot: '#f5a623', y: 560, maxWidth: 430 },
+    { text: 'Payment in pending state', color: '#36414d', dot: '#f5a623', y: 560, maxWidth: 430 },
     { text: values.mobikwikCreditedText || 'Amount credited to the beneficiary account', color: '#9ca3af', dot: '#f5a623', y: 616, maxWidth: 430 }
   ];
   timelineRows.forEach(row => {

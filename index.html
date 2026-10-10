@@ -1025,15 +1025,24 @@
       context.font = style === 3 ? `700 italic 14px ${fontStack}` : `600 14px ${fontStack}`;
       context.fillText(displayTime, 30, 29);
 
-      if (style === 2) {
-        context.font = `700 13px ${fontStack}`;
-        context.fillText('▰  ✦  ◉  ▣  ◆', 77, 29);
-        context.font = `600 12px ${fontStack}`;
-        context.fillText('◴', 350, 29);
-        context.font = `700 10px ${fontStack}`;
-        context.fillText('5G+', 374, 20); drawSignalBars(374, 39, ink);
-        context.fillText('5G', 411, 20); drawSignalBars(411, 39, ink);
-        drawWifi(455, 22, ink); drawBattery(482, 22, ink, values.battery);
+  if (style === 2) {
+  const iconY = 29;
+  const drawNotificationIcon = (x, color, type) => {
+    context.fillStyle = color;
+    context.strokeStyle = color;
+    context.lineWidth = 1.8;
+    if (type === 'chat') { roundedPath(context, x, 23, 14, 11, 3); context.fill(); context.beginPath(); context.moveTo(x + 3, 33); context.lineTo(x + 2, 36); context.lineTo(x + 7, 33); context.fill(); }
+    else if (type === 'compass') { context.beginPath(); context.arc(x + 8, iconY, 7, 0, Math.PI * 2); context.stroke(); context.beginPath(); context.moveTo(x + 5, 32); context.lineTo(x + 11, 25); context.lineTo(x + 9, 30); context.closePath(); context.fill(); }
+    else if (type === 'mail') { roundedPath(context, x, 23, 16, 12, 2); context.stroke(); context.beginPath(); context.moveTo(x + 1, 24); context.lineTo(x + 8, 30); context.lineTo(x + 15, 24); context.stroke(); }
+    else if (type === 'game') { roundedPath(context, x, 25, 16, 9, 4); context.fill(); context.fillStyle = '#ffad05'; context.fillRect(x + 3, 28, 5, 1.5); context.fillRect(x + 4.75, 26.25, 1.5, 5); context.beginPath(); context.arc(x + 12, 28, 1, 0, Math.PI * 2); context.fill(); }
+    else { context.beginPath(); context.arc(x + 8, iconY, 7, 0, Math.PI * 2); context.fill(); context.fillStyle = '#ffad05'; context.beginPath(); context.arc(x + 8, iconY, 2.5, 0, Math.PI * 2); context.fill(); }
+  };
+  drawNotificationIcon(77, '#3b3100', 'chat'); drawNotificationIcon(99, '#b7202e', 'alert'); drawNotificationIcon(121, '#3b3100', 'compass'); drawNotificationIcon(143, '#3b3100', 'mail'); drawNotificationIcon(165, '#3b3100', 'game');
+  context.font = `600 12px ${fontStack}`;
+  context.fillText('◴', 350, iconY);
+  const drawOrangeSim = (x, label) => { context.font = `700 10px ${fontStack}`; context.fillText(label, x, 18); drawSignalBars(x, 39, ink); };
+  drawOrangeSim(374, '5G+'); drawOrangeSim(411, '5G');
+  drawWifi(455, 22, ink); drawBattery(482, 22, ink, values.battery);
   } else if (style === 3) {
   context.fillStyle = '#fffaf0';
   context.fillRect(0, 0, width, 44);
@@ -1151,10 +1160,28 @@
         context.fill();
         context.fillStyle = '#000000';
         context.fillRect(batteryX + 3, batteryTop + 3, Math.max(2, 23 * values.battery / 100), 10);
-      } else {
-        context.font = `600 8px ${fontStack}`; context.fillText('VoLTE', 337, 19); context.fillText('25.84 KB/s', 337, 35);
-        drawWifi(400, 22, ink); drawSignalBars(423, 39, ink); drawSignalBars(450, 39, ink); drawBattery(480, 22, ink, values.battery, true);
-      }
+  } else {
+  const navyCenterY = 29;
+  context.fillStyle = '#f5f7fa';
+  context.textAlign = 'left';
+  context.textBaseline = 'middle';
+  context.font = `700 10px ${fontStack}`;
+  context.fillText('VoLTE', 337, 23);
+  context.fillText('25.84 KB/s', 337, 35);
+  drawWifi(399, navyCenterY, ink);
+  drawSignalBars(423, 39, ink);
+  drawSignalBars(450, 39, ink);
+  const navyBatteryX = 480;
+  context.strokeStyle = '#f5f7fa';
+  context.lineWidth = 1.5;
+  roundedPath(context, navyBatteryX, 22, 26, 14, 3);
+  context.stroke();
+  context.fillStyle = '#f5f7fa';
+  context.fillRect(navyBatteryX + 27, 26, 3, 6);
+  context.fillRect(navyBatteryX + 3, 25, Math.max(2, 20 * values.battery / 100), 8);
+  context.font = `600 13px ${fontStack}`;
+  context.fillText(`${values.battery}%`, navyBatteryX + 36, navyCenterY);
+  }
     }
 
     function drawStatusBar(values) {

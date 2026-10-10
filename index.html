@@ -559,6 +559,8 @@
   <div class="field"><label for="mobikwikInitiatedFrom">Initiated from</label><input id="mobikwikInitiatedFrom" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
   <div class="field"><label for="mobikwikPendingState">Pending state text</label><input id="mobikwikPendingState" value="Payment in pending state" maxlength="40"></div>
   <div class="field"><label for="mobikwikCreditedText">Credited status text</label><input id="mobikwikCreditedText" value="Amount credited to the beneficiary account" maxlength="52"></div>
+  <div class="field"><label for="mobikwikRecipientName">Recipient name</label><input id="mobikwikRecipientName" value="Pankaj Chamoli" maxlength="32"></div>
+  <div class="field"><label for="mobikwikSenderName">Sender name</label><input id="mobikwikSenderName" value="Santanu Roy" maxlength="32"></div>
   <div class="field"><label for="mobikwikRecipientBank">Recipient bank/account</label><input id="mobikwikRecipientBank" value="SBIN0012485" maxlength="30"></div>
   <div class="field"><label for="mobikwikRecipientAccount">Recipient account</label><input id="mobikwikRecipientAccount" value="XXXXXXX2247" maxlength="30"></div>
   <div class="field"><label for="mobikwikSenderUpi">Sender UPI ID</label><input id="mobikwikSenderUpi" value="8293293132@mbkns" maxlength="40"></div>
@@ -676,6 +678,8 @@
   mobikwikRecipientAccount: document.querySelector('#mobikwikRecipientAccount'),
   mobikwikSenderUpi: document.querySelector('#mobikwikSenderUpi'),
   mobikwikSenderBank: document.querySelector('#mobikwikSenderBank'),
+  mobikwikRecipientName: document.querySelector('#mobikwikRecipientName'),
+  mobikwikSenderName: document.querySelector('#mobikwikSenderName'),
   amount: document.querySelector('#amount'),
       paytmRecipient: document.querySelector('#paytmRecipient'),
       paytmBank: document.querySelector('#paytmBank'),
@@ -732,7 +736,7 @@
       mobikwik: null
     };
 
-    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'mobikwikReceivedBy', 'mobikwikPaymentMode', 'mobikwikDateTime', 'mobikwikStatusLabel', 'mobikwikHelpLabel', 'mobikwikInitiatedFrom', 'mobikwikPendingState', 'mobikwikCreditedText', 'mobikwikRecipientBank', 'mobikwikRecipientAccount', 'mobikwikSenderUpi', 'mobikwikSenderBank', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
+    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'mobikwikReceivedBy', 'mobikwikPaymentMode', 'mobikwikDateTime', 'mobikwikStatusLabel', 'mobikwikHelpLabel', 'mobikwikInitiatedFrom', 'mobikwikPendingState', 'mobikwikCreditedText', 'mobikwikRecipientBank', 'mobikwikRecipientAccount', 'mobikwikSenderUpi', 'mobikwikSenderBank', 'mobikwikRecipientName', 'mobikwikSenderName', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
     const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments', 'paytmStepTwoRecipient', 'paytmStepTwoBank', 'paytmStepTwoSender', 'paytmStepTwoSenderBank', 'paytmStepTwoUpi', 'paytmStepTwoDate', 'paytmStepTwoReference', 'paytmStepTwoStatus', 'paytmTimelineStarted', 'paytmTimelineTransferred', 'paytmTimelineSent', 'paytmTimelineDepositing', 'paytmRecipientInitials', 'paytmRecipientAvatarColor'];
 
     function captureProviderState() {
@@ -829,9 +833,9 @@
   graphPosition: Math.min(480, Math.max(380, Number.parseInt(fields.graphPosition.value, 10) || 415)),
   statusGroupPosition: Math.min(100, Math.max(0, Number.parseInt(fields.statusGroupPosition.value, 10) || 0)),
   graphCount: Number(fields.graphCount.value) === 2 ? 2 : 1,
-        senderName: activeProvider === 'mobikwik' ? 'Santanu Roy' : (fields.senderName.value.trim() || 'JOSHI'),
+        senderName: activeProvider === 'mobikwik' ? (fields.mobikwikSenderName.value.trim() || 'Santanu Roy') : (fields.senderName.value.trim() || 'JOSHI'),
         senderDetails: activeProvider === 'mobikwik' ? 'JIO PAYMENTS BANK LTD - 2682' : (fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)'),
-        recipientName: activeProvider === 'paytm' ? (fields.paytmRecipient.value.trim() || 'Mr Kinny L Mawnai') : (fields.recipientName.value.trim() || 'Pankaj Chamoli'),
+        recipientName: activeProvider === 'paytm' ? (fields.paytmRecipient.value.trim() || 'Mr Kinny L Mawnai') : activeProvider === 'mobikwik' ? (fields.mobikwikRecipientName.value.trim() || 'Pankaj Chamoli') : (fields.recipientName.value.trim() || 'Pankaj Chamoli'),
         recipientDetails: activeProvider === 'paytm' ? (fields.paytmBank.value.trim() || 'SBI Bank - 8063') : (fields.recipientDetails.value.trim() || 'PHONE ···· 0000'),
         mobikwikReceivedBy: fields.mobikwikReceivedBy.value.trim() || 'XXXX-XXX8-141',
   mobikwikPaymentMode: fields.mobikwikPaymentMode.value.trim() || 'INDIAN BANK 8737',

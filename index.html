@@ -302,20 +302,53 @@
       color: #8a4b00;
     }
     .status-bar-icon svg { width: 15px; height: 15px; }
-    #statusBarSection .field input,
-    #statusBarSection .field textarea,
-    #statusBarSection .field select {
-      border-color: rgba(0, 0, 0, .08);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, .7);
-      transition: border-color .2s ease, box-shadow .2s ease;
-    }
-    #statusBarSection .field input:focus,
-    #statusBarSection .field textarea:focus,
-    #statusBarSection .field select:focus {
-      border-color: #ff9f0a;
-      box-shadow: 0 0 0 3px rgba(255, 159, 10, .18);
-    }
+#statusBarSection .field input,
+#statusBarSection .field select {
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 14px;
+  background-color: rgba(255, 255, 255, .75);
+  background-image: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(255, 159, 10, .18), transparent 70%);
+  background-repeat: no-repeat;
+  background-size: 0% 0%;
+  color: #1d1d1f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 -1px 3px rgba(0, 0, 0, .04);
+  transition: transform .6s cubic-bezier(.34, 1.56, .64, 1), box-shadow .45s ease, border-color .25s ease, background-color .25s ease, background-size .5s ease, opacity .25s ease;
+}
+#statusBarSection .field input:hover,
+#statusBarSection .field select:hover {
+  border-color: rgba(255, 159, 10, .5);
+  background-color: rgba(255, 255, 255, .9);
+  box-shadow: 0 4px 14px rgba(255, 159, 10, .15), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+#statusBarSection .field input { cursor: text; }
+#statusBarSection .field select { cursor: pointer; }
+#statusBarSection .field input:active,
+#statusBarSection .field select:active,
+#statusBarSection .field input.is-rippling,
+#statusBarSection .field select.is-rippling {
+  transform: scale(.965) translateY(2px);
+  background-size: 140% 140%;
+  box-shadow: inset 0 6px 16px rgba(0, 0, 0, .16), inset 0 -2px 6px rgba(255, 255, 255, .8), 0 1px 2px rgba(0, 0, 0, .06);
+  transition: transform .16s cubic-bezier(.3, 0, .2, 1), box-shadow .16s ease, background-size .5s ease;
+}
+#statusBarSection .field input:focus,
+#statusBarSection .field select:focus {
+  transform: none;
+  border-color: #ff9f0a;
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, .096), inset 0 -2px 5px rgba(255, 255, 255, .8), 0 0 0 3px rgba(255, 159, 10, .18);
+}
+#statusBarSection .field input:focus.is-rippling,
+#statusBarSection .field select:focus.is-rippling {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #statusBarSection .field input,
+  #statusBarSection .field select { transition: border-color .01ms, box-shadow .01ms, background-color .01ms, background-size .01ms; }
+  #statusBarSection .field input:active,
+  #statusBarSection .field select:active,
+  #statusBarSection .field input.is-rippling,
+  #statusBarSection .field select.is-rippling { transform: none; }
+}
     .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 10px; }
     .field-grid.single { grid-template-columns: 1fr; }
     .field { min-width: 0; display: grid; align-content: start; gap: 6px; }
@@ -781,8 +814,8 @@
     const studioScreen = document.querySelector('#studioScreen');
     const freechargeButton = document.querySelector('#freechargeButton');
     const paytmButton = document.querySelector('#paytmButton');
-    const mobikwikButton = document.querySelector('#mobikwikButton');
-    const providerButtons = {
+  const mobikwikButton = document.querySelector('#mobikwikButton');
+  const providerButtons = {
       freecharge: freechargeButton,
       paytm: paytmButton,
       mobikwik: mobikwikButton
@@ -2108,6 +2141,19 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
     showStep(1);
     }
 
+  function addStatusFieldRipple(control, event) {
+  const rect = control.getBoundingClientRect();
+  control.style.setProperty('--ripple-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+  control.style.setProperty('--ripple-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+  control.classList.remove('is-rippling');
+  void control.offsetWidth;
+  control.classList.add('is-rippling');
+  window.setTimeout(() => control.classList.remove('is-rippling'), 520);
+  }
+  statusBarSection.addEventListener('pointerdown', event => {
+  const control = event.target.closest('input, select');
+  if (control) addStatusFieldRipple(control, event);
+  });
   function addProviderRipple(button, event) {
   const rect = button.getBoundingClientRect();
   button.style.setProperty('--ripple-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);

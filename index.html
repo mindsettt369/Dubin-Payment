@@ -179,9 +179,31 @@
       line-height: 1.2;
       transition: border-color .28s ease, background .28s ease, box-shadow .28s ease, color .28s ease, transform .28s ease;
     }
-    .step-button:hover { transform: translateY(-1px); background: rgba(255, 255, 255, .72); }
-    .step-button.active { border-color: rgba(237, 148, 23, .8); background: rgba(255, 244, 225, .82); box-shadow: 0 0 0 2px rgba(237, 148, 23, .12), 0 9px 20px rgba(237, 148, 23, .18), inset 0 1px 0 rgba(255, 255, 255, .9); color: #9d5018; }
-    .step-view[hidden] { display: none; }
+  .step-button:hover { transform: translateY(-1px); background: rgba(255, 255, 255, .72); }
+  .step-button.active { border-color: rgba(237, 148, 23, .8); background: rgba(255, 244, 225, .82); box-shadow: 0 0 0 2px rgba(237, 148, 23, .12), 0 9px 20px rgba(237, 148, 23, .18), inset 0 1px 0 rgba(255, 255, 255, .9); color: #9d5018; }
+  .step-label {
+    display: inline-block;
+    font-weight: 700;
+    transition: filter .3s ease;
+  }
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .step-label {
+      background-image: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, .9), rgba(255, 255, 255, 0) 40%), linear-gradient(100deg, #ff6a3d 0%, #ff9f0a 18%, #ffd60a 32%, #34c759 46%, #32ade6 60%, #5e5ce6 74%, #bf5af2 88%, #ff6a3d 100%);
+      background-size: 100% 100%, 300% 100%;
+      background-position: 0 0, 0% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      filter: drop-shadow(0 0 6px rgba(255, 159, 10, .35)) drop-shadow(0 0 14px rgba(94, 92, 230, .25));
+      animation: bubbleFlow 7s linear infinite;
+    }
+    .step-button:not(.active) .step-label { opacity: .7; animation-duration: 11s; }
+    .step-button:hover .step-label { filter: drop-shadow(0 0 10px rgba(255, 159, 10, .42)) drop-shadow(0 0 18px rgba(94, 92, 230, .32)); }
+  }
+  @keyframes bubbleFlow { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 300% 50%; } }
+  @media (prefers-reduced-motion: reduce) { .step-label { animation: none !important; } }
+  .step-view[hidden] { display: none; }
     .coming-soon { min-height: 420px; display: grid; place-items: center; padding: 30px 10px; text-align: center; }
     .coming-soon-card { max-width: 260px; }
     .coming-soon-badge { display: inline-flex; padding: 7px 10px; border-radius: 999px; background: #fff2df; color: #9d5018; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
@@ -427,8 +449,8 @@
       <div class="editor-body">
 
         <nav class="step-navigation" aria-label="Builder steps">
-          <button class="step-button active" id="stepOneButton" type="button" aria-selected="true">Step 1 · Customize</button>
-          <button class="step-button" id="stepTwoButton" type="button" aria-selected="false">Step 2 · Edit payment details</button>
+ <button class="step-button active" id="stepOneButton" type="button" aria-selected="true"><span class="step-label">Step 1 · Customize</span></button>
+ <button class="step-button" id="stepTwoButton" type="button" aria-selected="false"><span class="step-label">Step 2 · Edit payment details</span></button>
         </nav>
         <section class="step-view" id="stepOneView" aria-labelledby="editorTitle">
         <h1 class="editor-title" id="editorTitle">Customize your payment screen</h1>
@@ -719,6 +741,8 @@
     const downloadStatus = document.querySelector('#downloadStatus');
     const stepOneButton = document.querySelector('#stepOneButton');
     const stepTwoButton = document.querySelector('#stepTwoButton');
+    const stepOneLabel = stepOneButton.querySelector('.step-label');
+    const stepTwoLabel = stepTwoButton.querySelector('.step-label');
     const stepOneView = document.querySelector('#stepOneView');
     const stepTwoView = document.querySelector('#stepTwoView');
     const resetButton = document.querySelector('#resetButton');
@@ -2011,22 +2035,22 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
 
     function showFreechargeEditor() {
     selectProvider('freecharge');
-    stepOneButton.textContent = 'Step 1 · Customize';
-    stepTwoButton.textContent = 'Step 2 · Edit payment details';
+  stepOneLabel.textContent = 'Step 1 · Customize';
+  stepTwoLabel.textContent = 'Step 2 · Edit payment details';
     showStep(1);
     }
 
     function showPaytmEditor() {
     selectProvider('paytm');
-    stepOneButton.textContent = 'Step 1 · Paytm pending screen';
-    stepTwoButton.textContent = 'Step 2 · Transfer in progress';
+  stepOneLabel.textContent = 'Step 1 · Paytm pending screen';
+  stepTwoLabel.textContent = 'Step 2 · Transfer in progress';
     showStep(1);
     }
 
     function showMobikwikEditor() {
     selectProvider('mobikwik');
-    stepOneButton.textContent = 'Step 1 · Pending transfer';
-    stepTwoButton.textContent = 'Step 2 · Payment pending details';
+  stepOneLabel.textContent = 'Step 1 · Pending transfer';
+  stepTwoLabel.textContent = 'Step 2 · Payment pending details';
     showStep(1);
     }
 

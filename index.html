@@ -550,7 +550,22 @@
                 <div class="field"><label for="stepTwoStatus">Status</label><input id="stepTwoStatus" value="Pending" maxlength="14"></div>
               </div>
             </fieldset>
-<fieldset class="editor-section freecharge-step-two-only">
+  <fieldset class="editor-section mobikwik-step-two-only" hidden>
+  <legend class="section-title">MobiKwik pending details</legend>
+  <div class="field-grid">
+  <div class="field"><label for="mobikwikDateTime">Payment date and time</label><input id="mobikwikDateTime" value="5 Oct '26 at 7:00PM" maxlength="28"></div>
+  <div class="field"><label for="mobikwikStatusLabel">Status label</label><input id="mobikwikStatusLabel" value="Payment Pending" maxlength="30"></div>
+  <div class="field"><label for="mobikwikHelpLabel">Help button</label><input id="mobikwikHelpLabel" value="Need Help?" maxlength="24"></div>
+  <div class="field"><label for="mobikwikInitiatedFrom">Initiated from</label><input id="mobikwikInitiatedFrom" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
+  <div class="field"><label for="mobikwikPendingState">Pending state text</label><input id="mobikwikPendingState" value="Payment in pending state" maxlength="40"></div>
+  <div class="field"><label for="mobikwikCreditedText">Credited status text</label><input id="mobikwikCreditedText" value="Amount credited to the beneficiary account" maxlength="52"></div>
+  <div class="field"><label for="mobikwikRecipientBank">Recipient bank/account</label><input id="mobikwikRecipientBank" value="SBIN0012485" maxlength="30"></div>
+  <div class="field"><label for="mobikwikRecipientAccount">Recipient account</label><input id="mobikwikRecipientAccount" value="XXXXXXX2247" maxlength="30"></div>
+  <div class="field"><label for="mobikwikSenderUpi">Sender UPI ID</label><input id="mobikwikSenderUpi" value="8293293132@mbkns" maxlength="40"></div>
+  <div class="field"><label for="mobikwikSenderBank">Sender bank</label><input id="mobikwikSenderBank" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
+  </div>
+  </fieldset>
+  <fieldset class="editor-section freecharge-step-two-only">
   <legend class="section-title">Payment information</legend>
               <div class="field-grid single">
                 <div class="field"><label for="stepTwoNotice">Progress notice</label><textarea id="stepTwoNotice" rows="5" maxlength="280" aria-describedby="stepTwoNoticeHint">Payment is in progress. Don’t worry — If it fails, any debited amount will be auto-reversed; if successful, it will be credited to the recipient. The transaction will get updated within 3-8 days.</textarea><p class="field-hint" id="stepTwoNoticeHint">Edit this message to update the notice in the Step 2 preview.</p></div>
@@ -621,6 +636,7 @@
     const paytmStepOneForm = document.querySelector('#editorForm');
     const paytmStepTwoForm = document.querySelector('#stepTwoForm');
     const freechargeStepTwoSections = [...document.querySelectorAll('.freecharge-step-two-only')];
+  const mobikwikStepTwoSections = [...document.querySelectorAll('.mobikwik-step-two-only')];
     const paytmStepTwoSections = [...document.querySelectorAll('.paytm-step-two-only')];
     const stepTwoDescription = document.querySelector('#stepTwoDescription');
       const senderRecipientSection = document.querySelector('#senderRecipientSection');
@@ -650,6 +666,16 @@
   recipientDetails: document.querySelector('#recipientDetails'),
   mobikwikReceivedBy: document.querySelector('#mobikwikReceivedBy'),
   mobikwikPaymentMode: document.querySelector('#mobikwikPaymentMode'),
+  mobikwikDateTime: document.querySelector('#mobikwikDateTime'),
+  mobikwikStatusLabel: document.querySelector('#mobikwikStatusLabel'),
+  mobikwikHelpLabel: document.querySelector('#mobikwikHelpLabel'),
+  mobikwikInitiatedFrom: document.querySelector('#mobikwikInitiatedFrom'),
+  mobikwikPendingState: document.querySelector('#mobikwikPendingState'),
+  mobikwikCreditedText: document.querySelector('#mobikwikCreditedText'),
+  mobikwikRecipientBank: document.querySelector('#mobikwikRecipientBank'),
+  mobikwikRecipientAccount: document.querySelector('#mobikwikRecipientAccount'),
+  mobikwikSenderUpi: document.querySelector('#mobikwikSenderUpi'),
+  mobikwikSenderBank: document.querySelector('#mobikwikSenderBank'),
   amount: document.querySelector('#amount'),
       paytmRecipient: document.querySelector('#paytmRecipient'),
       paytmBank: document.querySelector('#paytmBank'),
@@ -706,7 +732,7 @@
       mobikwik: null
     };
 
-    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'mobikwikReceivedBy', 'mobikwikPaymentMode', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
+    const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'mobikwikReceivedBy', 'mobikwikPaymentMode', 'mobikwikDateTime', 'mobikwikStatusLabel', 'mobikwikHelpLabel', 'mobikwikInitiatedFrom', 'mobikwikPendingState', 'mobikwikCreditedText', 'mobikwikRecipientBank', 'mobikwikRecipientAccount', 'mobikwikSenderUpi', 'mobikwikSenderBank', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
     const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments', 'paytmStepTwoRecipient', 'paytmStepTwoBank', 'paytmStepTwoSender', 'paytmStepTwoSenderBank', 'paytmStepTwoUpi', 'paytmStepTwoDate', 'paytmStepTwoReference', 'paytmStepTwoStatus', 'paytmTimelineStarted', 'paytmTimelineTransferred', 'paytmTimelineSent', 'paytmTimelineDepositing', 'paytmRecipientInitials', 'paytmRecipientAvatarColor'];
 
     function captureProviderState() {
@@ -1375,10 +1401,10 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
     }
 
     function drawMobikwikStepTwo(values) {
-      context.fillStyle = '#f7f8fa'; context.fillRect(0, 0, width, height); drawStatusBar(values); context.textAlign = 'left'; context.fillStyle = '#273340'; context.font = `700 50px ${fontStack}`; context.fillText('×', 30, 125); context.textAlign = 'right'; context.font = `500 18px ${fontStack}`; context.fillText('◉ Share   ? Help', 548, 115); context.textAlign = 'left'; context.fillStyle = '#35404c'; context.font = `750 52px ${fontStack}`; context.fillText(`₹${values.amount === 'SET AMOUNT' ? '2,000' : values.amount}`, 46, 202); context.fillStyle = '#f4c83d'; context.font = `500 35px ${fontStack}`; context.fillText('◷', 248, 202); context.font = `500 20px ${fontStack}`; context.fillStyle = '#555'; context.fillText('▱  NA', 46, 252); context.font = `600 22px ${fontStack}`; context.fillText('Payment Pending', 46, 302); context.font = `500 18px ${fontStack}`; context.fillText('5 Oct \'26 at 7:00PM', 46, 342); roundedRect(context, 46, 372, 175, 48, 25, '#35404c'); context.fillStyle = '#fff'; context.textAlign = 'center'; context.font = `700 17px ${fontStack}`; context.fillText('Need Help?', 134, 397);
-      roundedRect(context, 18, 450, 540, 230, 24, '#fff'); context.textAlign = 'left'; context.fillStyle = '#36414d'; context.font = `500 17px ${fontStack}`; context.fillText('●   Payment initiated from JIO PAYMENTS', 50, 500); context.fillText('     BANK LTD - 2682', 50, 532); context.fillStyle = '#e5b932'; context.fillText('●   Payment in pending state', 50, 580); context.fillStyle = '#a1aab3'; context.fillText('●   Amount credited to the beneficiary account', 50, 632);
-      roundedRect(context, 18, 704, 540, 285, 24, '#fff'); context.fillStyle = '#8a959f'; context.font = `500 16px ${fontStack}`; context.fillText('To', 50, 752); context.fillStyle = '#36414d'; context.font = `750 25px ${fontStack}`; context.fillText(values.recipientName || 'Rahul Dindure', 50, 797); context.font = `500 20px ${fontStack}`; context.fillText('SBIN0012485', 50, 842); context.fillText('XXXXXXX2247', 50, 887); roundedRect(context, 50, 920, 174, 45, 23, '#fff', '#e5e8eb'); roundedRect(context, 240, 920, 174, 45, 23, '#fff', '#e5e8eb'); context.fillStyle = '#1260a9'; context.textAlign = 'center'; context.font = `600 16px ${fontStack}`; context.fillText('View History', 137, 947); context.fillText('Pay Again', 327, 947);
-      roundedRect(context, 18, 1015, 540, 220, 24, '#fff'); context.textAlign = 'left'; context.fillStyle = '#8a959f'; context.font = `500 16px ${fontStack}`; context.fillText('From', 50, 1062); context.fillStyle = '#36414d'; context.font = `750 25px ${fontStack}`; context.fillText(values.senderName || 'Santanu Roy', 50, 1108); context.font = `500 20px ${fontStack}`; context.fillText('8293293132@mbkns', 50, 1153); context.fillText('JIO PAYMENTS BANK LTD - 2682', 50, 1198); canvas.setAttribute('aria-label', 'Mobikwik payment pending details screen'); downloadButton.disabled = false;
+      context.fillStyle = '#f7f8fa'; context.fillRect(0, 0, width, height); drawStatusBar(values); context.textAlign = 'left'; context.fillStyle = '#273340'; context.font = `700 50px ${fontStack}`; context.fillText('×', 30, 125); context.textAlign = 'right'; context.font = `500 18px ${fontStack}`; context.fillText('◉ Share   ? Help', 548, 115); context.textAlign = 'left'; context.fillStyle = '#35404c'; context.font = `750 52px ${fontStack}`; context.fillText(`₹${values.amount === 'SET AMOUNT' ? '2,000' : values.amount}`, 46, 202); context.fillStyle = '#f4c83d'; context.font = `500 35px ${fontStack}`; context.fillText('◷', 248, 202); context.font = `500 20px ${fontStack}`; context.fillStyle = '#555'; context.fillText('▱  NA', 46, 252); context.font = `600 22px ${fontStack}`; context.fillText(values.mobikwikStatusLabel || 'Payment Pending', 46, 302); context.font = `500 18px ${fontStack}`; context.fillText(values.mobikwikDateTime || "5 Oct '26 at 7:00PM", 46, 342); roundedRect(context, 46, 372, 175, 48, 25, '#35404c'); context.fillStyle = '#fff'; context.textAlign = 'center'; context.font = `700 17px ${fontStack}`; context.fillText(values.mobikwikHelpLabel || 'Need Help?', 134, 397);
+      roundedRect(context, 18, 450, 540, 230, 24, '#fff'); context.textAlign = 'left'; context.fillStyle = '#36414d'; context.font = `500 17px ${fontStack}`; context.fillText(`●   Payment initiated from ${values.mobikwikInitiatedFrom || 'JIO PAYMENTS BANK LTD - 2682'}`, 50, 500); context.fillStyle = '#e5b932'; context.fillText(`●   ${values.mobikwikPendingState || 'Payment in pending state'}`, 50, 580); context.fillStyle = '#a1aab3'; context.fillText(`●   ${values.mobikwikCreditedText || 'Amount credited to the beneficiary account'}`, 50, 632);
+      roundedRect(context, 18, 704, 540, 285, 24, '#fff'); context.fillStyle = '#8a959f'; context.font = `500 16px ${fontStack}`; context.fillText('To', 50, 752); context.fillStyle = '#36414d'; context.font = `750 25px ${fontStack}`; context.fillText(values.recipientName || 'Rahul Dindure', 50, 797); context.font = `500 20px ${fontStack}`; context.fillText(values.mobikwikRecipientBank || 'SBIN0012485', 50, 842); context.fillText(values.mobikwikRecipientAccount || 'XXXXXXX2247', 50, 887); roundedRect(context, 50, 920, 174, 45, 23, '#fff', '#e5e8eb'); roundedRect(context, 240, 920, 174, 45, 23, '#fff', '#e5e8eb'); context.fillStyle = '#1260a9'; context.textAlign = 'center'; context.font = `600 16px ${fontStack}`; context.fillText('View History', 137, 947); context.fillText('Pay Again', 327, 947);
+      roundedRect(context, 18, 1015, 540, 220, 24, '#fff'); context.textAlign = 'left'; context.fillStyle = '#8a959f'; context.font = `500 16px ${fontStack}`; context.fillText('From', 50, 1062); context.fillStyle = '#36414d'; context.font = `750 25px ${fontStack}`; context.fillText(values.senderName || 'Santanu Roy', 50, 1108); context.font = `500 20px ${fontStack}`; context.fillText(values.mobikwikSenderUpi || '8293293132@mbkns', 50, 1153); context.fillText(values.mobikwikSenderBank || 'JIO PAYMENTS BANK LTD - 2682', 50, 1198); canvas.setAttribute('aria-label', 'Mobikwik payment pending details screen'); downloadButton.disabled = false;
     }
 
     function renderMockup() {
@@ -1478,6 +1504,7 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   const paytmStepActive = activeProvider === 'paytm';
   paytmDetailsSection.hidden = !paytmStepActive || !isStepOne;
       freechargeStepTwoSections.forEach(section => { section.hidden = paytmStepActive || activeProvider === 'mobikwik'; });
+  mobikwikStepTwoSections.forEach(section => { section.hidden = activeProvider !== 'mobikwik' || isStepOne; });
       paytmStepTwoSections.forEach(section => { section.hidden = !paytmStepActive || isStepOne; });
       if (paytmStepActive) stepTwoDescription.textContent = 'Edit the Paytm transfer screen shown in Step 2.';
       renderMockup();

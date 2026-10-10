@@ -91,7 +91,40 @@
   @keyframes windLeft { from { translate: 0 0; } to { translate: -130vw 0; } }
   @media (max-width: 760px) { .mascot-zone { height: 220px; } .dog-mascot { width: 200px; max-height: 200px; } .mascot-shadow { top: 230px; width: 120px; } }
   @media (prefers-reduced-motion: reduce) { .dog-mascot, .wind-streaks i { animation-duration: 4s; animation-iteration-count: infinite; } .dog-mascot.is-leaving { animation: none; } }
-    .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .mascot-zone { position: relative; width: 100%; max-width: 420px; height: 240px; margin: 0 auto; padding: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.9); border-radius: 28px; background: linear-gradient(#e8f4ff,#fff); box-shadow: 0 8px 28px rgba(0,0,0,.06); pointer-events: none; transition: height .5s ease, opacity .3s ease, margin .5s ease; }
+  .mascot-zone.is-collapsing { height: 0; margin: 0 auto; opacity: 0; }
+  .mascot-zone.is-collapsed { display: none; }
+  .dog-mascot { position: absolute; left: 50%; top: 0; width: 100%; max-width: 420px; height: 240px; overflow: hidden; transform: translateX(-50%); transform-origin: 50% 50%; opacity: 1; pointer-events: none; animation: none; transition: transform .7s cubic-bezier(.34,1.2,.64,1), opacity .7s ease; }
+  .dog-mascot .head { transform-box: fill-box; transform-origin: 50% 100%; animation: calmBreath 3s ease-in-out infinite; }
+  .dog-mascot .sunglasses { transform-box: fill-box; transform-origin: 50% 50%; animation: calmBlink 5s ease-in-out infinite; }
+  .dog-mascot .ear-left, .dog-mascot .ear-right, .dog-mascot .tongue, .dog-mascot .paw, .dog-mascot .wind-lines, .dog-mascot .wheels, .dog-mascot .road-lines, .dog-mascot .clouds { transform-box: fill-box; transform-origin: 50% 50%; }
+  .mascot-zone.is-hovering .dog-mascot .ear-left { animation: earFlapLeft .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .ear-right { animation: earFlapRight .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .tongue { animation: tongueWobble .35s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .head { animation: headLookUp .5s ease forwards, calmBreath 3s ease-in-out .5s infinite; }
+  .mascot-zone.is-hovering .dog-mascot .paw { animation: pawTap .4s ease-in-out 3; }
+  .mascot-zone.is-hovering .dog-mascot .wind-lines { animation: windRush .45s linear infinite; }
+  .mascot-zone.is-hovering .dog-mascot .wheels { animation: wheelSpin .5s linear infinite; transform-origin: 50% 78%; }
+  .mascot-zone.is-hovering .dog-mascot .road-lines { animation: roadMove .5s linear infinite; }
+  .mascot-zone.is-hovering .dog-mascot .clouds { animation: cloudDrift 3s linear infinite; }
+  .mascot-zone.is-jumping .dog-mascot { animation: sceneJump .4s ease-in-out; }
+  .mascot-zone.is-driving .dog-mascot { transform: translateX(120vw); opacity: 0; transition: transform .7s ease-in, opacity .7s ease-in; }
+  .mascot-shadow { position: absolute; left: 50%; bottom: 19px; width: 150px; height: 14px; border-radius: 50%; background: rgba(47,43,37,.16); opacity: .7; transform: translateX(-50%); }
+  @keyframes calmBreath { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  @keyframes calmBlink { 0%,44%,48%,100% { opacity: 1; } 46% { opacity: .86; } }
+  @keyframes earFlapLeft { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+  @keyframes earFlapRight { from { transform: rotate(8deg); } to { transform: rotate(-8deg); } }
+  @keyframes tongueWobble { from { transform: scaleY(1); } to { transform: scaleY(1.1); } }
+  @keyframes headLookUp { to { transform: rotate(-6deg); } }
+  @keyframes pawTap { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  @keyframes windRush { from { transform: translateX(32px); opacity: .2; } to { transform: translateX(-80px); opacity: 1; } }
+  @keyframes wheelSpin { to { transform: rotate(360deg); } }
+  @keyframes roadMove { to { transform: translateX(-48px); } }
+  @keyframes cloudDrift { to { transform: translateX(-20px); } }
+  @keyframes sceneJump { 0%,100% { transform: translateX(-50%) translateY(0); } 45% { transform: translateX(-50%) translateY(-20px); } }
+  @media (max-width: 760px) { .mascot-zone { height: 210px; } .dog-mascot { height: 210px; } }
+  @media (prefers-reduced-motion: reduce) { .dog-mascot .head, .dog-mascot .sunglasses { animation: none; } .mascot-zone.is-hovering .dog-mascot * { animation: none; } .mascot-zone.is-jumping .dog-mascot, .mascot-zone.is-driving .dog-mascot { animation: none; transition: none; } }
+  .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
     .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; overflow: visible; }
     .provider-button {
       position: relative;
@@ -557,9 +590,17 @@
       </div>
     </section>
     <div class="mascot-zone" id="mascotZone" aria-hidden="true">
-      <div class="wind-streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-      <img class="dog-mascot" id="dogMascot" src="/doberman-dog.png" alt="" aria-hidden="true">
-      <div class="mascot-shadow"></div>
+      <svg class="dog-mascot" id="dogMascot" viewBox="0 0 420 240" role="img" aria-label="Cartoon Doberman riding in a car">
+        <defs>
+          <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe9ff"/><stop offset="1" stop-color="#f1f8ff"/></linearGradient>
+          <linearGradient id="carPaint" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f6f8fa"/><stop offset="1" stop-color="#b9c1c9"/></linearGradient>
+          <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#292a2d"/><stop offset="1" stop-color="#08090b"/></linearGradient>
+        </defs>
+        <g class="scene-background"><rect width="420" height="240" rx="28" fill="url(#skyGradient)"/><g class="clouds" fill="#fff"><path d="M24 49c8-15 29-15 36-1 10-8 28-1 29 12H16c0-6 3-10 8-11z"/><path d="M270 35c7-13 25-14 32-2 12-7 26 2 27 13h-68c0-6 3-10 9-11z"/><path d="M326 91c7-12 24-13 31-1 11-7 25 2 25 13h-65c0-6 3-10 9-12z"/></g><path class="grass" d="M0 164h420v28H0z" fill="#83b58b"/><path class="road" d="M0 192h420v48H0z" fill="#737b84"/><g class="road-lines" stroke="#e9edf0" stroke-width="4" stroke-linecap="round"><path d="M18 219h42M112 219h42M206 219h42M300 219h42"/></g></g>
+        <g class="car"><path d="M22 166c5-22 23-38 49-43l82-16h133c26 0 42 16 61 39l45 20v28H22z" fill="url(#carPaint)" stroke="#7d8790" stroke-width="2"/><path d="M113 112h134l-3 51H92z" fill="#536574" stroke="#6f7d88" stroke-width="3"/><path d="M249 112h29c14 1 27 13 38 28l8 12h-75z" fill="#4b5f6d" stroke="#6f7d88" stroke-width="3"/><path d="M242 112v51" stroke="#cbd2d8" stroke-width="4"/><path d="M24 166h393v23H24z" fill="#adb6bd"/><g class="wheels" fill="#252a2e" stroke="#d2d7db" stroke-width="5"><circle cx="95" cy="189" r="21"/><circle cx="323" cy="189" r="21"/></g><path d="M95 180v18m-9-9h18M323 180v18m-9-9h18" class="wheel-spokes" stroke="#818b93" stroke-width="3"/></g>
+        <g class="dog"><path class="chest" d="M171 163c3-30 20-43 42-43s39 13 42 43z" fill="#b95e2d"/><path class="ear-left" d="M181 76C145 66 139 23 158 8c14 17 29 30 40 53z" fill="#151719" stroke="#0b0c0e" stroke-width="3"/><path class="ear-right" d="M253 76c37-10 43-53 24-68-14 17-29 30-40 53z" fill="#151719" stroke="#0b0c0e" stroke-width="3"/><path class="head" d="M178 80c7-38 72-38 79 0l-6 62c-10 24-57 24-67 0z" fill="url(#fur)"/><path class="cheeks" d="M184 103q12-23 25 0l-3 30q-13 12-25 0zm42 0q13-23 25 0l3 30q-12 12-25 0z" fill="#b95e2d"/><path class="brow-left" d="M187 91q13-10 24 0" stroke="#c7733b" stroke-width="6" stroke-linecap="round"/><path class="brow-right" d="M224 91q12-10 24 0" stroke="#c7733b" stroke-width="6" stroke-linecap="round"/><g class="sunglasses"><g fill="#151b22" stroke="#07090b" stroke-width="3"><ellipse cx="200" cy="91" rx="23" ry="15"/><ellipse cx="234" cy="91" rx="23" ry="15"/></g><path d="M222 91h-10" stroke="#07090b" stroke-width="4"/><path d="M185 84l24 9m10-9 24 9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/></g><path class="nose" d="M208 115q9-8 18 0l-2 10q-7 7-14 0z" fill="#090a0c"/><path class="mouth" d="M201 126q16 14 32 0v20q-16 18-32 0z" fill="#551f24"/><path class="teeth" d="M205 130l5 7 5-6 5 6 5-7" fill="#fff"/><path class="tongue" d="M216 140q8-8 16 0v28q-8 12-16 0z" fill="#ef8694"/><path class="paw" d="M186 153q24-10 49 0v17q-24 8-49 0z" fill="#b95e2d" stroke="#7d3d23" stroke-width="3"/></g>
+        <g class="wind-lines" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M52 72h29M70 91h42M30 111h36M296 68h42M315 87h28"/></g>
+      </svg>
     </div>
   </main>
 
@@ -2181,27 +2222,27 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
     }
 
   function mascotPosition(button) {
-  if (!mascotZone || !dogMascot || !button) return { x: 0, y: 34 };
+  if (!mascotZone || !button) return 0;
   const card = button.getBoundingClientRect();
   const zone = mascotZone.getBoundingClientRect();
-  const size = dogMascot.getBoundingClientRect();
-  return { x: card.left + card.width / 2 - zone.left - size.width / 2, y: Math.max(24, card.bottom - zone.top + 10) };
+  return card.left + card.width / 2 - (zone.left + zone.width / 2);
   }
-  function moveMascotTo(button, look = true) {
+  function moveMascotTo(button) {
   if (mascotDismissed || !dogMascot) return;
-  const { x, y } = mascotPosition(button);
-  dogMascot.style.setProperty('--dog-x', `${x}px`);
-  dogMascot.style.setProperty('--dog-y', `${y}px`);
-  dogMascot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-  if (mascotShadow) mascotShadow.style.transform = `translate3d(${x + 22}px, ${y + 112}px, 0) scale(1)`;
-  dogMascot.classList.toggle('is-looking', look);
+  const x = mascotPosition(button);
+  dogMascot.style.transform = `translateX(calc(-50% + ${x}px))`;
+  mascotZone.classList.add('is-hovering');
+  if (mascotShadow) mascotShadow.style.transform = `translateX(calc(-50% + ${x}px))`;
+  }
+  function calmMascot() {
+  if (!dogMascot || mascotDismissed) return;
+  mascotZone.classList.remove('is-hovering');
+  dogMascot.style.transform = 'translateX(-50%)';
+  if (mascotShadow) mascotShadow.style.transform = 'translateX(-50%)';
   }
   function tapMascotAt(button) {
   if (mascotDismissed || !dogMascot) return;
   moveMascotTo(button);
-  dogMascot.classList.remove('is-tapping');
-  void dogMascot.offsetWidth;
-  dogMascot.classList.add('is-tapping');
   button.classList.remove('mascot-tap-target');
   void button.offsetWidth;
   button.classList.add('mascot-tap-target');
@@ -2210,24 +2251,19 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   }
   function startMascotLoop() {
   if (!mascotZone || !dogMascot || mascotDismissed) return;
-  window.clearTimeout(mascotTimer);
-  const cards = [freechargeButton, paytmButton, mobikwikButton];
-  let index = 0;
-  const cycle = () => {
-    if (mascotDismissed) return;
-    if (mascotHoverTarget) { moveMascotTo(mascotHoverTarget); mascotTimer = window.setTimeout(cycle, 900); return; }
-    tapMascotAt(cards[index]);
-    index = (index + 1) % cards.length;
-    mascotTimer = window.setTimeout(cycle, index === 0 ? 4200 : 3000);
-  };
-  const zoneRect = mascotZone.getBoundingClientRect();
-  const dogRect = dogMascot.getBoundingClientRect();
-  const centerX = Math.max(0, (zoneRect.width - dogRect.width) / 2);
-  dogMascot.style.setProperty('--dog-x', `${centerX}px`);
-  dogMascot.style.setProperty('--dog-y', '34px');
-  dogMascot.style.transform = `translate3d(${centerX}px, 34px, 0)`;
-  if (mascotShadow) mascotShadow.style.transform = `translate3d(${centerX + 22}px, 146px, 0) scale(1)`;
-  mascotTimer = window.setTimeout(cycle, 2000);
+  dogMascot.style.transform = 'translateX(-50%)';
+  mascotZone.classList.remove('is-hovering');
+  }
+  function handleCardEnter(button) {
+  if (mascotDismissed) return;
+  mascotHoverTarget = button;
+  moveMascotTo(button);
+  tapMascotAt(button);
+  }
+  function handleCardLeave() {
+  mascotHoverTarget = null;
+  const calmTimer = window.setTimeout(() => { if (!mascotHoverTarget) calmMascot(); mascotTimers.delete(calmTimer); }, 300);
+  mascotTimers.add(calmTimer);
   }
   function stopMascotResources() {
   window.clearTimeout(mascotTimer);
@@ -2255,15 +2291,17 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   mascotDismissed = true;
   stopMascotResources();
   if (!dogMascot) { collapseMascotZone(); return; }
+  mascotZone.classList.remove('is-hovering');
   dogMascot.classList.remove('is-tapping');
-  dogMascot.classList.add('is-jumping');
-  window.setTimeout(() => dogMascot.classList.add('is-leaving'), 520);
+  mascotZone.classList.add('is-jumping');
+  window.setTimeout(() => mascotZone.classList.add('is-driving'), 400);
   if (mascotShadow) mascotShadow.style.opacity = '0';
-  window.setTimeout(collapseMascotZone, 800);
+  window.setTimeout(collapseMascotZone, 1150);
   }
   [freechargeButton, paytmButton, mobikwikButton].forEach(button => {
-  button.addEventListener('mouseenter', () => { mascotHoverTarget = button; moveMascotTo(button); });
-  button.addEventListener('mouseleave', () => { mascotHoverTarget = null; });
+  button.addEventListener('mouseenter', () => handleCardEnter(button));
+  button.addEventListener('mouseleave', handleCardLeave);
+  button.addEventListener('touchstart', () => handleCardEnter(button), { passive: true });
   });
   window.addEventListener('resize', () => { if (mascotHoverTarget) moveMascotTo(mascotHoverTarget); });
   startMascotLoop();

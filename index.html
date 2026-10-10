@@ -448,10 +448,29 @@
                   <option value="1">1 graph</option>
                   <option value="2" selected>2 graphs</option>
                 </select>
-                <p class="field-hint">Choose one or two editable signal graph icons.</p>
-              </div>
-            </div>
-          </fieldset>
+  <p class="field-hint">Choose one or two editable signal graph icons.</p>
+  </div>
+  <div class="field wide" id="iphoneControlsField" hidden>
+  <label for="iphoneSelectedElement">iPhone status element</label>
+  <select id="iphoneSelectedElement" name="iphoneSelectedElement">
+  <option value="island">Black island</option>
+  <option value="chain">Green chain icon</option>
+  <option value="signal">Signal bars</option>
+  <option value="network">5G text</option>
+  <option value="battery">Battery</option>
+  </select>
+  <p class="field-hint" id="iphoneSelectionHint">Click an element in the preview to select its controls.</p>
+  </div>
+  <div class="field-grid" id="iphoneElementControls" hidden>
+  <div class="field"><label for="iphoneIslandWidth">Island width</label><input id="iphoneIslandWidth" type="number" min="120" max="240" value="200"></div>
+  <div class="field"><label for="iphoneIslandOffset">Island position</label><input id="iphoneIslandOffset" type="number" min="-80" max="80" value="0"></div>
+  <div class="field"><label for="iphoneNetworkOffset">5G position</label><input id="iphoneNetworkOffset" type="number" min="-80" max="80" value="0"></div>
+  <div class="field"><label for="iphoneSignalOffset">Graph position</label><input id="iphoneSignalOffset" type="number" min="-80" max="80" value="0"></div>
+  <div class="field"><label for="iphoneBatteryOffset">Battery position</label><input id="iphoneBatteryOffset" type="number" min="-80" max="80" value="0"></div>
+  <div class="field"><label><input id="iphoneShowChain" type="checkbox" checked> Show green chain icon</label></div>
+  </div>
+  </div>
+  </fieldset>
 
           <fieldset class="editor-section" id="senderRecipientSection">
             <legend class="section-title" id="senderRecipientLegend">Sender and recipient</legend>
@@ -686,6 +705,13 @@
   graphPosition: document.querySelector('#graphPosition'),
   statusGroupPosition: document.querySelector('#statusGroupPosition'),
   graphCount: document.querySelector('#graphCount'),
+  iphoneSelectedElement: document.querySelector('#iphoneSelectedElement'),
+  iphoneIslandWidth: document.querySelector('#iphoneIslandWidth'),
+  iphoneIslandOffset: document.querySelector('#iphoneIslandOffset'),
+  iphoneNetworkOffset: document.querySelector('#iphoneNetworkOffset'),
+  iphoneSignalOffset: document.querySelector('#iphoneSignalOffset'),
+  iphoneBatteryOffset: document.querySelector('#iphoneBatteryOffset'),
+  iphoneShowChain: document.querySelector('#iphoneShowChain'),
       senderName: document.querySelector('#senderName'),
       senderDetails: document.querySelector('#senderDetails'),
       recipientName: document.querySelector('#recipientName'),
@@ -756,7 +782,7 @@
       paytm: null,
       mobikwik: null
     };
-    const statusStyleKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount'];
+    const statusStyleKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'iphoneSelectedElement', 'iphoneIslandWidth', 'iphoneIslandOffset', 'iphoneNetworkOffset', 'iphoneSignalOffset', 'iphoneBatteryOffset', 'iphoneShowChain'];
     const statusStyleStates = {};
     let activeStatusStyle = '1';
 
@@ -889,6 +915,13 @@
   graphPosition: Math.min(480, Math.max(380, Number.parseInt(fields.graphPosition.value, 10) || 415)),
   statusGroupPosition: Math.min(100, Math.max(0, Number.parseInt(fields.statusGroupPosition.value, 10) || 0)),
   graphCount: Number(fields.graphCount.value) === 2 ? 2 : 1,
+  iphoneSelectedElement: fields.iphoneSelectedElement.value,
+  iphoneIslandWidth: Math.min(240, Math.max(120, Number(fields.iphoneIslandWidth.value) || 200)),
+  iphoneIslandOffset: Number(fields.iphoneIslandOffset.value) || 0,
+  iphoneNetworkOffset: Number(fields.iphoneNetworkOffset.value) || 0,
+  iphoneSignalOffset: Number(fields.iphoneSignalOffset.value) || 0,
+  iphoneBatteryOffset: Number(fields.iphoneBatteryOffset.value) || 0,
+  iphoneShowChain: fields.iphoneShowChain.checked,
         senderName: activeProvider === 'mobikwik' ? (fields.mobikwikSenderName.value.trim() || 'Santanu Roy') : (fields.senderName.value.trim() || 'JOSHI'),
         senderDetails: activeProvider === 'mobikwik' ? 'JIO PAYMENTS BANK LTD - 2682' : (fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)'),
         recipientName: activeProvider === 'paytm' ? (fields.paytmRecipient.value.trim() || 'Mr Kinny L Mawnai') : activeProvider === 'mobikwik' ? (fields.mobikwikRecipientName.value.trim() || 'Pankaj Chamoli') : (fields.recipientName.value.trim() || 'Pankaj Chamoli'),
@@ -1018,12 +1051,13 @@
         context.textBaseline = 'middle';
         context.fillText(displayTime, 24, 26);
 
-  const islandWidth = Math.min(200, Math.max(0, width - 2 * 24 - 8 - 95));
-  const islandX = (width - islandWidth) / 2;
+  const islandWidth = Math.min(values.iphoneIslandWidth, Math.max(0, width - 2 * 24 - 8 - 95));
+  const islandX = (width - islandWidth) / 2 + values.iphoneIslandOffset;
   context.fillStyle = '#000000';
   roundedPath(context, islandX, 7, islandWidth, 38, 19);
   context.fill();
 
+  if (values.iphoneShowChain) {
   context.save();
   context.translate(islandX + 14 + 12, 26);
   context.rotate(-Math.PI / 4);
@@ -1036,14 +1070,15 @@
   roundedPath(context, -3, -3, 12, 12, 3.5);
   context.stroke();
   context.restore();
-
+  }
+  
   const rightCenterY = 26;
   const batteryWidth = 33;
   const networkWidth = 24;
   const signalWidth = 22;
   const rightGroupWidth = signalWidth + 8 + networkWidth + 8 + batteryWidth;
   const rightGroupX = width - 24 - rightGroupWidth;
-  const signalX = rightGroupX;
+  const signalX = rightGroupX + values.iphoneSignalOffset;
   [5, 8, 11, 14].forEach((barHeight, index) => {
   context.fillStyle = index < 2 ? '#000000' : '#c7c7cc';
   roundedPath(context, signalX + index * 6, rightCenterY + 7 - barHeight, 4, barHeight, 2);
@@ -1053,9 +1088,9 @@
   context.fillStyle = '#000000';
   context.font = `600 18px ${fontStack}`;
   context.textAlign = 'left';
-  context.fillText(values.network, rightGroupX + signalWidth + 8, rightCenterY);
+  context.fillText(values.network, rightGroupX + signalWidth + 8 + values.iphoneNetworkOffset, rightCenterY);
   
-  const batteryX = rightGroupX + signalWidth + 8 + networkWidth + 8;
+  const batteryX = rightGroupX + signalWidth + 8 + networkWidth + 8 + values.iphoneBatteryOffset;
         const batteryTop = rightCenterY - 8;
         context.strokeStyle = '#8e8e93';
         context.lineWidth = 1.5;
@@ -1830,6 +1865,24 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
     stepTwoButton.addEventListener('click', () => showStep(2));
 
   statusStyleStates['1'] = captureStatusStyle();
+  canvas.addEventListener('click', event => {
+  if (fields.statusStyle.value !== '4') return;
+  const rect = canvas.getBoundingClientRect();
+  const x = (event.clientX - rect.left) * canvas.width / rect.width;
+  const width = canvas.width;
+  const islandWidth = Math.min(Number(fields.iphoneIslandWidth.value) || 200, width - 2 * 24 - 8 - 95);
+  const islandX = (width - islandWidth) / 2 + (Number(fields.iphoneIslandOffset.value) || 0);
+  const groupX = width - 24 - (22 + 8 + 24 + 8 + 33);
+  const distances = [{ key: 'island', test: x >= islandX && x <= islandX + islandWidth }, { key: 'signal', test: x >= groupX && x < groupX + 30 }, { key: 'network', test: x >= groupX + 30 && x < groupX + 54 }, { key: 'battery', test: x >= groupX + 54 && x < groupX + 90 }];
+  const selected = distances.find(item => item.test)?.key;
+  if (selected) {
+    fields.iphoneSelectedElement.value = selected;
+    document.querySelector('#iphoneSelectionHint').textContent = `${selected} selected. Adjust its controls below.`;
+  }
+  });
+
+  [fields.iphoneSelectedElement, fields.iphoneIslandWidth, fields.iphoneIslandOffset, fields.iphoneNetworkOffset, fields.iphoneSignalOffset, fields.iphoneBatteryOffset, fields.iphoneShowChain].forEach(field => field.addEventListener('input', renderMockup));
+
   fields.statusStyle.addEventListener('change', () => {
   statusStyleStates[activeStatusStyle] = captureStatusStyle();
   applyStatusStyle(fields.statusStyle.value);
@@ -1837,6 +1890,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
     const id = field.querySelector('input, select')?.id;
     field.hidden = fields.statusStyle.value !== '1' && ['temperature', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount'].includes(id);
   });
+  document.querySelector('#iphoneControlsField').hidden = fields.statusStyle.value !== '4';
+  document.querySelector('#iphoneElementControls').hidden = fields.statusStyle.value !== '4';
   renderMockup();
   });
 

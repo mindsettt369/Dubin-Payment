@@ -192,6 +192,54 @@
     .editor-form { display: grid; gap: 20px; }
     .editor-section { min-width: 0; margin: 0; padding: 0; border: 0; }
     .section-title { margin: 0 0 11px; padding: 0; color: #404a58; font-size: 10px; font-weight: 800; letter-spacing: .095em; text-transform: uppercase; }
+    #statusBarSection {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 20px;
+      background: rgba(255, 248, 238, .95);
+      box-shadow: 0 8px 32px rgba(255, 159, 10, .12), inset 0 1px 0 rgba(255, 255, 255, .9);
+    }
+    @supports (backdrop-filter: blur(14px)) {
+      #statusBarSection {
+        background: linear-gradient(135deg, rgba(255, 255, 255, .65), rgba(255, 236, 210, .35));
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+    }
+    #statusBarSection > .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 16px;
+      padding: 0 0 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, .06);
+    }
+    .status-bar-icon {
+      width: 28px;
+      height: 28px;
+      display: inline-grid;
+      flex: none;
+      place-items: center;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ffd08a, #ff9f0a);
+      color: #8a4b00;
+    }
+    .status-bar-icon svg { width: 15px; height: 15px; }
+    #statusBarSection .field input,
+    #statusBarSection .field textarea,
+    #statusBarSection .field select {
+      border-color: rgba(0, 0, 0, .08);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .7);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    #statusBarSection .field input:focus,
+    #statusBarSection .field textarea:focus,
+    #statusBarSection .field select:focus {
+      border-color: #ff9f0a;
+      box-shadow: 0 0 0 3px rgba(255, 159, 10, .18);
+    }
     .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 10px; }
     .field-grid.single { grid-template-columns: 1fr; }
     .field { min-width: 0; display: grid; align-content: start; gap: 6px; }
@@ -388,7 +436,7 @@
 
         <form class="editor-form" id="editorForm">
           <fieldset class="editor-section" id="statusBarSection">
-  <legend class="section-title">Phone status bar</legend>
+  <legend class="section-title"><span class="status-bar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M10 18.5h4"></path></svg></span><span>Phone status bar</span></legend>
   <div class="field wide">
   <label for="statusStyle">Status bar style</label>
   <select id="statusStyle" name="statusStyle">

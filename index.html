@@ -483,7 +483,6 @@
   <div class="field"><label for="paytmTimelineDepositing">Timeline · depositing</label><input id="paytmTimelineDepositing" value="Depositing money in Mr ABHILASH REDDY PANDIRI's..." maxlength="75"></div>
   <div class="field"><label for="paytmRecipientInitials">Avatar initials</label><input id="paytmRecipientInitials" value="MP" maxlength="4"><p class="field-hint">Leave empty to generate initials from the recipient name.</p></div>
   <div class="field"><label for="paytmRecipientAvatarColor">Avatar color</label><input id="paytmRecipientAvatarColor" type="color" value="#C9D9A8"></div>
-  <div class="field"><label for="paytmRecipientInitialsColor">Initials color</label><input id="paytmRecipientInitialsColor" type="color" value="#4A5D23"></div>
   <div class="field"><label class="checkbox-field"><input id="showPaytmRecipientAvatar" type="checkbox" checked> Show avatar</label></div>
   <div class="field"><label for="paytmRecipientPhoto">Upload photo</label><input id="paytmRecipientPhoto" type="file" accept="image/*"><button class="secondary-button" id="removePaytmRecipientPhoto" type="button">Remove photo</button></div>
   <div class="field"><label for="paytmSenderPhoto">Sender photo</label><input id="paytmSenderPhoto" type="file" accept="image/*"><button class="secondary-button" id="removePaytmSenderPhoto" type="button">Remove photo</button><label class="checkbox-field"><input id="showPaytmSenderPhoto" type="checkbox" checked> Show photo</label></div>
@@ -627,8 +626,7 @@
       paytmTimelineSent: document.querySelector('#paytmTimelineSent'),
       paytmTimelineDepositing: document.querySelector('#paytmTimelineDepositing'),
       paytmRecipientInitials: document.querySelector('#paytmRecipientInitials'),
-      paytmRecipientAvatarColor: document.querySelector('#paytmRecipientAvatarColor'),
-      paytmRecipientInitialsColor: document.querySelector('#paytmRecipientInitialsColor')
+      paytmRecipientAvatarColor: document.querySelector('#paytmRecipientAvatarColor')
 
   };
     const paytmSenderPhotoInput = document.querySelector('#paytmSenderPhoto');
@@ -655,7 +653,7 @@
     };
 
     const stepOneFieldKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'senderName', 'senderDetails', 'recipientName', 'recipientDetails', 'amount', 'paytmRecipient', 'paytmBank', 'paytmTransaction', 'paytmTimestamp', 'heading', 'message'];
-    const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments', 'paytmStepTwoRecipient', 'paytmStepTwoBank', 'paytmStepTwoSender', 'paytmStepTwoSenderBank', 'paytmStepTwoUpi', 'paytmStepTwoDate', 'paytmStepTwoReference', 'paytmStepTwoStatus', 'paytmTimelineStarted', 'paytmTimelineTransferred', 'paytmTimelineSent', 'paytmTimelineDepositing', 'paytmRecipientInitials', 'paytmRecipientAvatarColor', 'paytmRecipientInitialsColor'];
+    const stepTwoFieldKeys = ['stepTwoTitle', 'stepTwoHelp', 'stepTwoRecipient', 'stepTwoAmount', 'stepTwoUpi', 'stepTwoStatus', 'stepTwoNotice', 'stepTwoBank', 'stepTwoTransaction', 'stepTwoComments', 'paytmStepTwoRecipient', 'paytmStepTwoBank', 'paytmStepTwoSender', 'paytmStepTwoSenderBank', 'paytmStepTwoUpi', 'paytmStepTwoDate', 'paytmStepTwoReference', 'paytmStepTwoStatus', 'paytmTimelineStarted', 'paytmTimelineTransferred', 'paytmTimelineSent', 'paytmTimelineDepositing', 'paytmRecipientInitials', 'paytmRecipientAvatarColor'];
 
     function captureProviderState() {
       const capture = keys => Object.fromEntries(keys.map(key => [key, fields[key].value]));
@@ -785,7 +783,7 @@
         paytmTimelineDepositing: fields.paytmTimelineDepositing.value.trim() || "Depositing money in Mr ABHILASH REDDY PANDIRI's...",
         recipientAvatarInitials: fields.paytmRecipientInitials.value.trim(),
         recipientAvatarColor: fields.paytmRecipientAvatarColor.value || '#C9D9A8',
-        recipientInitialsColor: fields.paytmRecipientInitialsColor.value || '#4A5D23',
+        recipientInitialsColor: '#4A5D23',
         showRecipientAvatar: showPaytmRecipientAvatar.checked,
         recipientPhoto: paytmRecipientPhotoData,
         senderPhoto: paytmSenderPhotoData,

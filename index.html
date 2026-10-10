@@ -1518,7 +1518,7 @@
   const amountWidth = context.measureText(amountText).width;
   const amountGap = 12;
   const iconMarginLeft = 12;
-  const iconSize = 32;
+  const iconSize = 40;
   const amountGroupWidth = amountWidth + amountGap + iconMarginLeft + iconSize;
   const amountStart = (width - amountGroupWidth) / 2;
   context.fillStyle = '#111';
@@ -1526,14 +1526,24 @@
   context.fillText(amountText, amountStart, 356);
   context.textAlign = 'center';
   const warningX = amountStart + amountWidth + amountGap + iconMarginLeft + iconSize / 2;
-  context.fillStyle = '#f7a900';
+  context.fillStyle = '#FF9F0A';
   context.beginPath();
   context.arc(warningX, 355, iconSize / 2, 0, Math.PI * 2);
   context.fill();
+  context.save();
+  context.translate(warningX - iconSize / 2, 355 - iconSize / 2);
+  context.scale(iconSize / 40, iconSize / 40);
+  context.strokeStyle = '#fff';
+  context.lineWidth = 3.5;
+  context.lineCap = 'round';
+  context.beginPath();
+  context.moveTo(20, 10); context.lineTo(20, 25);
+  context.stroke();
   context.fillStyle = '#fff';
-  context.font = `700 18px ${fontStack}`;
-  context.textBaseline = 'middle';
-  context.fillText('!', warningX, 355);
+  context.beginPath();
+  context.arc(20, 31, 2, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
 
       context.fillStyle = '#252525';
       context.font = `700 20px ${fontStack}`;

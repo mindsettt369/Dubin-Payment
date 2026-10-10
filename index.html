@@ -1224,7 +1224,7 @@
       context.font = `500 18px ${fontStack}`;
       context.fillText(values.paytmTimestamp, width / 2, 479);
       context.font = `500 17px ${fontStack}`;
-      const statusMessageLines = wrapText('It is taking time to confirm the status of your payment. We are continuously checking the status of your payment. Meanwhile you can come back later to your UPI passbook and view the latest status of the payment', 410, 5, `500 17px ${fontStack}`);
+      const statusMessageLines = wrapText('It is taking time to confirm the status of your payment. We are continuously checking the status of your payment. Meanwhile you can come back later to your UPI passbook and view the latest status of the payment', 410, 6, `500 17px ${fontStack}`);
       statusMessageLines.forEach((line, i) => context.fillText(line, width / 2, 539 + i * 24));
 
       const passbookButtonY = 539 + statusMessageLines.length * 24 + 20;

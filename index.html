@@ -181,6 +181,27 @@
   @keyframes carDrive { to { transform: translateX(140%); } }
   @media (max-width: 760px) { .mascot-zone { height: 260px; min-height: 260px; } }
   @media (prefers-reduced-motion: reduce) { .scene-background *, .dog-mascot .car, .dog-mascot .wheels, .dog-mascot .wind-lines { animation: none !important; } }
+  .mascot-zone { min-height: 320px; }
+  .money-rain { position:absolute; inset:0; z-index:1; overflow:hidden; pointer-events:none; }
+  .money-item { position:absolute; top:-30px; left:var(--money-x); width:var(--money-size); height:var(--money-size); display:grid; place-items:center; color:#8a5a00; font:800 calc(var(--money-size)*.62)/1 sans-serif; opacity:0; animation:moneyFall var(--money-fall) linear var(--money-delay) infinite, moneySway 1.7s ease-in-out infinite alternate, moneyFlip 1.4s ease-in-out infinite alternate; }
+  .money-item.coin { border:2px solid #b47a0b; border-radius:50%; background:#f5b921; box-shadow:inset 0 0 0 2px #ffd96b; }
+  .money-item.note { width:calc(var(--money-size)*1.75); height:calc(var(--money-size)); border:1px solid #2e8139; border-radius:4px; background:#4caf50; color:#fff; font-size:calc(var(--money-size)*.7); }
+  .money-rain.is-fast .money-item { animation-duration:calc(var(--money-fall)/1.6), 1.2s, 1.1s; }
+  .money-rain.is-burst .money-item { animation-duration:1s, .8s, .7s; }
+  .dog-mascot { z-index:2; }
+  .dog-mascot .car { animation: carBounce .4s ease-in-out infinite, carTilt 1.2s ease-in-out infinite; }
+  .dog-mascot .wheel-inner { transform-box: fill-box; transform-origin: center; animation: wheelSpin .5s linear infinite; }
+  .dog-mascot .wheels { transform-box: fill-box; transform-origin:center; }
+  .exhaust-puff { fill:#9aa3aa; animation: exhaust 1.2s ease-out infinite; }
+  @keyframes wheelSpin { to { transform: rotate(360deg); } }
+  @keyframes carBounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-2px); } }
+  @keyframes carTilt { 0%,100% { rotate:-.4deg; } 50% { rotate:.4deg; } }
+  @keyframes moneyFall { 0% { transform:translateY(-30px); opacity:0; } 8% { opacity:1; } 90% { opacity:1; } 100% { transform:translateY(calc(100vh + 30px)); opacity:0; } }
+  @keyframes moneySway { from { margin-left:-12px; } to { margin-left:12px; } }
+  @keyframes moneyFlip { from { rotate:0deg; scale:1 1; } to { rotate:360deg; scale:-1 1; } }
+  @keyframes exhaust { 0% { transform:translate(0,0) scale(.4); opacity:.6; } 100% { transform:translate(-25px,8px) scale(1.5); opacity:0; } }
+  @media (max-width:760px) { .mascot-zone { min-height:260px; } .money-item:nth-child(n+9) { display:none; } }
+  @media (prefers-reduced-motion:reduce) { .money-item,.dog-mascot .car,.dog-mascot .wheel-inner,.exhaust-puff { animation:none !important; } .money-item { opacity:1; transform:none; } }
   .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
     .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; overflow: visible; }
     .provider-button {
@@ -683,15 +704,16 @@
       </div>
     </section>
     <div class="mascot-zone" id="mascotZone" aria-hidden="true">
-      <svg class="dog-mascot" id="dogMascot" viewBox="0 0 420 240" preserveAspectRatio="none" role="img" aria-label="Cartoon Doberman riding in a car">
+        <div class="money-rain" id="moneyRain" aria-hidden="true"></div>
+        <svg class="dog-mascot" id="dogMascot" viewBox="0 0 420 240" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Cartoon Doberman riding in a car">
         <defs>
           <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe9ff"/><stop offset="1" stop-color="#f1f8ff"/></linearGradient>
           <linearGradient id="carPaint" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f6f8fa"/><stop offset="1" stop-color="#b9c1c9"/></linearGradient>
           <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#292a2d"/><stop offset="1" stop-color="#08090b"/></linearGradient>
         </defs>
         <g class="scene-background"><rect width="420" height="240" fill="url(#skyGradient)"/><circle class="sun-glow" cx="330" cy="38" r="42" fill="#fff5bf" opacity=".7"/><g class="clouds" fill="#fff"><path d="M24 49c8-15 29-15 36-1 10-8 28-1 29 12H16c0-6 3-10 8-11z"/><path d="M150 31c10-18 37-18 46-2 15-11 38 1 38 17H135c0-8 6-13 15-15z"/><path d="M270 35c7-13 25-14 32-2 12-7 26 2 27 13h-68c0-6 3-10 9-11z"/><path d="M326 91c7-12 24-13 31-1 11-7 25 2 25 13h-65c0-6 3-10 9-12z"/><path d="M58 101c6-11 23-12 30-1 10-6 22 2 22 11H50c0-5 3-9 8-10z"/></g><path class="distant-hills" d="M0 133Q60 88 120 132T240 124T360 132T480 118V180H0z" fill="#77a9a5"/><path class="near-hills" d="M0 151Q72 112 142 151T280 146T420 145V186H0z" fill="#548b68"/><g class="passing-trees" fill="#356d4f"><path d="M35 151l14-38 14 38zM49 119v48M335 151l15-43 15 43zM350 112v55M385 151l12-32 12 32zM397 125v42" stroke="#356d4f" stroke-width="5"/></g><path class="grass" d="M0 166h420v26H0z" fill="#6b9b62"/><path class="road" d="M0 192h420v48H0z" fill="#69737d"/><g class="road-lines" stroke="#f5f7f8" stroke-width="4" stroke-linecap="round"><path d="M-30 219h52M72 219h52M174 219h52M276 219h52M378 219h52"/></g></g>
-        <g class="car"><path d="M22 166c5-22 23-38 49-43l82-16h133c26 0 42 16 61 39l45 20v28H22z" fill="url(#carPaint)" stroke="#7d8790" stroke-width="2"/><path d="M113 112h134l-3 51H92z" fill="#536574" stroke="#6f7d88" stroke-width="3"/><path d="M249 112h29c14 1 27 13 38 28l8 12h-75z" fill="#4b5f6d" stroke="#6f7d88" stroke-width="3"/><path d="M242 112v51" stroke="#cbd2d8" stroke-width="4"/><path d="M24 166h393v23H24z" fill="#adb6bd"/><g class="wheels" fill="#252a2e" stroke="#d2d7db" stroke-width="5"><circle cx="95" cy="189" r="21"/><circle cx="323" cy="189" r="21"/></g><path d="M95 180v18m-9-9h18M323 180v18m-9-9h18" class="wheel-spokes" stroke="#818b93" stroke-width="3"/></g>
-        <g class="dog"><path class="chest" d="M171 163c3-30 20-43 42-43s39 13 42 43z" fill="#b95e2d"/><path class="ear-left" d="M181 76C145 66 139 23 158 8c14 17 29 30 40 53z" fill="#151719" stroke="#0b0c0e" stroke-width="3"/><path class="ear-right" d="M253 76c37-10 43-53 24-68-14 17-29 30-40 53z" fill="#151719" stroke="#0b0c0e" stroke-width="3"/><path class="head" d="M178 80c7-38 72-38 79 0l-6 62c-10 24-57 24-67 0z" fill="url(#fur)"/><path class="cheeks" d="M184 103q12-23 25 0l-3 30q-13 12-25 0zm42 0q13-23 25 0l3 30q-12 12-25 0z" fill="#b95e2d"/><path class="brow-left" d="M187 91q13-10 24 0" stroke="#c7733b" stroke-width="6" stroke-linecap="round"/><path class="brow-right" d="M224 91q12-10 24 0" stroke="#c7733b" stroke-width="6" stroke-linecap="round"/><g class="sunglasses"><g fill="#151b22" stroke="#07090b" stroke-width="3"><ellipse cx="200" cy="91" rx="23" ry="15"/><ellipse cx="234" cy="91" rx="23" ry="15"/></g><path d="M222 91h-10" stroke="#07090b" stroke-width="4"/><path d="M185 84l24 9m10-9 24 9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/></g><path class="nose" d="M208 115q9-8 18 0l-2 10q-7 7-14 0z" fill="#090a0c"/><path class="mouth" d="M201 126q16 14 32 0v20q-16 18-32 0z" fill="#551f24"/><path class="teeth" d="M205 130l5 7 5-6 5 6 5-7" fill="#fff"/><path class="tongue" d="M216 140q8-8 16 0v28q-8 12-16 0z" fill="#ef8694"/><path class="paw" d="M186 153q24-10 49 0v17q-24 8-49 0z" fill="#b95e2d" stroke="#7d3d23" stroke-width="3"/></g>
+        <g class="car" transform="translate(134 123) scale(.36)"><path d="M22 166c5-22 23-38 49-43l82-16h133c26 0 42 16 61 39l45 20v28H22z" fill="url(#carPaint)" stroke="#7d8790" stroke-width="2"/><path d="M113 112h134l-3 51H92z" fill="#536574" stroke="#6f7d88" stroke-width="3"/><path d="M249 112h29c14 1 27 13 38 28l8 12h-75z" fill="#4b5f6d" stroke="#6f7d88" stroke-width="3"/><path d="M242 112v51" stroke="#cbd2d8" stroke-width="4"/><path d="M24 166h393v23H24z" fill="#adb6bd"/><path d="M68 167q27-16 54 0v10H68zM296 167q27-16 54 0v10H296z" fill="#89939b"/><g class="wheels"><g class="wheel" transform="translate(95 189)"><circle r="26" fill="#15181b"/><circle r="20" fill="#3f464c"/><g class="wheel-inner"><circle r="14" fill="#c4c9cd" stroke="#858d93" stroke-width="2"/><path d="M0-12v24M-11-7l22 14M11-7L-11 7M-12 0h24M0-4v8" stroke="#707980" stroke-width="2"/><circle r="4" fill="#535b62"/><path d="M-15-8A17 17 0 0 1 5-16" fill="none" stroke="#fff" stroke-width="2"/></g></g><g class="wheel" transform="translate(323 189)"><circle r="26" fill="#15181b"/><circle r="20" fill="#3f464c"/><g class="wheel-inner"><circle r="14" fill="#c4c9cd" stroke="#858d93" stroke-width="2"/><path d="M0-12v24M-11-7l22 14M11-7L-11 7M-12 0h24M0-4v8" stroke="#707980" stroke-width="2"/><circle r="4" fill="#535b62"/><path d="M-15-8A17 17 0 0 1 5-16" fill="none" stroke="#fff" stroke-width="2"/></g></g></g></g>
+        <g class="dog" transform="translate(94 55) scale(.55)"><path class="chest" d="M171 163c3-30 20-43 42-43s39 13 42 43z" fill="#b95e2d"/><path class="ear-left" d="M181 76C145 66 139 23 158 8c14 17 29 30 40 53z" fill="#151719" stroke="#0b0c0e" stroke-width="3"/><path class="ear-right" d="M253 76c37-10 43-53 24-68-14 17-29 30-40 53z" fill="#151719" stroke="#0b0c0e" stroke-width="3"/><path class="head" d="M178 80c7-38 72-38 79 0l-6 62c-10 24-57 24-67 0z" fill="url(#fur)"/><path class="cheeks" d="M184 103q12-23 25 0l-3 30q-13 12-25 0zm42 0q13-23 25 0l3 30q-12 12-25 0z" fill="#b95e2d"/><path class="brow-left" d="M187 91q13-10 24 0" stroke="#c7733b" stroke-width="6" stroke-linecap="round"/><path class="brow-right" d="M224 91q12-10 24 0" stroke="#c7733b" stroke-width="6" stroke-linecap="round"/><g class="sunglasses"><g fill="#151b22" stroke="#07090b" stroke-width="3"><ellipse cx="200" cy="91" rx="23" ry="15"/><ellipse cx="234" cy="91" rx="23" ry="15"/></g><path d="M222 91h-10" stroke="#07090b" stroke-width="4"/><path d="M185 84l24 9m10-9 24 9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/></g><path class="nose" d="M208 115q9-8 18 0l-2 10q-7 7-14 0z" fill="#090a0c"/><path class="mouth" d="M201 126q16 14 32 0v20q-16 18-32 0z" fill="#551f24"/><path class="teeth" d="M205 130l5 7 5-6 5 6 5-7" fill="#fff"/><path class="tongue" d="M216 140q8-8 16 0v28q-8 12-16 0z" fill="#ef8694"/><path class="paw" d="M186 153q24-10 49 0v17q-24 8-49 0z" fill="#b95e2d" stroke="#7d3d23" stroke-width="3"/></g>
         <g class="wind-lines" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M52 72h29M70 91h42M30 111h36M296 68h42M315 87h28"/></g>
       </svg>
     </div>
@@ -983,6 +1005,30 @@
   const mobikwikButton = document.querySelector('#mobikwikButton');
   const mascotZone = document.querySelector('#mascotZone');
   const dogMascot = document.querySelector('#dogMascot');
+  const moneyRain = document.querySelector('#moneyRain');
+  const moneySymbols = ['$', '₹'];
+  let moneyBurstTimer = 0;
+  function createMoney(count = window.innerWidth <= 760 ? 8 : 14, burst = false) {
+  if (!moneyRain || mascotDismissed) return;
+  moneyRain.innerHTML = '';
+  for (let i = 0; i < count; i += 1) {
+    const item = document.createElement('span');
+    const size = 20 + Math.random() * 16;
+    item.className = `money-item ${i % 3 === 0 ? 'note' : 'coin'}`;
+    item.textContent = moneySymbols[i % moneySymbols.length];
+    item.style.setProperty('--money-x', `${Math.random() * 96}%`);
+    item.style.setProperty('--money-size', `${size}px`);
+    item.style.setProperty('--money-fall', `${burst ? 1 : 3 + Math.random() * 4}s`);
+    item.style.setProperty('--money-delay', `${burst ? Math.random() * .4 : Math.random() * 5}s`);
+    moneyRain.appendChild(item);
+  }
+  }
+  function burstMoney() {
+  if (!moneyRain || mascotDismissed) return;
+  createMoney(25, true);
+  moneyRain.classList.add('is-burst');
+  moneyBurstTimer = window.setTimeout(() => { moneyRain.classList.remove('is-burst'); moneyRain.innerHTML = ''; }, 1000);
+  }
   const mascotShadow = mascotZone?.querySelector('.mascot-shadow');
   let mascotTimer = 0;
   const mascotTimers = new Set();
@@ -2004,7 +2050,7 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       context.textAlign = 'left';
       context.fillStyle = '#fff';
       context.font = `700 28px ${fontStack}`;
-      context.fillText('‹', 30, 105);
+      context.fillText('���', 30, 105);
       context.fillText('Transfer in Progress', 86, 105);
       context.font = `700 21px ${fontStack}`;
       context.fillText('Share', 410, 105);
@@ -2367,12 +2413,14 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   const index = [freechargeButton, paytmButton, mobikwikButton].indexOf(button) + 1;
   mascotZone.classList.remove('is-idle', 'is-card-1', 'is-card-2', 'is-card-3', 'is-sad');
   mascotZone.classList.add('is-hovering', `is-card-${index}`);
+  moneyRain?.classList.add('is-fast');
   moveMascotTo(button);
   tapMascotAt(button);
   }
   function handleCardLeave() {
   mascotHoverTarget = null;
   mascotZone.classList.remove('is-hovering', 'is-card-1', 'is-card-2', 'is-card-3');
+  moneyRain?.classList.remove('is-fast');
   mascotZone.classList.add('is-sad');
   const calmTimer = window.setTimeout(() => { if (!mascotHoverTarget) { mascotZone.classList.remove('is-sad'); mascotZone.classList.add('is-idle'); calmMascot(); } mascotTimers.delete(calmTimer); }, 1200);
   mascotTimers.add(calmTimer);
@@ -2403,6 +2451,9 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   if (mascotDismissed) return;
   mascotDismissed = true;
   stopMascotResources();
+  window.clearTimeout(moneyBurstTimer);
+  if (moneyRain) { moneyRain.classList.remove('is-fast', 'is-burst'); moneyRain.innerHTML = ''; }
+  burstMoney();
   if (!dogMascot) { collapseMascotZone(); return; }
   mascotZone.classList.remove('is-hovering');
   dogMascot.classList.remove('is-tapping');
@@ -2419,6 +2470,7 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   window.addEventListener('resize', () => { if (mascotHoverTarget) moveMascotTo(mascotHoverTarget); });
   sizeMascotZone();
   window.addEventListener('resize', sizeMascotZone);
+  createMoney();
   mascotZone.classList.add('is-idle');
   function addStatusFieldRipple(control, event) {
   const rect = control.getBoundingClientRect();

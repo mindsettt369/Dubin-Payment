@@ -485,7 +485,7 @@
   <div class="field"><label for="paytmSenderPhoto">Sender photo</label><input id="paytmSenderPhoto" type="file" accept="image/*"><button class="secondary-button" id="removePaytmSenderPhoto" type="button">Remove photo</button><label class="checkbox-field"><input id="showPaytmSenderPhoto" type="checkbox" checked> Show photo</label></div>
   <div class="field"><label for="paytmBankLogo">Bank logo</label><input id="paytmBankLogo" type="file" accept="image/*"><button class="secondary-button" id="removePaytmBankLogo" type="button">Use Yes Bank badge</button></div>
   </div>
-  <p class="field-hint">Only these fields control the Paytm transfer screen. Freecharge fields are not used here.</p>
+  <p class="field-hint">Only these fields control the Paytm transfer screen.</p>
   </fieldset>
   <fieldset class="editor-section freecharge-step-two-only">
   <legend class="section-title">Payment summary</legend>
@@ -1402,15 +1402,11 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       stepTwoButton.classList.toggle('active', !isStepOne);
       stepOneButton.setAttribute('aria-selected', String(isStepOne));
       stepTwoButton.setAttribute('aria-selected', String(!isStepOne));
-      const paytmStepActive = activeProvider === 'paytm';
-      if (paytmStepActive) {
-        if (isStepOne) paytmStepOneForm.appendChild(paytmDetailsSection);
-        else paytmStepTwoForm.insertBefore(paytmDetailsSection, paytmStepTwoForm.firstElementChild);
-      }
-      paytmDetailsSection.hidden = !paytmStepActive;
+  const paytmStepActive = activeProvider === 'paytm';
+  paytmDetailsSection.hidden = !paytmStepActive || !isStepOne;
       freechargeStepTwoSections.forEach(section => { section.hidden = paytmStepActive; });
       paytmStepTwoSections.forEach(section => { section.hidden = !paytmStepActive || isStepOne; });
-      if (paytmStepActive) stepTwoDescription.textContent = 'Edit the Paytm transfer screen shown in Step 2. Each Paytm field is separate from Freecharge and MobiKwik.';
+      if (paytmStepActive) stepTwoDescription.textContent = 'Edit the Paytm transfer screen shown in Step 2.';
       renderMockup();
     }
 

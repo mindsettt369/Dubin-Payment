@@ -1553,7 +1553,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       editorDescription.textContent = providerCopy.description;
       freechargeTextSection.hidden = provider !== 'freecharge';
       paytmDetailsSection.hidden = provider !== 'paytm';
-      statusBarSection.hidden = provider === 'mobikwik';
+      // Keep the status bar controls available for every provider with isolated provider state.
+  statusBarSection.hidden = false;
       mobikwikReceivedByField.hidden = provider !== 'mobikwik';
       mobikwikPaymentModeField.hidden = provider !== 'mobikwik';
       recipientDetailsField.hidden = provider === 'mobikwik';

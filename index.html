@@ -1016,13 +1016,13 @@
         context.font = `600 20px ${fontStack}`;
         context.textAlign = 'left';
         context.textBaseline = 'middle';
-        context.fillText(displayTime, 28, 26);
+        context.fillText(displayTime, 24, 26);
 
-        const islandWidth = 260;
-        const islandX = (width - islandWidth) / 2;
-        context.fillStyle = '#000000';
-        roundedPath(context, islandX, 7, islandWidth, 38, 19);
-        context.fill();
+  const islandWidth = Math.min(200, Math.max(0, width - 2 * 24 - 8 - 95));
+  const islandX = (width - islandWidth) / 2;
+  context.fillStyle = '#000000';
+  roundedPath(context, islandX, 7, islandWidth, 38, 19);
+  context.fill();
 
   context.save();
   context.translate(islandX + 14 + 12, 26);
@@ -1037,20 +1037,25 @@
   context.stroke();
   context.restore();
 
-        const rightCenterY = 26;
-        const signalX = islandX + islandWidth - 86;
-        [5, 8, 11, 14].forEach((barHeight, index) => {
-          context.fillStyle = index < 2 ? '#000000' : '#c7c7cc';
-          roundedPath(context, signalX + index * 6, rightCenterY + 7 - barHeight, 4, barHeight, 2);
-          context.fill();
-        });
-
-        context.fillStyle = '#000000';
-        context.font = `600 18px ${fontStack}`;
-        context.textAlign = 'left';
-        context.fillText(values.network, 406, rightCenterY);
-
-        const batteryX = 449;
+  const rightCenterY = 26;
+  const batteryWidth = 33;
+  const networkWidth = 24;
+  const signalWidth = 22;
+  const rightGroupWidth = signalWidth + 8 + networkWidth + 8 + batteryWidth;
+  const rightGroupX = width - 24 - rightGroupWidth;
+  const signalX = rightGroupX;
+  [5, 8, 11, 14].forEach((barHeight, index) => {
+  context.fillStyle = index < 2 ? '#000000' : '#c7c7cc';
+  roundedPath(context, signalX + index * 6, rightCenterY + 7 - barHeight, 4, barHeight, 2);
+  context.fill();
+  });
+  
+  context.fillStyle = '#000000';
+  context.font = `600 18px ${fontStack}`;
+  context.textAlign = 'left';
+  context.fillText(values.network, rightGroupX + signalWidth + 8, rightCenterY);
+  
+  const batteryX = rightGroupX + signalWidth + 8 + networkWidth + 8;
         const batteryTop = rightCenterY - 8;
         context.strokeStyle = '#8e8e93';
         context.lineWidth = 1.5;

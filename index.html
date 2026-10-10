@@ -393,10 +393,10 @@
   <label for="statusStyle">Status bar style</label>
   <select id="statusStyle" name="statusStyle">
   <option value="1">Style 1 (Default)</option>
-  <option value="2">Style 2 (Dark Android)</option>
-  <option value="3">Style 3 (Orange Android)</option>
+  <option value="2">Style 2 (Orange Android)</option>
+  <option value="3">Style 3 (Xiaomi / Cream)</option>
   <option value="4">Style 4 (iPhone Dynamic Island)</option>
-  <option value="5">Style 5 (Cream Android)</option>
+  <option value="5">Style 5 (Dark Navy)</option>
   </select>
   </div>
   <div class="field-grid">
@@ -937,44 +937,86 @@
       };
     }
 
+    function drawSignalBars(x, y, color, muted = null) {
+      context.fillStyle = color;
+      [4, 7, 10, 13].forEach((height, index) => {
+        context.globalAlpha = muted !== null && index >= muted ? 0.25 : 1;
+        context.fillRect(x + index * 5, y - height, 3, height);
+      });
+      context.globalAlpha = 1;
+    }
+
+    function drawWifi(x, y, color) {
+      context.strokeStyle = color;
+      context.lineWidth = 2;
+      context.beginPath();
+      context.arc(x, y + 4, 12, Math.PI * 1.2, Math.PI * 1.8);
+      context.stroke();
+      context.beginPath();
+      context.arc(x, y + 4, 7, Math.PI * 1.2, Math.PI * 1.8);
+      context.stroke();
+      context.fillStyle = color;
+      context.beginPath(); context.arc(x, y + 6, 2, 0, Math.PI * 2); context.fill();
+    }
+
+    function drawBattery(x, y, color, percentage, withText = false) {
+      context.strokeStyle = color;
+      context.lineWidth = 1.5;
+      roundedPath(context, x, y, 26, 13, 3);
+      context.stroke();
+      context.fillStyle = color;
+      context.fillRect(x + 27, y + 4, 3, 5);
+      context.fillRect(x + 3, y + 3, Math.max(2, 20 * percentage / 100), 7);
+      if (withText) {
+        context.fillStyle = color;
+        context.font = `600 8px ${fontStack}`;
+        context.textAlign = 'center';
+        context.fillText(`${percentage}`, x + 13, y + 7);
+      }
+    }
+
     function drawPresetStatusBar(values) {
       const style = Number(values.statusStyle);
-      const colors = { 2: ['#183149', '#f5f7fa'], 3: ['#ffae08', '#1d232b'], 4: ['#f4f5f7', '#17191d'], 5: ['#fffaf0', '#343434'] };
-      const [background, ink] = colors[style] || ['#ffffff', '#20232a'];
+      const background = style === 2 ? '#ffad05' : style === 3 ? '#fffaf0' : style === 4 ? '#f4f5f7' : '#183149';
+      const ink = style === 4 ? '#14171b' : style === 3 ? '#343434' : style === 2 ? '#3b3100' : '#f5f7fa';
       context.fillStyle = background;
       context.fillRect(0, 0, width, 58);
-      context.fillStyle = ink;
-      context.textBaseline = 'middle';
       const timeParts = values.time.split(':');
       const displayTime = `${Number.parseInt(timeParts[0], 10)}:${timeParts[1] || '01'}`;
-      context.font = style === 5 ? `700 italic 17px ${fontStack}` : `600 17px ${fontStack}`;
+      context.fillStyle = ink;
+      context.textBaseline = 'middle';
       context.textAlign = 'left';
-      context.fillText(displayTime, 34, 30);
-      if (style === 4) {
+      context.font = style === 3 ? `700 italic 16px ${fontStack}` : `600 16px ${fontStack}`;
+      context.fillText(displayTime, 30, 29);
+
+      if (style === 2) {
+        context.font = `700 13px ${fontStack}`;
+        context.fillText('▰  ✦  ◉  ▣  ◆', 77, 29);
+        context.font = `600 12px ${fontStack}`;
+        context.fillText('◴', 350, 29);
+        context.font = `700 8px ${fontStack}`;
+        context.fillText('5G+', 374, 20); drawSignalBars(374, 39, ink);
+        context.fillText('5G', 411, 20); drawSignalBars(411, 39, ink);
+        drawWifi(455, 22, ink); drawBattery(482, 22, ink, values.battery);
+      } else if (style === 3) {
+        context.font = `600 11px ${fontStack}`;
+        context.fillText('4.8KB/s', 83, 29);
+        context.font = `700 7px ${fontStack}`;
+        context.fillText('VoLTE', 352, 18); context.fillText('4G', 370, 18); drawSignalBars(370, 39, ink);
+        context.fillText('VoLTE', 410, 18); context.fillText('4G', 428, 18); drawSignalBars(428, 39, ink);
+        drawBattery(476, 22, ink, values.battery, true);
+      } else if (style === 4) {
         context.fillStyle = '#000';
-        roundedRect(context, 155, 8, 145, 42, 22, '#000');
+        roundedPath(context, 150, 7, 150, 44, 23); context.fill();
         context.fillStyle = '#20e875';
-        context.font = `700 18px ${fontStack}`;
-        context.fillText('◉', 174, 29);
+        context.beginPath(); context.arc(174, 29, 8, 0, Math.PI * 2); context.fill();
+        context.fillStyle = ink;
+        drawSignalBars(390, 39, ink, 2);
+        context.font = `600 13px ${fontStack}`; context.fillText('5G', 416, 29); drawBattery(449, 22, ink, values.battery, true);
+      } else {
+        context.font = `600 8px ${fontStack}`; context.fillText('VoLTE', 337, 19); context.fillText('25.84 KB/s', 337, 35);
+        drawWifi(400, 22, ink); drawSignalBars(423, 39, ink); drawSignalBars(450, 39, ink); drawBattery(480, 22, ink, values.battery, true);
       }
-      context.textAlign = 'right';
-      context.font = `600 13px ${fontStack}`;
-      context.fillStyle = ink;
-      context.fillText(values.network, 438, 30);
-      context.font = `600 12px ${fontStack}`;
-      context.fillText(`${values.battery}%`, 510, 30);
-      context.strokeStyle = ink;
-      context.lineWidth = 1.5;
-      roundedPath(context, 516, 21, 28, 15, 3);
-      context.stroke();
-      context.fillStyle = ink;
-      context.fillRect(520, 24, Math.max(2, 20 * values.battery / 100), 9);
-      context.fillRect(545, 25, 3, 7);
-      context.textAlign = 'left';
-      context.font = `600 11px ${fontStack}`;
-      if (style === 3 && values.statusDots > 0) context.fillText('▣  ✦  ◉  ◌  ◆', 78, 30);
-      if (style === 5) context.fillText('4G   ▴▴▴   VoLTE', 365, 30);
-      if (style === 2) context.fillText('VoLTE  25.84 KB/S  ▴▴▴', 350, 30);
     }
 
     function drawStatusBar(values) {

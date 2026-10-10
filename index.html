@@ -1018,24 +1018,29 @@
         context.textBaseline = 'middle';
         context.fillText(displayTime, 28, 26);
 
+        const islandWidth = 260;
+        const islandX = (width - islandWidth) / 2;
         context.fillStyle = '#000000';
-        roundedPath(context, 140, 7, 220, 38, 19);
+        roundedPath(context, islandX, 7, islandWidth, 38, 19);
         context.fill();
 
+        // Draw the two interlocking rounded-square chain loops like the reference icon.
+        context.save();
+        context.translate(islandX + 14 + 12, 26);
+        context.rotate(-Math.PI / 4);
         context.strokeStyle = '#34c759';
         context.lineWidth = 2.5;
+        context.lineJoin = 'round';
         context.lineCap = 'round';
-        context.beginPath();
-        context.ellipse(157, 26, 6.5, 10, -0.7, 0, Math.PI * 2);
+        roundedPath(context, -9, -5, 13, 10, 4);
         context.stroke();
-        context.beginPath();
-        context.ellipse(165, 26, 6.5, 10, 0.7, 0, Math.PI * 2);
+        roundedPath(context, -4, -5, 13, 10, 4);
         context.stroke();
-        context.lineCap = 'butt';
+        context.restore();
 
         const rightCenterY = 26;
-        const signalX = 376;
-        [4, 7, 10, 14].forEach((barHeight, index) => {
+        const signalX = islandX + islandWidth - 86;
+        [5, 8, 11, 14].forEach((barHeight, index) => {
           context.fillStyle = index < 2 ? '#000000' : '#c7c7cc';
           roundedPath(context, signalX + index * 6, rightCenterY + 7 - barHeight, 4, barHeight, 2);
           context.fill();

@@ -73,60 +73,51 @@
       overflow: visible;
       min-height: 78px;
       padding: 12px;
-      border: 1px solid rgba(255, 255, 255, .72);
+      border: 1px solid rgba(255, 255, 255, .9);
       border-radius: 14px;
-      background: #fff;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78), 0 8px 18px rgba(93, 105, 122, .13), 0 2px 4px rgba(93, 105, 122, .08);
+      background: linear-gradient(145deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .78));
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .07), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -2px 6px rgba(0, 0, 0, .03);
       color: var(--ink);
       font-size: 14px;
       font-weight: 750;
-      transition: transform .35s ease, box-shadow .35s ease, background-color .35s ease, border-color .35s ease;
+      transition: transform .7s cubic-bezier(.34, 1.56, .64, 1), box-shadow .5s ease, background .3s ease;
     }
     .provider-button > * { position: relative; z-index: 1; }
-    .provider-button::before {
-      position: absolute;
-      z-index: -1;
-      inset: -2px;
-      border-radius: inherit;
-      background: linear-gradient(120deg, #ff6a3d, #ff9f0a, #ffd60a, #34c759, #32ade6, #5e5ce6, #bf5af2, #ff6a3d);
-      background-size: 300% 100%;
-      filter: blur(10px);
-      opacity: .12;
-      content: "";
-      pointer-events: none;
-      animation: cardLight 10s linear infinite;
-      transition: opacity .35s ease, filter .35s ease, background-position .35s ease;
-    }
     .provider-button::after {
       position: absolute;
       z-index: 0;
       inset: 0;
       border-radius: inherit;
-      background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(94, 92, 230, .18), transparent 0%);
+      background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .7) 50%, transparent 70%);
+      background-size: 220% 100%;
+      background-position: -140% 0;
+      content: "";
+      opacity: 0;
+      pointer-events: none;
+    }
+    .provider-button:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, .10), inset 0 1px 0 rgba(255, 255, 255, 1); transition: transform .35s ease, box-shadow .35s ease; }
+    .provider-button:hover::after { opacity: 1; animation: selectorShine .8s ease-out 1; }
+    .provider-button:active { transform: scale(.93) translateY(4px); background: linear-gradient(145deg, rgba(240, 240, 244, .95), rgba(250, 250, 252, .9)); box-shadow: inset 0 10px 26px rgba(0, 0, 0, .20), inset 0 -3px 10px rgba(255, 255, 255, .8), 0 1px 3px rgba(0, 0, 0, .08); transition: transform .2s cubic-bezier(.3, 0, .2, 1), box-shadow .2s ease; }
+    .provider-button.active { border-color: rgba(237, 148, 23, .82); background: #fff7e9; box-shadow: 0 0 0 2px rgba(237, 148, 23, .14), 0 10px 25px rgba(237, 148, 23, .2), inset 0 1px 0 rgba(255, 255, 255, .88); color: #9d5018; }
+    .provider-button.is-rippling::before {
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(0, 0, 0, .06), transparent 70%);
       content: "";
       opacity: 0;
       pointer-events: none;
       transform: scale(0);
       transform-origin: var(--ripple-x, 50%) var(--ripple-y, 50%);
+      animation: selectorRipple .6s ease-out forwards;
     }
-    .provider-button.is-rippling::after { animation: cardRipple .5s ease-out forwards; }
-    .provider-button:hover { transform: translateY(-2px); background-color: #fff; border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 12px 24px rgba(93, 105, 122, .18); }
-    .provider-button:hover::before { opacity: .75; filter: blur(16px); animation-duration: 5s; }
-    .provider-button:hover { background-image: linear-gradient(#fff, #fff), linear-gradient(120deg, #ff6a3d, #ff9f0a, #ffd60a, #34c759, #32ade6, #5e5ce6, #bf5af2, #ff6a3d); background-origin: border-box; background-clip: padding-box, border-box; border: 1.5px solid transparent; }
-    .provider-button:active { transform: scale(.94) translateY(3px); box-shadow: inset 0 8px 22px rgba(0, 0, 0, .22), inset 0 -3px 10px rgba(255, 255, 255, .7), 0 1px 3px rgba(0, 0, 0, .08); transition: transform .18s cubic-bezier(.3, 0, .2, 1), box-shadow .18s ease; }
-    .provider-button:active::before { opacity: .9; }
-    .provider-button.active { border-color: rgba(237, 148, 23, .82); background-color: #fff7e9; box-shadow: 0 0 0 2px rgba(237, 148, 23, .14), 0 10px 25px rgba(237, 148, 23, .2), inset 0 1px 0 rgba(255, 255, 255, .88); color: #9d5018; }
-    .provider-button.active::before { opacity: .25; }
-    .provider-button.active:hover::before { opacity: .75; }
-    @supports not (filter: blur(10px)) {
-      .provider-button::before { filter: none; box-shadow: 0 0 18px rgba(255, 159, 10, .35); }
-    }
-    @keyframes cardLight { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
-    @keyframes cardRipple { 0% { opacity: .8; transform: scale(0); } 100% { opacity: 0; transform: scale(1.4); } }
+    @keyframes selectorShine { from { background-position: -140% 0; } to { background-position: 140% 0; } }
+    @keyframes selectorRipple { 0% { opacity: .8; transform: scale(0); } 100% { opacity: 0; transform: scale(1.5); } }
     @media (prefers-reduced-motion: reduce) {
-      .provider-button, .provider-button::before, .provider-button::after { transition: none; animation: none; }
+      .provider-button, .provider-button::after, .provider-button::before { transition: none; animation: none; }
       .provider-button:hover, .provider-button:active { transform: none; }
-      .provider-button.is-rippling::after { opacity: .18; transform: scale(1); }
+      .provider-button.is-rippling::before { opacity: .12; transform: scale(1); }
     }
     .provider-button img { display: block; width: auto; height: 30px; max-width: 100%; margin: 0 auto 5px; object-fit: contain; }
     .provider-button .paytm-logo { width: 118px; height: 44px; padding: 0; border-radius: 0; background: transparent; mix-blend-mode: multiply; object-fit: contain; }

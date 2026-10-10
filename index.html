@@ -1009,13 +1009,54 @@
         context.fillText('VoLTE', 410, 18); context.fillText('4G', 428, 18); drawSignalBars(428, 39, ink);
         drawBattery(476, 22, ink, values.battery, true);
       } else if (style === 4) {
-        context.fillStyle = '#000';
-        roundedPath(context, 150, 7, 150, 44, 23); context.fill();
-        context.fillStyle = '#20e875';
-        context.beginPath(); context.arc(174, 29, 8, 0, Math.PI * 2); context.fill();
-        context.fillStyle = ink;
-        drawSignalBars(390, 39, ink, 2);
-        context.font = `600 13px ${fontStack}`; context.fillText('5G', 416, 29); drawBattery(449, 22, ink, values.battery, true);
+        context.fillStyle = '#f2f2f2';
+        context.fillRect(0, 0, width, 52);
+
+        context.fillStyle = '#000000';
+        context.font = `600 20px ${fontStack}`;
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        context.fillText(displayTime, 28, 26);
+
+        context.fillStyle = '#000000';
+        roundedPath(context, 140, 7, 220, 38, 19);
+        context.fill();
+
+        context.strokeStyle = '#34c759';
+        context.lineWidth = 2.5;
+        context.lineCap = 'round';
+        context.beginPath();
+        context.ellipse(157, 26, 6.5, 10, -0.7, 0, Math.PI * 2);
+        context.stroke();
+        context.beginPath();
+        context.ellipse(165, 26, 6.5, 10, 0.7, 0, Math.PI * 2);
+        context.stroke();
+        context.lineCap = 'butt';
+
+        const rightCenterY = 26;
+        const signalX = 376;
+        [4, 7, 10, 14].forEach((barHeight, index) => {
+          context.fillStyle = index < 2 ? '#000000' : '#c7c7cc';
+          roundedPath(context, signalX + index * 6, rightCenterY + 7 - barHeight, 4, barHeight, 2);
+          context.fill();
+        });
+
+        context.fillStyle = '#000000';
+        context.font = `600 18px ${fontStack}`;
+        context.textAlign = 'left';
+        context.fillText(values.network, 406, rightCenterY);
+
+        const batteryX = 449;
+        const batteryTop = rightCenterY - 8;
+        context.strokeStyle = '#8e8e93';
+        context.lineWidth = 1.5;
+        roundedPath(context, batteryX, batteryTop, 29, 16, 4);
+        context.stroke();
+        context.fillStyle = '#8e8e93';
+        roundedPath(context, batteryX + 30, batteryTop + 5, 3, 6, 1.5);
+        context.fill();
+        context.fillStyle = '#000000';
+        context.fillRect(batteryX + 3, batteryTop + 3, Math.max(2, 23 * values.battery / 100), 10);
       } else {
         context.font = `600 8px ${fontStack}`; context.fillText('VoLTE', 337, 19); context.fillText('25.84 KB/s', 337, 35);
         drawWifi(400, 22, ink); drawSignalBars(423, 39, ink); drawSignalBars(450, 39, ink); drawBattery(480, 22, ink, values.battery, true);

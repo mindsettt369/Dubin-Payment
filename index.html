@@ -94,6 +94,9 @@
     .mascot-zone { position: relative; width: 100%; max-width: 420px; height: 240px; margin: 0 auto; padding: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.9); border-radius: 28px; background: linear-gradient(#e8f4ff,#fff); box-shadow: 0 8px 28px rgba(0,0,0,.06); pointer-events: none; transition: height .5s ease, opacity .3s ease, margin .5s ease; }
   .mascot-zone.is-collapsing { height: 0; margin: 0 auto; opacity: 0; }
   .mascot-zone.is-collapsed { display: none; }
+  .mascot-zone.is-exiting { position: absolute; inset: auto 0 auto 0; height: 0 !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; border-width: 0 !important; opacity: 0; visibility: hidden; overflow: hidden; pointer-events: none; transition: opacity .2s ease, visibility 0s linear .2s; }
+  .studio-shell.editor-revealing { opacity: 0; transform: translateY(12px); transition: opacity .35s ease-out, transform .35s ease-out; }
+  .studio-shell.editor-ready { opacity: 1; transform: translateY(0); }
   .dog-mascot { position: absolute; left: 50%; top: 0; width: 100%; max-width: 420px; height: 240px; overflow: hidden; transform: translateX(-50%); transform-origin: 50% 50%; opacity: 1; pointer-events: none; animation: none; transition: transform .7s cubic-bezier(.34,1.2,.64,1), opacity .7s ease; }
   .dog-mascot .head { transform-box: fill-box; transform-origin: 50% 100%; animation: calmBreath 3s ease-in-out infinite; }
   .dog-mascot .sunglasses { transform-box: fill-box; transform-origin: 50% 50%; animation: calmBlink 5s ease-in-out infinite; }
@@ -1031,6 +1034,7 @@
   let mascotTimer = 0;
   const mascotTimers = new Set();
   let mascotDismissed = false;
+  let mascotDone = false;
   let mascotHoverTarget = null;
   const providerButtons = {
       freecharge: freechargeButton,
@@ -2300,6 +2304,9 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       ensureProviderState(activeProvider);
       applyProviderState(providerState[activeProvider]);
       studioScreen.hidden = false;
+      studioScreen.classList.remove('editor-ready');
+      studioScreen.classList.add('editor-revealing');
+      requestAnimationFrame(() => studioScreen.classList.add('editor-ready'));
       const providerCopy = {
         freecharge: {
           title: 'Customize your payment screen',
@@ -2446,19 +2453,23 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   requestAnimationFrame(() => { mascotZone.style.height = '0px'; mascotZone.classList.add('is-collapsing'); });
   }
   function dismissMascot() {
-  if (mascotDismissed) return;
+  if (mascotDone) return;
   mascotDismissed = true;
+  mascotDone = true;
   stopMascotResources();
   window.clearTimeout(moneyBurstTimer);
   if (moneyRain) { moneyRain.classList.remove('is-fast', 'is-burst'); moneyRain.innerHTML = ''; }
-  burstMoney();
-  if (!dogMascot) { collapseMascotZone(); return; }
-  mascotZone.classList.remove('is-hovering');
-  dogMascot.classList.remove('is-tapping');
-  mascotZone.classList.add('is-jumping');
-  window.setTimeout(() => mascotZone.classList.add('is-driving'), 400);
-  if (mascotShadow) mascotShadow.style.opacity = '0';
-  window.setTimeout(collapseMascotZone, 1150);
+  if (mascotZone) {
+    mascotZone.classList.remove('is-hovering', 'is-jumping', 'is-driving', 'is-sad');
+    mascotZone.classList.add('is-exiting');
+    const removeMascot = event => {
+      if (event.propertyName !== 'opacity') return;
+      mascotZone.removeEventListener('transitionend', removeMascot);
+      mascotZone.remove();
+    };
+    mascotZone.addEventListener('transitionend', removeMascot);
+    window.setTimeout(() => { if (mascotZone.isConnected) mascotZone.remove(); }, 260);
+  }
   }
   [freechargeButton, paytmButton, mobikwikButton].forEach(button => {
   button.addEventListener('mouseenter', () => handleCardEnter(button));
@@ -2494,9 +2505,9 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   const providerRippleTimer = window.setTimeout(() => { button.classList.remove('is-rippling'); mascotTimers.delete(providerRippleTimer); }, 520);
   mascotTimers.add(providerRippleTimer);
   }
-  freechargeButton.addEventListener('click', event => { addProviderRipple(freechargeButton, event); dismissMascot(); showFreechargeEditor(); });
-  paytmButton.addEventListener('click', event => { addProviderRipple(paytmButton, event); dismissMascot(); showPaytmEditor(); });
-  mobikwikButton.addEventListener('click', event => { addProviderRipple(mobikwikButton, event); dismissMascot(); showMobikwikEditor(); });
+freechargeButton.addEventListener('click', event => { addProviderRipple(freechargeButton, event); showFreechargeEditor(); dismissMascot(); });
+ paytmButton.addEventListener('click', event => { addProviderRipple(paytmButton, event); showPaytmEditor(); dismissMascot(); });
+  mobikwikButton.addEventListener('click', event => { addProviderRipple(mobikwikButton, event); showMobikwikEditor(); dismissMascot(); });
     stepOneButton.addEventListener('click', () => showStep(1));
     stepTwoButton.addEventListener('click', () => showStep(2));
 

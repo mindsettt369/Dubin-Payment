@@ -818,6 +818,23 @@
       return lines;
     }
 
+    function wrapBreakAll(text, maxWidth, font) {
+      context.font = font;
+      const lines = [];
+      let line = '';
+      for (const character of String(text || '')) {
+        const candidate = line + character;
+        if (line && context.measureText(candidate).width > maxWidth) {
+          lines.push(line);
+          line = character;
+        } else {
+          line = candidate;
+        }
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
     function readValues() {
       const rawAmount = fields.amount.value.trim();
       const numericAmount = Number(rawAmount);
@@ -1201,16 +1218,23 @@
       context.fillStyle = '#202020';
       context.font = `600 18px ${fontStack}`;
       context.fillText('Status: Pending', 44, 846);
-      context.font = `500 18px ${fontStack}`;
       const transactionId = values.paytmTransaction;
-      context.fillText(`Transaction ID: ${transactionId.slice(0, 31)}`, 44, 918);
-      context.fillText(transactionId.slice(31), 188, 946);
-      context.fillStyle = '#10a9dc';
-      context.font = `600 18px ${fontStack}`;
-      context.fillText('Copy', 484, 918);
+      const transactionFont = `500 18px ${fontStack}`;
+      const label = 'Transaction ID:';
+      const labelX = 44;
+      context.font = transactionFont;
+      const idX = labelX + context.measureText(label).width + 4;
+      const copyX = 484;
+      const idWidth = copyX - 6 - idX;
+      context.fillText(label, labelX, 918);
+      const idLines = wrapBreakAll(transactionId, idWidth, transactionFont);
+      idLines.forEach((line, index) => context.fillText(line, idX, 918 + index * 27));
+      context.fillStyle = '#1AA3E8';
+      context.font = `500 18px ${fontStack}`;
+      context.fillText('Copy', copyX, 918);
       context.fillStyle = '#888';
       context.font = `500 16px ${fontStack}`;
-      context.fillText('05 Oct 2026, 06:33 PM', 44, 1004);
+      context.fillText('05 Oct 2026 , 06:33 PM', 44, 1004);
 
       context.textAlign = 'center';
       context.fillStyle = '#7e8084';

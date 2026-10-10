@@ -50,6 +50,7 @@
       border-radius: 16px;
       background: #fff;
       box-shadow: 0 12px 36px rgba(22, 32, 48, .08);
+      overflow: visible;
     }
     .provider-mark {
       width: 54px;
@@ -64,44 +65,210 @@
       font-weight: 800;
     }
     .provider-card h1 { margin: 0; font-size: 28px; letter-spacing: -.6px; }
-    .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
-    .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .mascot-zone { position: relative; height: 220px; margin: 0; padding: 0; overflow: visible; pointer-events: none; opacity: 1; visibility: visible; transition: height .5s cubic-bezier(.4, 0, .2, 1), opacity .3s ease, margin .5s cubic-bezier(.4, 0, .2, 1); }
+  .mascot-zone.is-collapsing { height: 0; margin: 0; padding: 0; overflow: hidden; opacity: 0; pointer-events: none; visibility: hidden; }
+  .mascot-zone.is-collapsed { display: none; }
+  .dog-mascot { position: absolute; left: 0; top: 34px; width: 260px; height: auto; max-height: 260px; object-fit: contain; transform: translate3d(0, 40px, 0); opacity: 0; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 12px 8px rgba(47, 43, 37, .18)); animation: dogEntrance .8s cubic-bezier(.34, 1.56, .64, 1) forwards, dogRideBob 1.6s ease-in-out 0.8s infinite, dogRideTilt 2.4s ease-in-out 0.8s infinite; transition: transform .7s ease-in, opacity .7s ease-in; }
+  .dog-mascot.is-looking { filter: drop-shadow(0 12px 8px rgba(47, 43, 37, .18)); }
+  .dog-mascot.is-tapping { animation: dogEntrance .8s cubic-bezier(.34, 1.56, .64, 1) forwards, dogRideBob 1.6s ease-in-out infinite, dogRideTilt 2.4s ease-in-out infinite, dogPointBounce .35s ease-in-out 3; }
+  .dog-mascot.is-jumping { animation: dogHappyJump .55s cubic-bezier(.34, 1.56, .64, 1); }
+  .dog-mascot.is-leaving { opacity: 0; transform: translate3d(120vw, 0, 0) !important; transition: transform .7s ease-in, opacity .7s ease-in; }
+  .dog-mascot.is-dismissed { display: none; }
+  .wind-streaks { position: absolute; inset: 20px 0 30px; overflow: hidden; pointer-events: none; }
+  .wind-streaks i { position: absolute; left: 100%; height: 2px; border-radius: 99px; background: rgba(255, 255, 255, .85); opacity: .6; animation: windLeft var(--wind-duration) linear var(--wind-delay) infinite; }
+  .wind-streaks i:nth-child(1) { top: 24%; width: 34px; --wind-duration: .8s; --wind-delay: 0s; }
+  .wind-streaks i:nth-child(2) { top: 38%; width: 58px; --wind-duration: 1.1s; --wind-delay: .2s; }
+  .wind-streaks i:nth-child(3) { top: 52%; width: 24px; --wind-duration: .95s; --wind-delay: .45s; }
+  .wind-streaks i:nth-child(4) { top: 66%; width: 46px; --wind-duration: 1.4s; --wind-delay: .1s; }
+  .wind-streaks i:nth-child(5) { top: 78%; width: 30px; --wind-duration: 1s; --wind-delay: .55s; }
+  .mascot-shadow { position: absolute; left: 50%; top: 292px; width: 150px; height: 14px; border-radius: 50%; background: rgba(47, 43, 37, .16); opacity: .7; transform: translateX(-50%) scale(1); transition: transform .7s ease, opacity .7s ease; }
+  .dog-mascot.is-jumping + .mascot-shadow { transform: translateX(-50%) scale(.7); opacity: .35; }
+  @keyframes dogEntrance { from { transform: translate3d(var(--dog-x, 0px), 40px, 0); opacity: 0; } to { transform: translate3d(var(--dog-x, 0px), var(--dog-y, 34px), 0); opacity: 1; } }
+  @keyframes dogRideBob { 0%, 100% { margin-top: 0; } 50% { margin-top: -6px; } }
+  @keyframes dogRideTilt { 0%, 100% { rotate: -1.5deg; } 50% { rotate: 1.5deg; } }
+  @keyframes dogPointBounce { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+  @keyframes dogHappyJump { 0%, 100% { translate: 0 0; } 45% { translate: 0 -24px; } }
+  @keyframes windLeft { from { translate: 0 0; } to { translate: -130vw 0; } }
+  @media (max-width: 760px) { .mascot-zone { height: 220px; } .dog-mascot { width: 200px; max-height: 200px; } .mascot-shadow { top: 230px; width: 120px; } }
+  @media (prefers-reduced-motion: reduce) { .dog-mascot, .wind-streaks i { animation-duration: 4s; animation-iteration-count: infinite; } .dog-mascot.is-leaving { animation: none; } }
+    .mascot-zone { position: relative; width: 100%; max-width: 420px; height: 240px; margin: 0 auto; padding: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.9); border-radius: 28px; background: linear-gradient(#e8f4ff,#fff); box-shadow: 0 8px 28px rgba(0,0,0,.06); pointer-events: none; transition: height .5s ease, opacity .3s ease, margin .5s ease; }
+  .mascot-zone.is-collapsing { height: 0; margin: 0 auto; opacity: 0; }
+  .mascot-zone.is-collapsed { display: none; }
+  .mascot-zone.is-exiting { position: absolute; inset: auto 0 auto 0; height: 0 !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; border-width: 0 !important; opacity: 0; visibility: hidden; overflow: hidden; pointer-events: none; transition: opacity .2s ease, visibility 0s linear .2s; }
+  .studio-shell.editor-revealing { opacity: 0; transform: translateY(12px); transition: opacity .35s ease-out, transform .35s ease-out; }
+  .studio-shell.editor-ready { opacity: 1; transform: translateY(0); }
+  .dog-mascot { position: absolute; left: 50%; top: 0; width: 100%; max-width: 420px; height: 240px; overflow: hidden; transform: translateX(-50%); transform-origin: 50% 50%; opacity: 1; pointer-events: none; animation: none; transition: transform .7s cubic-bezier(.34,1.2,.64,1), opacity .7s ease; }
+  .dog-mascot .head { transform-box: fill-box; transform-origin: 50% 100%; animation: calmBreath 3s ease-in-out infinite; }
+  .dog-mascot .sunglasses { transform-box: fill-box; transform-origin: 50% 50%; animation: calmBlink 5s ease-in-out infinite; }
+  .dog-mascot .ear-left, .dog-mascot .ear-right, .dog-mascot .tongue, .dog-mascot .paw, .dog-mascot .wind-lines, .dog-mascot .road-lines, .dog-mascot .clouds { transform-box: fill-box; transform-origin: 50% 50%; }
+  .mascot-zone.is-hovering .dog-mascot .ear-left { animation: earFlapLeft .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .ear-right { animation: earFlapRight .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .tongue { animation: tongueWobble .35s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .head { animation: headLookUp .5s ease forwards, calmBreath 3s ease-in-out .5s infinite; }
+  .mascot-zone.is-hovering .dog-mascot .paw { animation: pawTap .4s ease-in-out 3; }
+  .mascot-zone.is-hovering .dog-mascot .wind-lines { animation: windRush .45s linear infinite; }
+    .mascot-zone.is-hovering .dog-mascot .road-lines { animation: roadMove .5s linear infinite; }
+  .mascot-zone.is-hovering .dog-mascot .clouds { animation: cloudDrift 3s linear infinite; }
+  .mascot-zone.is-jumping .dog-mascot { animation: sceneJump .4s ease-in-out; }
+  .mascot-zone.is-driving .dog-mascot { transform: translateX(120vw); opacity: 0; transition: transform .7s ease-in, opacity .7s ease-in; }
+  .mascot-shadow { position: absolute; left: 50%; bottom: 19px; width: 150px; height: 14px; border-radius: 50%; background: rgba(47,43,37,.16); opacity: .7; transform: translateX(-50%); }
+  @keyframes calmBreath { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  @keyframes calmBlink { 0%,44%,48%,100% { opacity: 1; } 46% { opacity: .86; } }
+  @keyframes earFlapLeft { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+  @keyframes earFlapRight { from { transform: rotate(8deg); } to { transform: rotate(-8deg); } }
+  @keyframes tongueWobble { from { transform: scaleY(1); } to { transform: scaleY(1.1); } }
+  @keyframes headLookUp { to { transform: rotate(-6deg); } }
+  @keyframes pawTap { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  @keyframes windRush { from { transform: translateX(32px); opacity: .2; } to { transform: translateX(-80px); opacity: 1; } }
+  @keyframes roadMove { to { transform: translateX(-48px); } }
+  @keyframes cloudDrift { to { transform: translateX(-20px); } }
+  @keyframes sceneJump { 0%,100% { transform: translateX(-50%) translateY(0); } 45% { transform: translateX(-50%) translateY(-20px); } }
+  @media (max-width: 760px) { .mascot-zone { height: 220px; } .dog-mascot { height: 100%; } }
+  @media (prefers-reduced-motion: reduce) { .dog-mascot .head, .dog-mascot .sunglasses { animation: none; } .mascot-zone.is-hovering .dog-mascot * { animation: none; } .mascot-zone.is-jumping .dog-mascot, .mascot-zone.is-driving .dog-mascot { animation: none; transition: none; } }
+  /* Final mascot scene behavior: the car stays fixed while only the dog reacts. */
+  .mascot-zone { width: 100%; max-width: none; height: 280px; margin: 16px 0 0; overflow: hidden; border: 1px solid rgba(255,255,255,.9); border-radius: 28px; background: linear-gradient(#bfe3ff,#f1f8ff); box-shadow: 0 8px 28px rgba(0,0,0,.06); }
+  .mascot-zone.is-collapsing { height: 0; margin: 0; border-width: 0; }
+  .dog-mascot { inset: 0; width: 100% !important; max-width: none; height: 100% !important; min-height: 100%; display: block; transform: none; overflow: hidden; }
+  .dog-mascot .car { transform: none !important; }
+  .dog-mascot .dog { transform: none; }
+  .dog-mascot .head { transform-box: fill-box; transform-origin: 50% 100%; animation: calmBreath 3s ease-in-out infinite; }
+  .dog-mascot .head, .dog-mascot .ear-left, .dog-mascot .ear-right, .dog-mascot .sunglasses, .dog-mascot .tongue { transition: transform .5s cubic-bezier(.34,1.4,.64,1); }
+  .mascot-zone.is-hovering .dog-mascot .head { transform: translate(var(--look-x, 0px), -40px) rotate(var(--look-angle, 0deg)); }
+  .mascot-zone.is-hovering .dog-mascot .ear-left { animation: earFlapLeft .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .ear-right { animation: earFlapRight .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .tongue { animation: tongueWobble .35s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .wind-lines { animation: windRush .45s linear infinite; }
+    .mascot-zone.is-hovering .dog-mascot .road-lines { animation: roadMove .5s linear infinite; }
+  .mascot-zone.is-hovering .dog-mascot .clouds { animation: cloudDrift 3s linear infinite; }
+  .mascot-zone.is-jumping .dog-mascot .head { animation: headHappyJump .4s ease-in-out; }
+  .mascot-zone.is-driving .dog-mascot .car { animation: carDrive .8s ease-in forwards; }
+  @keyframes headHappyJump { 0%,100% { transform: translate(var(--look-x,0px), -40px) rotate(var(--look-angle,0deg)); } 45% { transform: translate(var(--look-x,0px), -60px) rotate(var(--look-angle,0deg)); } }
+  @keyframes carDrive { from { transform: translateX(0); } to { transform: translateX(130%); } }
+  @media (max-width: 760px) { .mascot-zone { height: 220px; } }
+  @media (prefers-reduced-motion: reduce) { .dog-mascot .head { animation: none; } .mascot-zone.is-hovering .dog-mascot * { animation: none; } .mascot-zone.is-driving .dog-mascot .car { animation: none; } }
+  .mascot-zone { height: max(320px, calc(100vh - var(--cards-bottom, 220px) - 24px)); min-height: 320px; margin-top: 16px; }
+  .dog-mascot { preserveAspectRatio: xMidYMax slice; }
+  .scene-background .road-lines { animation: roadDrive 1s linear infinite; }
+  .scene-background .clouds { animation: cloudDrive 55s linear infinite; }
+  .scene-background .distant-hills { animation: hillDrive 30s linear infinite; transform-origin: center; }
+  .scene-background .near-hills { animation: hillDrive 22s linear infinite reverse; transform-origin: center; }
+  .scene-background .passing-trees { animation: treeDrive 5s linear infinite; }
+  .dog-mascot .car { transform-box: fill-box; transform-origin: 50% 100%; animation: carBounce .5s ease-in-out infinite; }
+    .dog-mascot .wind-lines { animation: windRush .9s linear infinite; }
+  .mascot-zone.is-hovering .dog-mascot .head { animation: headLookUp .5s ease forwards; }
+  .mascot-zone.is-hovering .dog-mascot .ear-left { animation: earFlapLeft .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .ear-right { animation: earFlapRight .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-card-1 .dog-mascot .head { animation: excitedJump .45s ease-in-out 3; }
+  .mascot-zone.is-card-1 .dog-mascot .tongue { animation: tongueWobble .25s ease-in-out infinite alternate; }
+  .mascot-zone.is-card-2 .dog-mascot .head { animation: plead .9s ease-in-out infinite; }
+  .mascot-zone.is-card-2 .dog-mascot .sunglasses { transform: translateY(-20px); }
+  .mascot-zone.is-card-2 .dog-mascot .paw { animation: pawTap .5s ease-in-out infinite; }
+  .mascot-zone.is-card-3 .dog-mascot .head { animation: playful .35s ease-in-out infinite alternate; }
+  .mascot-zone.is-card-3 .dog-mascot .tongue { animation: tongueWobble .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-sad .dog-mascot .head { animation: sadLower .8s ease forwards; }
+  .mascot-zone.is-sad .dog-mascot .ears { opacity: .7; }
+  .mascot-zone.is-driving .dog-mascot .car { animation: carDrive .9s ease-in forwards; }
+  @keyframes roadDrive { to { transform: translateX(-102px); } }
+  @keyframes cloudDrive { to { transform: translateX(-35px); } }
+  @keyframes hillDrive { to { transform: translateX(-18px); } }
+  @keyframes treeDrive { to { transform: translateX(-90px); } }
+  @keyframes carBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  @keyframes excitedJump { 0%,100% { transform: translate(var(--look-x,0px), -40px); } 45% { transform: translate(var(--look-x,0px), -78px) scale(1.04,.96); } }
+  @keyframes plead { 0%,100% { transform: translate(var(--look-x,0px), -40px) rotate(12deg) scale(1); } 50% { transform: translate(var(--look-x,0px), -44px) rotate(12deg) scale(1.04); } }
+  @keyframes playful { from { transform: translate(var(--look-x,0px), -42px) rotate(-10deg); } to { transform: translate(var(--look-x,0px), -42px) rotate(10deg); } }
+  @keyframes sadLower { to { transform: translate(var(--look-x,0px), -8px) rotate(0); } }
+  @keyframes carDrive { to { transform: translateX(140%); } }
+  @media (max-width: 760px) { .mascot-zone { height: 260px; min-height: 260px; } }
+  @media (prefers-reduced-motion: reduce) { .scene-background *, .dog-mascot .car, .dog-mascot .wind-lines { animation: none !important; } }
+  .mascot-zone { min-height: 320px; }
+  .money-rain { position:absolute; inset:0; z-index:1; overflow:hidden; pointer-events:none; }
+  .money-item { position:absolute; top:-30px; left:var(--money-x); width:var(--money-size); height:var(--money-size); display:grid; place-items:center; color:#8a5a00; font:800 calc(var(--money-size)*.62)/1 sans-serif; opacity:0; animation:moneyFall var(--money-fall) linear var(--money-delay) infinite, moneySway 1.7s ease-in-out infinite alternate, moneyFlip 1.4s ease-in-out infinite alternate; }
+  .money-item.coin { border:2px solid #b47a0b; border-radius:50%; background:#f5b921; box-shadow:inset 0 0 0 2px #ffd96b; }
+  .money-item.note { width:calc(var(--money-size)*1.75); height:calc(var(--money-size)); border:1px solid #2e8139; border-radius:4px; background:#4caf50; color:#fff; font-size:calc(var(--money-size)*.7); }
+  .money-rain.is-fast .money-item { animation-duration:calc(var(--money-fall)/1.6), 1.2s, 1.1s; }
+  .money-rain.is-burst .money-item { animation-duration:1s, .8s, .7s; }
+  .dog-mascot { z-index:2; }
+  .dog-mascot .car { animation: carBounce .4s ease-in-out infinite, carTilt 1.2s ease-in-out infinite; }
+    .exhaust-puff { fill:#9aa3aa; animation: exhaust 1.2s ease-out infinite; }
+  @keyframes carBounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-2px); } }
+  @keyframes carTilt { 0%,100% { rotate:-.4deg; } 50% { rotate:.4deg; } }
+  @keyframes moneyFall { 0% { transform:translateY(-30px); opacity:0; } 8% { opacity:1; } 90% { opacity:1; } 100% { transform:translateY(calc(100vh + 30px)); opacity:0; } }
+  @keyframes moneySway { from { margin-left:-12px; } to { margin-left:12px; } }
+  @keyframes moneyFlip { from { rotate:0deg; scale:1 1; } to { rotate:360deg; scale:-1 1; } }
+  @keyframes exhaust { 0% { transform:translate(0,0) scale(.4); opacity:.6; } 100% { transform:translate(-25px,8px) scale(1.5); opacity:0; } }
+  @media (max-width:760px) { .mascot-zone { min-height:260px; } .money-item:nth-child(n+9) { display:none; } }
+  @media (prefers-reduced-motion:reduce) { .money-item,.dog-mascot .car,.dog-mascot .car,.exhaust-puff { animation:none !important; } .money-item { opacity:1; transform:none; } }
+  .dog-mascot .car-bounce { transform-box: view-box; transform-origin: 50% 100%; animation: carBounce .5s ease-in-out infinite; }
+  .dog-mascot .car { animation: none !important; }
+  .mascot-zone.is-driving .dog-mascot .car-bounce { animation: carDrive .8s ease-in forwards; }
+    @keyframes carDrive { from { transform: translateX(0); } to { transform: translateX(140%); } }
+  @media (prefers-reduced-motion: reduce) { .dog-mascot .car-bounce { animation: none !important; } }
+  .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; overflow: visible; }
     .provider-button {
       position: relative;
       isolation: isolate;
-      overflow: hidden;
+      overflow: visible;
       min-height: 78px;
       padding: 12px;
-      border: 1px solid rgba(255, 255, 255, .72);
+      border: 1px solid rgba(255, 255, 255, .9);
       border-radius: 14px;
-      background: rgba(255, 255, 255, .35);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78), 0 8px 18px rgba(93, 105, 122, .13), 0 2px 4px rgba(93, 105, 122, .08);
-      backdrop-filter: blur(16px) saturate(160%);
+      background: linear-gradient(145deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .78));
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .07), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -2px 6px rgba(0, 0, 0, .03);
       color: var(--ink);
       font-size: 14px;
       font-weight: 750;
-      transition: border-color .16s ease, background .16s ease, box-shadow .16s ease, transform .16s ease;
+      transition: transform .7s cubic-bezier(.34, 1.56, .64, 1), box-shadow .5s ease, background .3s ease;
+    }
+    .provider-button > * { position: relative; z-index: 1; }
+    .provider-button::before {
+      position: absolute;
+      z-index: -1;
+      inset: -4px;
+      border-radius: inherit;
+      background: conic-gradient(from 0deg, #ff9f0a, #ff6a9d, #bf5af2, #5e5ce6, #32ade6, #34c759, #ffd60a, #ff9f0a);
+      filter: blur(16px);
+      opacity: 0;
+      pointer-events: none;
+      content: "";
+      transform: rotate(0deg);
+      animation: cardHalo 9s linear infinite paused;
+      transition: opacity .5s ease;
     }
     .provider-button::after {
       position: absolute;
-      z-index: -1;
-      top: -30%;
-      left: -65%;
-      width: 34%;
-      height: 160%;
-      transform: skewX(-22deg);
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .72), transparent);
+      z-index: 0;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .7) 50%, transparent 70%);
+      background-size: 220% 100%;
+      background-position: -140% 0;
       content: "";
+      opacity: 0;
       pointer-events: none;
-      animation: button-shine 3.6s ease-in-out infinite;
     }
-    .provider-button:nth-child(2)::after { animation-delay: 1.1s; }
-    .provider-button:nth-child(3)::after { animation-delay: 2.2s; }
-    .provider-button:hover { transform: translateY(-2px); background: rgba(255, 255, 255, .52); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 12px 24px rgba(93, 105, 122, .18); }
-    .provider-button:hover::after { animation-duration: 1.7s; }
-    .provider-button.active { border-color: rgba(237, 148, 23, .82); background: rgba(255, 244, 225, .68); box-shadow: 0 0 0 2px rgba(237, 148, 23, .14), 0 10px 25px rgba(237, 148, 23, .2), inset 0 1px 0 rgba(255, 255, 255, .88); color: #9d5018; }
+    .provider-button.mascot-tap-target { transform: translateY(-4px); transition: transform .4s cubic-bezier(.34, 1.2, .64, 1); }
+    .provider-button:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, .10), inset 0 1px 0 rgba(255, 255, 255, 1); transition: transform .35s ease, box-shadow .35s ease; }
+    .provider-button:hover::before { opacity: .22; animation-play-state: running; }
+    .provider-button:hover::after { opacity: 1; animation: selectorShine .8s ease-out 1; }
+    .provider-button:active { transform: scale(.93) translateY(4px); background: linear-gradient(145deg, rgba(240, 240, 244, .95), rgba(250, 250, 252, .9)); box-shadow: inset 0 10px 26px rgba(0, 0, 0, .20), inset 0 -3px 10px rgba(255, 255, 255, .8), 0 1px 3px rgba(0, 0, 0, .08); transition: transform .2s cubic-bezier(.3, 0, .2, 1), box-shadow .2s ease; }
+    .provider-button:active::before { opacity: .1; }
+    .provider-button.active { border-color: rgba(237, 148, 23, .82); background: #fff7e9; box-shadow: 0 0 0 2px rgba(237, 148, 23, .14), 0 10px 25px rgba(237, 148, 23, .2), inset 0 1px 0 rgba(255, 255, 255, .88); color: #9d5018; }
+    .provider-button.is-rippling::after { background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(0, 0, 0, .06), transparent 70%), linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .7) 50%, transparent 70%); background-size: 140% 140%, 220% 100%; animation: selectorRipple .6s ease-out forwards; }
+    @keyframes selectorShine { from { background-position: -140% 0; } to { background-position: 140% 0; } }
+    @keyframes selectorRipple { 0% { opacity: .8; transform: scale(0); } 100% { opacity: 0; transform: scale(1.5); } }
+    @keyframes cardHalo { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @supports not (filter: blur(16px)) {
+      .provider-button:hover::before { filter: none; box-shadow: 0 0 18px rgba(255, 159, 10, .18); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .provider-button, .provider-button::after, .provider-button::before { transition: none; animation: none; }
+      .provider-button:hover, .provider-button:active { transform: none; }
+      .provider-button:hover::before { opacity: .22; animation: none; }
+      .provider-button:active::before { opacity: .1; }
+    }
     .provider-button img { display: block; width: auto; height: 30px; max-width: 100%; margin: 0 auto 5px; object-fit: contain; }
-    .provider-button .paytm-logo { width: 118px; height: 44px; padding: 0; border-radius: 0; background: #fff; object-fit: contain; }
+    .provider-button .paytm-logo { width: 118px; height: 44px; padding: 0; border-radius: 0; background: transparent; mix-blend-mode: multiply; object-fit: contain; }
     .provider-button small { display: block; color: var(--muted); font-size: 10px; font-weight: 500; }
     .provider-button:focus-visible, .back-button:focus-visible { outline: 2px solid #c76722; outline-offset: 3px; }
     @keyframes button-shine { 0%, 18% { left: -65%; } 58%, 100% { left: 135%; } }
@@ -171,17 +338,65 @@
       border: 1px solid rgba(210, 218, 228, .9);
       border-radius: 15px;
       background: rgba(255, 255, 255, .5);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 7px 16px rgba(93, 105, 122, .1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .08), inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -2px 6px rgba(0, 0, 0, .04);
       backdrop-filter: blur(14px) saturate(145%);
       color: #667181;
       font-size: 14px;
       font-weight: 650;
       line-height: 1.2;
-      transition: border-color .28s ease, background .28s ease, box-shadow .28s ease, color .28s ease, transform .28s ease;
+      transition: all .35s cubic-bezier(.34, 1.56, .64, 1);
     }
-    .step-button:hover { transform: translateY(-1px); background: rgba(255, 255, 255, .72); }
-    .step-button.active { border-color: rgba(237, 148, 23, .8); background: rgba(255, 244, 225, .82); box-shadow: 0 0 0 2px rgba(237, 148, 23, .12), 0 9px 20px rgba(237, 148, 23, .18), inset 0 1px 0 rgba(255, 255, 255, .9); color: #9d5018; }
-    .step-view[hidden] { display: none; }
+  .step-button:hover,
+  .step-button:focus-visible {
+    transform: scale(.98);
+    background-color: rgba(255, 255, 255, .72);
+    background-image: radial-gradient(circle at 50% 120%, rgba(255, 159, 10, .25), transparent 65%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .10), inset 0 3px 10px rgba(0, 0, 0, .12), inset 0 -2px 8px rgba(255, 255, 255, .8);
+  }
+  .step-button:active { transform: scale(.96); box-shadow: 0 1px 4px rgba(0, 0, 0, .12), inset 0 4px 12px rgba(0, 0, 0, .16), inset 0 -2px 8px rgba(255, 255, 255, .72); }
+  .step-button.active:hover,
+  .step-button.active:focus-visible { transform: none; }
+  .step-button.active:active { transform: scale(.96); }
+  .step-button.active { border-color: rgba(237, 148, 23, .8); background-color: rgba(255, 244, 225, .82); background-image: none; box-shadow: 0 2px 6px rgba(0, 0, 0, .10), inset 0 3px 10px rgba(0, 0, 0, .12), inset 0 -2px 8px rgba(255, 255, 255, .8); color: #9d5018; }
+  .step-label {
+    display: inline-block;
+    font-weight: 700;
+    transition: filter .3s ease, opacity .3s ease;
+  }
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .step-label {
+      background-image: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, .9), rgba(255, 255, 255, 0) 40%), linear-gradient(100deg, #ff6a3d 0%, #ff9f0a 18%, #ffd60a 32%, #34c759 46%, #32ade6 60%, #5e5ce6 74%, #bf5af2 88%, #ff6a3d 100%);
+      background-size: 100% 100%, 300% 100%;
+      background-position: 0 0, 0% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      filter: drop-shadow(0 0 6px rgba(255, 159, 10, .35)) drop-shadow(0 0 14px rgba(94, 92, 230, .25));
+      animation: bubbleFlow 7s linear infinite;
+    }
+    .step-button:not(.active) .step-label { opacity: .7; animation-duration: 11s; }
+    .step-button:hover .step-label,
+    .step-button:focus-visible .step-label {
+      background-image: linear-gradient(100deg, #e8501f 0%, #e07b00 18%, #c99a00 32%, #1f9d3f 46%, #0f7fc0 60%, #3d3bc4 74%, #9333d4 88%, #e8501f 100%);
+      background-size: 300% 100%;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .18));
+      opacity: 1;
+    }
+  }
+  .step-button:hover .step-label,
+  .step-button:focus-visible .step-label { background-image: none; color: #1d1d1f; -webkit-text-fill-color: #1d1d1f; }
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .step-button:hover .step-label,
+    .step-button:focus-visible .step-label { background-image: linear-gradient(100deg, #e8501f 0%, #e07b00 18%, #c99a00 32%, #1f9d3f 46%, #0f7fc0 60%, #3d3bc4 74%, #9333d4 88%, #e8501f 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+  }
+  @keyframes bubbleFlow { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 300% 50%; } }
+  @media (prefers-reduced-motion: reduce) {
+    .step-button { transition: background-color .01ms, background-image .01ms, box-shadow .01ms, color .01ms; }
+    .step-button:hover, .step-button:focus-visible, .step-button:active { transform: none; }
+    .step-label { animation: none !important; transition: filter .01ms, opacity .01ms; }
+  }
+  .step-view[hidden] { display: none; }
     .coming-soon { min-height: 420px; display: grid; place-items: center; padding: 30px 10px; text-align: center; }
     .coming-soon-card { max-width: 260px; }
     .coming-soon-badge { display: inline-flex; padding: 7px 10px; border-radius: 999px; background: #fff2df; color: #9d5018; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
@@ -192,6 +407,87 @@
     .editor-form { display: grid; gap: 20px; }
     .editor-section { min-width: 0; margin: 0; padding: 0; border: 0; }
     .section-title { margin: 0 0 11px; padding: 0; color: #404a58; font-size: 10px; font-weight: 800; letter-spacing: .095em; text-transform: uppercase; }
+    #statusBarSection {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 20px;
+      background: rgba(255, 248, 238, .95);
+      box-shadow: 0 8px 32px rgba(255, 159, 10, .12), inset 0 1px 0 rgba(255, 255, 255, .9);
+    }
+    @supports (backdrop-filter: blur(14px)) {
+      #statusBarSection {
+        background: linear-gradient(135deg, rgba(255, 255, 255, .65), rgba(255, 236, 210, .35));
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+    }
+    #statusBarSection > .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 16px;
+      padding: 0 0 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, .06);
+    }
+    .status-bar-icon {
+      width: 28px;
+      height: 28px;
+      display: inline-grid;
+      flex: none;
+      place-items: center;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ffd08a, #ff9f0a);
+      color: #8a4b00;
+    }
+    .status-bar-icon svg { width: 15px; height: 15px; }
+#statusBarSection .field input,
+#statusBarSection .field select {
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 14px;
+  background-color: rgba(255, 255, 255, .75);
+  background-image: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(255, 159, 10, .18), transparent 70%);
+  background-repeat: no-repeat;
+  background-size: 0% 0%;
+  color: #1d1d1f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 -1px 3px rgba(0, 0, 0, .04);
+  transition: transform .6s cubic-bezier(.34, 1.56, .64, 1), box-shadow .45s ease, border-color .25s ease, background-color .25s ease, background-size .5s ease, opacity .25s ease;
+}
+#statusBarSection .field input:hover,
+#statusBarSection .field select:hover {
+  border-color: rgba(255, 159, 10, .5);
+  background-color: rgba(255, 255, 255, .9);
+  box-shadow: 0 4px 14px rgba(255, 159, 10, .15), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+#statusBarSection .field input { cursor: text; }
+#statusBarSection .field select { cursor: pointer; }
+#statusBarSection .field input:active,
+#statusBarSection .field select:active,
+#statusBarSection .field input.is-rippling,
+#statusBarSection .field select.is-rippling {
+  transform: scale(.965) translateY(2px);
+  background-size: 140% 140%;
+  box-shadow: inset 0 6px 16px rgba(0, 0, 0, .16), inset 0 -2px 6px rgba(255, 255, 255, .8), 0 1px 2px rgba(0, 0, 0, .06);
+  transition: transform .16s cubic-bezier(.3, 0, .2, 1), box-shadow .16s ease, background-size .5s ease;
+}
+#statusBarSection .field input:focus,
+#statusBarSection .field select:focus {
+  transform: none;
+  border-color: #ff9f0a;
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, .096), inset 0 -2px 5px rgba(255, 255, 255, .8), 0 0 0 3px rgba(255, 159, 10, .18);
+}
+#statusBarSection .field input:focus.is-rippling,
+#statusBarSection .field select:focus.is-rippling {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #statusBarSection .field input,
+  #statusBarSection .field select { transition: border-color .01ms, box-shadow .01ms, background-color .01ms, background-size .01ms; }
+  #statusBarSection .field input:active,
+  #statusBarSection .field select:active,
+  #statusBarSection .field input.is-rippling,
+  #statusBarSection .field select.is-rippling { transform: none; }
+}
     .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 10px; }
     .field-grid.single { grid-template-columns: 1fr; }
     .field { min-width: 0; display: grid; align-content: start; gap: 6px; }
@@ -212,6 +508,42 @@
     .field textarea { min-height: 66px; resize: vertical; line-height: 1.45; }
     .field input:focus, .field textarea:focus { border-color: #dd8a22; box-shadow: 0 0 0 3px rgba(237, 148, 23, .15); }
     .field-hint { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+  .editor-form .field input, .editor-form .field textarea, .editor-form .field select {
+    border: 1px solid rgba(0, 0, 0, .08);
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, .75);
+    background-image: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(255, 159, 10, .18), transparent 70%);
+    background-repeat: no-repeat;
+    background-size: 0% 0%;
+    color: #1d1d1f;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 -1px 3px rgba(0, 0, 0, .04);
+    transition: transform .6s cubic-bezier(.34, 1.56, .64, 1), box-shadow .45s ease, border-color .25s ease, background-color .25s ease, background-size .5s ease, opacity .25s ease;
+  }
+  .editor-form .field input:hover, .editor-form .field textarea:hover, .editor-form .field select:hover {
+    border-color: rgba(255, 159, 10, .5);
+    background-color: rgba(255, 255, 255, .9);
+    box-shadow: 0 4px 14px rgba(255, 159, 10, .15), inset 0 1px 0 rgba(255, 255, 255, 1);
+  }
+  .editor-form .field input, .editor-form .field textarea { cursor: text; }
+  .editor-form .field select { cursor: pointer; }
+  .editor-form .field input:active, .editor-form .field textarea:active, .editor-form .field select:active,
+  .editor-form .field input.is-rippling, .editor-form .field textarea.is-rippling, .editor-form .field select.is-rippling {
+    transform: scale(.965) translateY(2px);
+    background-size: 140% 140%;
+    box-shadow: inset 0 6px 16px rgba(0, 0, 0, .16), inset 0 -2px 6px rgba(255, 255, 255, .8), 0 1px 2px rgba(0, 0, 0, .06);
+    transition: transform .16s cubic-bezier(.3, 0, .2, 1), box-shadow .16s ease, background-size .5s ease;
+  }
+  .editor-form .field input:focus, .editor-form .field textarea:focus, .editor-form .field select:focus {
+    transform: none;
+    border-color: #ff9f0a;
+    box-shadow: inset 0 3px 10px rgba(0, 0, 0, .096), inset 0 -2px 5px rgba(255, 255, 255, .8), 0 0 0 3px rgba(255, 159, 10, .18);
+  }
+  .editor-form .field input:focus.is-rippling, .editor-form .field textarea:focus.is-rippling, .editor-form .field select:focus.is-rippling { transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .editor-form .field input, .editor-form .field textarea, .editor-form .field select { transition: border-color .01ms, box-shadow .01ms, background-color .01ms, background-size .01ms; }
+    .editor-form .field input:active, .editor-form .field textarea:active, .editor-form .field select:active,
+    .editor-form .field input.is-rippling, .editor-form .field textarea.is-rippling, .editor-form .field select.is-rippling { transform: none; }
+  }
   .paytm-media-cards { display: grid; gap: 16px; }
   .paytm-media-card { display: grid; gap: 10px; padding: 12px; background: #fff; border: 1px solid #E5E7EB; border-radius: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.04); container-type: inline-size; }
   .paytm-media-card h3 { margin: 0; color: #111827; font-size: 13px; font-weight: 600; }
@@ -372,6 +704,20 @@
         <button class="provider-button" id="mobikwikButton" type="button" aria-pressed="false"><img src="/mobikwik-logo.png" alt="Mobikwik"><small>Open editor</small></button>
       </div>
     </section>
+    <div class="mascot-zone" id="mascotZone" aria-hidden="true">
+        <div class="money-rain" id="moneyRain" aria-hidden="true"></div>
+        <svg class="dog-mascot" id="dogMascot" viewBox="0 0 420 240" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Cartoon Doberman riding in a car">
+        <defs>
+          <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe9ff"/><stop offset="1" stop-color="#f1f8ff"/></linearGradient>
+          <linearGradient id="carPaint" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f6f8fa"/><stop offset="1" stop-color="#b9c1c9"/></linearGradient>
+          <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#292a2d"/><stop offset="1" stop-color="#08090b"/></linearGradient>
+        </defs>
+        <g class="scene-background"><rect width="420" height="240" fill="url(#skyGradient)"/><circle class="sun-glow" cx="330" cy="38" r="42" fill="#fff5bf" opacity=".7"/><g class="clouds" fill="#fff"><path d="M24 49c8-15 29-15 36-1 10-8 28-1 29 12H16c0-6 3-10 8-11z"/><path d="M150 31c10-18 37-18 46-2 15-11 38 1 38 17H135c0-8 6-13 15-15z"/><path d="M270 35c7-13 25-14 32-2 12-7 26 2 27 13h-68c0-6 3-10 9-11z"/><path d="M326 91c7-12 24-13 31-1 11-7 25 2 25 13h-65c0-6 3-10 9-12z"/><path d="M58 101c6-11 23-12 30-1 10-6 22 2 22 11H50c0-5 3-9 8-10z"/></g><path class="distant-hills" d="M0 133Q60 88 120 132T240 124T360 132T480 118V180H0z" fill="#77a9a5"/><path class="near-hills" d="M0 151Q72 112 142 151T280 146T420 145V186H0z" fill="#548b68"/><g class="passing-trees" fill="#356d4f"><path d="M35 151l14-38 14 38zM49 119v48M335 151l15-43 15 43zM350 112v55M385 151l12-32 12 32zM397 125v42" stroke="#356d4f" stroke-width="5"/></g><path class="grass" d="M0 166h420v26H0z" fill="#6b9b62"/><path class="road" d="M0 192h420v48H0z" fill="#69737d"/><g class="road-lines" stroke="#f5f7f8" stroke-width="4" stroke-linecap="round"><path d="M-30 219h52M72 219h52M174 219h52M276 219h52M378 219h52"/></g></g>
+        <g class="car-bounce"><g class="car" transform="translate(134 123) scale(.36)"><path d="M22 166c5-22 23-38 49-43l82-16h133c26 0 42 16 61 39l45 20v28H22z" fill="url(#carPaint)" stroke="#7d8790" stroke-width="2"/><path d="M113 112h134l-3 51H92z" fill="#536574" stroke="#6f7d88" stroke-width="3"/><path d="M249 112h29c14 1 27 13 38 28l8 12h-75z" fill="#4b5f6d" stroke="#6f7d88" stroke-width="3"/><path d="M242 112v51" stroke="#cbd2d8" stroke-width="4"/><path d="M24 166h393v23H24z" fill="#adb6bd"/><path d="M68 167q27-16 54 0v10H68zM296 167q27-16 54 0v10H296z" fill="#89939b"/><g class="wheels"><g transform="translate(95 189)"><g><animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="0.5s" repeatCount="indefinite"/><circle cx="0" cy="0" r="26" fill="#1c1f22"/><circle cx="0" cy="0" r="20" fill="#3a4147"/><circle cx="0" cy="0" r="14" fill="#9aa3ab"/><line x1="0" y1="-14" x2="0" y2="14" stroke="#4b5359" stroke-width="2.5"/><line x1="-14" y1="0" x2="14" y2="0" stroke="#4b5359" stroke-width="2.5"/><line x1="-10" y1="-10" x2="10" y2="10" stroke="#4b5359" stroke-width="2.5"/><line x1="-10" y1="10" x2="10" y2="-10" stroke="#4b5359" stroke-width="2.5"/><circle cx="0" cy="0" r="4" fill="#4b5359"/><path d="M -18 -8 A 20 20 0 0 1 -8 -18" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/></g></g><g transform="translate(323 189)"><g><animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="0.5s" repeatCount="indefinite"/><circle cx="0" cy="0" r="26" fill="#1c1f22"/><circle cx="0" cy="0" r="20" fill="#3a4147"/><circle cx="0" cy="0" r="14" fill="#9aa3ab"/><line x1="0" y1="-14" x2="0" y2="14" stroke="#4b5359" stroke-width="2.5"/><line x1="-14" y1="0" x2="14" y2="0" stroke="#4b5359" stroke-width="2.5"/><line x1="-10" y1="-10" x2="10" y2="10" stroke="#4b5359" stroke-width="2.5"/><line x1="-10" y1="10" x2="10" y2="-10" stroke="#4b5359" stroke-width="2.5"/><circle cx="0" cy="0" r="4" fill="#4b5359"/><path d="M -18 -8 A 20 20 0 0 1 -8 -18" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/></g></g></g></g><g class="wheel-spin" transform="rotate(0 0 0)"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 0 0" to="360 0 0" dur="0.5s" repeatCount="indefinite"/><circle r="26" fill="#15181b"/><circle r="20" fill="#3f464c"/><g class="wheel-inner"><circle r="14" fill="#c4c9cd" stroke="#858d93" stroke-width="2"/><path d="M0-12v24M-11-7l22 14M11-7L-11 7M-12 0h24M0-4v8" stroke="#707980" stroke-width="2"/><circle r="4" fill="#535b62"/><path d="M-15-8A17 17 0 0 1 5-16" fill="none" stroke="#fff" stroke-width="2"/></g></g></g><g class="wheel" transform="translate(323 189)"><g class="wheel-spin" transform="rotate(0 0 0)"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 0 0" to="360 0 0" dur="0.5s" repeatCount="indefinite"/><circle r="26" fill="#15181b"/><circle r="20" fill="#3f464c"/><g class="wheel-inner"><circle r="14" fill="#c4c9cd" stroke="#858d93" stroke-width="2"/><path d="M0-12v24M-11-7l22 14M11-7L-11 7M-12 0h24M0-4v8" stroke="#707980" stroke-width="2"/><circle r="4" fill="#535b62"/><path d="M-15-8A17 17 0 0 1 5-16" fill="none" stroke="#fff" stroke-width="2"/></g></g></g></g></g>
+        <g class="dog" transform="translate(94 55) scale(.55)"><path class="chest" d="M171 163c3-30 20-43 42-43s39 13 42 43z" fill="#b95e2d"/><path class="ear-left" d="M181 76C145 66 139 23 158 8c14 17 29 30 40 53z" fill="#151719" stroke="#0b0c0e" stroke-width="3"/><path class="ear-right" d="M253 76c37-10 43-53 24-68-14 17-29 30-40 53z" fill="#151719" stroke="#0b0c0e" stroke-width="3"/><path class="head" d="M178 80c7-38 72-38 79 0l-6 62c-10 24-57 24-67 0z" fill="url(#fur)"/><path class="cheeks" d="M184 103q12-23 25 0l-3 30q-13 12-25 0zm42 0q13-23 25 0l3 30q-12 12-25 0z" fill="#b95e2d"/><path class="brow-left" d="M187 91q13-10 24 0" stroke="#c7733b" stroke-width="6" stroke-linecap="round"/><path class="brow-right" d="M224 91q12-10 24 0" stroke="#c7733b" stroke-width="6" stroke-linecap="round"/><g class="sunglasses"><g fill="#151b22" stroke="#07090b" stroke-width="3"><ellipse cx="200" cy="91" rx="23" ry="15"/><ellipse cx="234" cy="91" rx="23" ry="15"/></g><path d="M222 91h-10" stroke="#07090b" stroke-width="4"/><path d="M185 84l24 9m10-9 24 9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/></g><path class="nose" d="M208 115q9-8 18 0l-2 10q-7 7-14 0z" fill="#090a0c"/><path class="mouth" d="M201 126q16 14 32 0v20q-16 18-32 0z" fill="#551f24"/><path class="teeth" d="M205 130l5 7 5-6 5 6 5-7" fill="#fff"/><path class="tongue" d="M216 140q8-8 16 0v28q-8 12-16 0z" fill="#ef8694"/><path class="paw" d="M186 153q24-10 49 0v17q-24 8-49 0z" fill="#b95e2d" stroke="#7d3d23" stroke-width="3"/></g>
+        <g class="wind-lines" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M52 72h29M70 91h42M30 111h36M296 68h42M315 87h28"/></g>
+      </svg>
+    </div>
   </main>
 
   <main class="studio-shell" id="studioScreen" hidden>
@@ -379,8 +725,8 @@
       <div class="editor-body">
 
         <nav class="step-navigation" aria-label="Builder steps">
-          <button class="step-button active" id="stepOneButton" type="button" aria-selected="true">Step 1 · Customize</button>
-          <button class="step-button" id="stepTwoButton" type="button" aria-selected="false">Step 2 · Edit payment details</button>
+ <button class="step-button active" id="stepOneButton" type="button" aria-selected="true"><span class="step-label">Step 1 · Customize</span></button>
+ <button class="step-button" id="stepTwoButton" type="button" aria-selected="false"><span class="step-label">Step 2 · Edit payment details</span></button>
         </nav>
         <section class="step-view" id="stepOneView" aria-labelledby="editorTitle">
         <h1 class="editor-title" id="editorTitle">Customize your payment screen</h1>
@@ -388,7 +734,7 @@
 
         <form class="editor-form" id="editorForm">
           <fieldset class="editor-section" id="statusBarSection">
-  <legend class="section-title">Phone status bar</legend>
+  <legend class="section-title"><span class="status-bar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M10 18.5h4"></path></svg></span><span>Phone status bar</span></legend>
   <div class="field wide">
   <label for="statusStyle">Status bar style</label>
   <select id="statusStyle" name="statusStyle">
@@ -448,10 +794,29 @@
                   <option value="1">1 graph</option>
                   <option value="2" selected>2 graphs</option>
                 </select>
-                <p class="field-hint">Choose one or two editable signal graph icons.</p>
-              </div>
-            </div>
-          </fieldset>
+  <p class="field-hint">Choose one or two editable signal graph icons.</p>
+  </div>
+  <div class="field wide" id="iphoneControlsField" hidden>
+  <label for="iphoneSelectedElement">iPhone status element</label>
+  <select id="iphoneSelectedElement" name="iphoneSelectedElement">
+  <option value="island">Black island</option>
+  <option value="chain">Green chain icon</option>
+  <option value="signal">Signal bars</option>
+  <option value="network">5G text</option>
+  <option value="battery">Battery</option>
+  </select>
+  <p class="field-hint" id="iphoneSelectionHint">Click an element in the preview to select its controls.</p>
+  </div>
+  <div class="field-grid" id="iphoneElementControls" hidden>
+  <div class="field"><label for="iphoneIslandWidth">Island width</label><input id="iphoneIslandWidth" type="number" min="120" max="240" value="200"></div>
+  <div class="field"><label for="iphoneIslandOffset">Island position</label><input id="iphoneIslandOffset" type="number" min="-80" max="80" value="0"></div>
+  <div class="field"><label for="iphoneNetworkOffset">5G position</label><input id="iphoneNetworkOffset" type="number" min="-80" max="80" value="0"></div>
+  <div class="field"><label for="iphoneSignalOffset">Graph position</label><input id="iphoneSignalOffset" type="number" min="-80" max="80" value="0"></div>
+  <div class="field"><label for="iphoneBatteryOffset">Battery position</label><input id="iphoneBatteryOffset" type="number" min="-80" max="80" value="0"></div>
+  <div class="field"><label><input id="iphoneShowChain" type="checkbox" checked> Show green chain icon</label></div>
+  </div>
+  </div>
+  </fieldset>
 
           <fieldset class="editor-section" id="senderRecipientSection">
             <legend class="section-title" id="senderRecipientLegend">Sender and recipient</legend>
@@ -638,8 +1003,40 @@
     const studioScreen = document.querySelector('#studioScreen');
     const freechargeButton = document.querySelector('#freechargeButton');
     const paytmButton = document.querySelector('#paytmButton');
-    const mobikwikButton = document.querySelector('#mobikwikButton');
-    const providerButtons = {
+  const mobikwikButton = document.querySelector('#mobikwikButton');
+  const mascotZone = document.querySelector('#mascotZone');
+  const dogMascot = document.querySelector('#dogMascot');
+  const moneyRain = document.querySelector('#moneyRain');
+  const moneySymbols = ['$', '₹'];
+  let moneyBurstTimer = 0;
+  function createMoney(count = window.innerWidth <= 760 ? 8 : 14, burst = false) {
+  if (!moneyRain || mascotDismissed) return;
+  moneyRain.innerHTML = '';
+  for (let i = 0; i < count; i += 1) {
+    const item = document.createElement('span');
+    const size = 20 + Math.random() * 16;
+    item.className = `money-item ${i % 3 === 0 ? 'note' : 'coin'}`;
+    item.textContent = moneySymbols[i % moneySymbols.length];
+    item.style.setProperty('--money-x', `${Math.random() * 96}%`);
+    item.style.setProperty('--money-size', `${size}px`);
+    item.style.setProperty('--money-fall', `${burst ? 1 : 3 + Math.random() * 4}s`);
+    item.style.setProperty('--money-delay', `${burst ? Math.random() * .4 : Math.random() * 5}s`);
+    moneyRain.appendChild(item);
+  }
+  }
+  function burstMoney() {
+  if (!moneyRain || mascotDismissed) return;
+  createMoney(25, true);
+  moneyRain.classList.add('is-burst');
+  moneyBurstTimer = window.setTimeout(() => { moneyRain.classList.remove('is-burst'); moneyRain.innerHTML = ''; }, 1000);
+  }
+  const mascotShadow = mascotZone?.querySelector('.mascot-shadow');
+  let mascotTimer = 0;
+  const mascotTimers = new Set();
+  let mascotDismissed = false;
+  let mascotDone = false;
+  let mascotHoverTarget = null;
+  const providerButtons = {
       freecharge: freechargeButton,
       paytm: paytmButton,
       mobikwik: mobikwikButton
@@ -652,6 +1049,8 @@
     const downloadStatus = document.querySelector('#downloadStatus');
     const stepOneButton = document.querySelector('#stepOneButton');
     const stepTwoButton = document.querySelector('#stepTwoButton');
+    const stepOneLabel = stepOneButton.querySelector('.step-label');
+    const stepTwoLabel = stepTwoButton.querySelector('.step-label');
     const stepOneView = document.querySelector('#stepOneView');
     const stepTwoView = document.querySelector('#stepTwoView');
     const resetButton = document.querySelector('#resetButton');
@@ -686,6 +1085,13 @@
   graphPosition: document.querySelector('#graphPosition'),
   statusGroupPosition: document.querySelector('#statusGroupPosition'),
   graphCount: document.querySelector('#graphCount'),
+  iphoneSelectedElement: document.querySelector('#iphoneSelectedElement'),
+  iphoneIslandWidth: document.querySelector('#iphoneIslandWidth'),
+  iphoneIslandOffset: document.querySelector('#iphoneIslandOffset'),
+  iphoneNetworkOffset: document.querySelector('#iphoneNetworkOffset'),
+  iphoneSignalOffset: document.querySelector('#iphoneSignalOffset'),
+  iphoneBatteryOffset: document.querySelector('#iphoneBatteryOffset'),
+  iphoneShowChain: document.querySelector('#iphoneShowChain'),
       senderName: document.querySelector('#senderName'),
       senderDetails: document.querySelector('#senderDetails'),
       recipientName: document.querySelector('#recipientName'),
@@ -756,7 +1162,7 @@
       paytm: null,
       mobikwik: null
     };
-    const statusStyleKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount'];
+    const statusStyleKeys = ['time', 'network', 'battery', 'temperature', 'statusDots', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount', 'iphoneSelectedElement', 'iphoneIslandWidth', 'iphoneIslandOffset', 'iphoneNetworkOffset', 'iphoneSignalOffset', 'iphoneBatteryOffset', 'iphoneShowChain'];
     const statusStyleStates = {};
     let activeStatusStyle = '1';
 
@@ -889,6 +1295,13 @@
   graphPosition: Math.min(480, Math.max(380, Number.parseInt(fields.graphPosition.value, 10) || 415)),
   statusGroupPosition: Math.min(100, Math.max(0, Number.parseInt(fields.statusGroupPosition.value, 10) || 0)),
   graphCount: Number(fields.graphCount.value) === 2 ? 2 : 1,
+  iphoneSelectedElement: fields.iphoneSelectedElement.value,
+  iphoneIslandWidth: Math.min(240, Math.max(120, Number(fields.iphoneIslandWidth.value) || 200)),
+  iphoneIslandOffset: Number(fields.iphoneIslandOffset.value) || 0,
+  iphoneNetworkOffset: Number(fields.iphoneNetworkOffset.value) || 0,
+  iphoneSignalOffset: Number(fields.iphoneSignalOffset.value) || 0,
+  iphoneBatteryOffset: Number(fields.iphoneBatteryOffset.value) || 0,
+  iphoneShowChain: fields.iphoneShowChain.checked,
         senderName: activeProvider === 'mobikwik' ? (fields.mobikwikSenderName.value.trim() || 'Santanu Roy') : (fields.senderName.value.trim() || 'JOSHI'),
         senderDetails: activeProvider === 'mobikwik' ? 'JIO PAYMENTS BANK LTD - 2682' : (fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)'),
         recipientName: activeProvider === 'paytm' ? (fields.paytmRecipient.value.trim() || 'Mr Kinny L Mawnai') : activeProvider === 'mobikwik' ? (fields.mobikwikRecipientName.value.trim() || 'Pankaj Chamoli') : (fields.recipientName.value.trim() || 'Pankaj Chamoli'),
@@ -937,41 +1350,54 @@
       };
     }
 
-    function drawSignalBars(x, y, color, muted = null) {
+    function drawSignalBars(x, baseline, color, muted = null) {
       context.fillStyle = color;
-      [4, 7, 10, 13].forEach((height, index) => {
-        context.globalAlpha = muted !== null && index >= muted ? 0.25 : 1;
-        context.fillRect(x + index * 5, y - height, 3, height);
+      [4, 7, 10, 14].forEach((height, index) => {
+        context.globalAlpha = muted !== null && index >= muted ? 0.3 : 1;
+        roundedPath(context, x + index * 5, baseline - height, 3, height, 1.5);
+        context.fill();
       });
       context.globalAlpha = 1;
     }
 
-    function drawWifi(x, y, color) {
-      context.strokeStyle = color;
-      context.lineWidth = 2;
-      context.beginPath();
-      context.arc(x, y + 4, 12, Math.PI * 1.2, Math.PI * 1.8);
-      context.stroke();
-      context.beginPath();
-      context.arc(x, y + 4, 7, Math.PI * 1.2, Math.PI * 1.8);
-      context.stroke();
-      context.fillStyle = color;
-      context.beginPath(); context.arc(x, y + 6, 2, 0, Math.PI * 2); context.fill();
-    }
+  function drawWifi(x, centerY, color) {
+  const scale = 18 / 24;
+  const paths = [
+  new Path2D('M1.5 7.2C7.2 2.2 16.8 2.2 22.5 7.2'),
+  new Path2D('M4.2 10.8C8.5 7.1 15.5 7.1 19.8 10.8'),
+  new Path2D('M7.2 14.3C9.8 12.1 14.2 12.1 16.8 14.3'),
+  new Path2D('M9.8 17.2C11.1 16.1 12.9 16.1 14.2 17.2')
+  ];
+  context.save();
+  context.translate(x - 9, centerY - 9);
+  context.scale(scale, scale);
+  context.strokeStyle = color;
+  context.lineWidth = 2.5;
+  context.lineCap = 'round';
+  context.lineJoin = 'round';
+  paths.forEach(path => context.stroke(path));
+  context.fillStyle = color;
+  context.beginPath();
+  context.arc(12, 19.5, 1.3, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+  }
 
-    function drawBattery(x, y, color, percentage, withText = false) {
+    function drawBattery(x, centerY, color, percentage, withText = false) {
+      const top = centerY - 7;
       context.strokeStyle = color;
       context.lineWidth = 1.5;
-      roundedPath(context, x, y, 26, 13, 3);
+      roundedPath(context, x, top, 26, 14, 3);
       context.stroke();
       context.fillStyle = color;
-      context.fillRect(x + 27, y + 4, 3, 5);
-      context.fillRect(x + 3, y + 3, Math.max(2, 20 * percentage / 100), 7);
+      context.fillRect(x + 27, top + 4, 3, 6);
+      context.fillRect(x + 3, top + 3, Math.max(2, 20 * percentage / 100), 8);
       if (withText) {
         context.fillStyle = color;
         context.font = `600 8px ${fontStack}`;
         context.textAlign = 'center';
-        context.fillText(`${percentage}`, x + 13, y + 7);
+        context.textBaseline = 'middle';
+        context.fillText(`${percentage}`, x + 13, centerY);
       }
     }
 
@@ -986,37 +1412,189 @@
       context.fillStyle = ink;
       context.textBaseline = 'middle';
       context.textAlign = 'left';
-      context.font = style === 3 ? `700 italic 16px ${fontStack}` : `600 16px ${fontStack}`;
+      context.font = style === 3 ? `700 italic 14px ${fontStack}` : `600 14px ${fontStack}`;
       context.fillText(displayTime, 30, 29);
 
-      if (style === 2) {
-        context.font = `700 13px ${fontStack}`;
-        context.fillText('▰  ✦  ◉  ▣  ◆', 77, 29);
-        context.font = `600 12px ${fontStack}`;
-        context.fillText('◴', 350, 29);
-        context.font = `700 8px ${fontStack}`;
-        context.fillText('5G+', 374, 20); drawSignalBars(374, 39, ink);
-        context.fillText('5G', 411, 20); drawSignalBars(411, 39, ink);
-        drawWifi(455, 22, ink); drawBattery(482, 22, ink, values.battery);
-      } else if (style === 3) {
-        context.font = `600 11px ${fontStack}`;
-        context.fillText('4.8KB/s', 83, 29);
-        context.font = `700 7px ${fontStack}`;
-        context.fillText('VoLTE', 352, 18); context.fillText('4G', 370, 18); drawSignalBars(370, 39, ink);
-        context.fillText('VoLTE', 410, 18); context.fillText('4G', 428, 18); drawSignalBars(428, 39, ink);
-        drawBattery(476, 22, ink, values.battery, true);
+  if (style === 2) {
+  const iconY = 29;
+  const drawNotificationIcon = (x, color, type) => {
+    context.fillStyle = color;
+    context.strokeStyle = color;
+    context.lineWidth = 1.8;
+    if (type === 'chat') { roundedPath(context, x, 23, 14, 11, 3); context.fill(); context.beginPath(); context.moveTo(x + 3, 33); context.lineTo(x + 2, 36); context.lineTo(x + 7, 33); context.fill(); }
+    else if (type === 'compass') { context.beginPath(); context.arc(x + 8, iconY, 7, 0, Math.PI * 2); context.stroke(); context.beginPath(); context.moveTo(x + 5, 32); context.lineTo(x + 11, 25); context.lineTo(x + 9, 30); context.closePath(); context.fill(); }
+    else if (type === 'mail') { roundedPath(context, x, 23, 16, 12, 2); context.stroke(); context.beginPath(); context.moveTo(x + 1, 24); context.lineTo(x + 8, 30); context.lineTo(x + 15, 24); context.stroke(); }
+    else if (type === 'game') { roundedPath(context, x, 25, 16, 9, 4); context.fill(); context.fillStyle = '#ffad05'; context.fillRect(x + 3, 28, 5, 1.5); context.fillRect(x + 4.75, 26.25, 1.5, 5); context.beginPath(); context.arc(x + 12, 28, 1, 0, Math.PI * 2); context.fill(); }
+    else { context.beginPath(); context.arc(x + 8, iconY, 7, 0, Math.PI * 2); context.fill(); context.fillStyle = '#ffad05'; context.beginPath(); context.arc(x + 8, iconY, 2.5, 0, Math.PI * 2); context.fill(); }
+  };
+  drawNotificationIcon(77, '#3b3100', 'chat'); drawNotificationIcon(99, '#b7202e', 'alert'); drawNotificationIcon(121, '#3b3100', 'compass'); drawNotificationIcon(143, '#3b3100', 'mail'); drawNotificationIcon(165, '#3b3100', 'game');
+  const drawOrangeSim = (x, label) => {
+    context.textAlign = 'center';
+    context.font = `700 9px ${fontStack}`;
+    context.fillText(label, x + 9, 15);
+    context.fillStyle = ink;
+    [4, 7, 10, 13].forEach((height, index) => {
+      roundedPath(context, x + index * 5, 40 - height, 3, height, 1.2);
+      context.fill();
+    });
+  };
+  drawOrangeSim(374, '5G+');
+  drawOrangeSim(407, '5G');
+
+  context.strokeStyle = ink;
+  context.lineWidth = 1.8;
+  context.lineCap = 'round';
+  context.beginPath();
+  context.arc(448, 25, 8, Math.PI * 1.2, Math.PI * 1.8);
+  context.stroke();
+  context.beginPath();
+  context.arc(448, 25, 4.5, Math.PI * 1.2, Math.PI * 1.8);
+  context.stroke();
+  context.fillStyle = ink;
+  context.beginPath();
+  context.arc(448, 34, 1.7, 0, Math.PI * 2);
+  context.fill();
+  context.lineCap = 'butt';
+  drawBattery(474, 29, ink, values.battery);
+  } else if (style === 3) {
+  context.fillStyle = '#fffaf0';
+  context.fillRect(0, 0, width, 44);
+  context.fillStyle = '#343434';
+  context.textBaseline = 'middle';
+  context.textAlign = 'left';
+  context.font = `600 17px ${fontStack}`;
+  context.fillText(displayTime, 20, 22);
+  context.fillStyle = '#b9b9b9';
+  context.font = `400 15px ${fontStack}`;
+  context.fillText('|', 76, 22);
+  context.fillStyle = '#343434';
+  context.font = `600 15px ${fontStack}`;
+  context.fillText('4.8KB/s', 88, 22);
+  context.fillStyle = '#000000';
+  roundedPath(context, 154, 16, 12, 12, 3);
+  context.fill();
+
+  const drawXiaomiSignal = (x) => {
+    const baseline = 34;
+    [4, 7, 10, 13].forEach((height, index) => {
+      roundedPath(context, x + index * 4.5, baseline - height, 3, height, 1.2);
+      context.fill();
+    });
+  };
+  const drawSimGroup = (x) => {
+    context.strokeStyle = '#343434';
+    context.lineWidth = 1.5;
+    roundedPath(context, x, 13, 22, 18, 4);
+    context.stroke();
+    context.fillStyle = '#343434';
+    context.textAlign = 'center';
+    context.font = `700 7px ${fontStack}`;
+    context.fillText('Vo', x + 11, 19);
+    context.fillText('LTE', x + 11, 27);
+    context.textAlign = 'left';
+    context.font = `700 10px ${fontStack}`;
+    context.fillText('4G', x + 25, 17);
+    context.font = `700 8px ${fontStack}`;
+    context.fillText('↕', x + 29, 28);
+    drawXiaomiSignal(x + 42);
+  };
+  const batteryX = width - 50;
+  const secondSimX = batteryX - 8 - 65;
+  const firstSimX = secondSimX - 8 - 65;
+  drawSimGroup(firstSimX);
+  drawSimGroup(secondSimX);
+  context.strokeStyle = '#343434';
+  context.lineWidth = 1.5;
+  roundedPath(context, batteryX, 14, 30, 16, 4);
+  context.stroke();
+  context.fillStyle = '#343434';
+  roundedPath(context, batteryX + 31, 19, 3, 6, 1.5);
+  context.fill();
+  context.textAlign = 'center';
+  context.font = `700 11px ${fontStack}`;
+  context.fillText(`${values.battery}`, batteryX + 15, 22);
       } else if (style === 4) {
-        context.fillStyle = '#000';
-        roundedPath(context, 150, 7, 150, 44, 23); context.fill();
-        context.fillStyle = '#20e875';
-        context.beginPath(); context.arc(174, 29, 8, 0, Math.PI * 2); context.fill();
-        context.fillStyle = ink;
-        drawSignalBars(390, 39, ink, 2);
-        context.font = `600 13px ${fontStack}`; context.fillText('5G', 416, 29); drawBattery(449, 22, ink, values.battery, true);
-      } else {
-        context.font = `600 8px ${fontStack}`; context.fillText('VoLTE', 337, 19); context.fillText('25.84 KB/s', 337, 35);
-        drawWifi(400, 22, ink); drawSignalBars(423, 39, ink); drawSignalBars(450, 39, ink); drawBattery(480, 22, ink, values.battery, true);
-      }
+        context.fillStyle = '#f2f2f2';
+        context.fillRect(0, 0, width, 52);
+
+        context.fillStyle = '#000000';
+        context.font = `600 20px ${fontStack}`;
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        context.fillText(displayTime, 24, 26);
+
+  const islandWidth = Math.min(values.iphoneIslandWidth, Math.max(0, width - 2 * 24 - 8 - 95));
+  const islandX = (width - islandWidth) / 2 + values.iphoneIslandOffset;
+  context.fillStyle = '#000000';
+  roundedPath(context, islandX, 7, islandWidth, 38, 19);
+  context.fill();
+
+  if (values.iphoneShowChain) {
+  context.save();
+  context.translate(islandX + 14 + 12, 26);
+  context.rotate(-Math.PI / 4);
+  context.strokeStyle = '#34C759';
+  context.lineWidth = 2.5;
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
+  roundedPath(context, -9, -9, 12, 12, 3.5);
+  context.stroke();
+  roundedPath(context, -3, -3, 12, 12, 3.5);
+  context.stroke();
+  context.restore();
+  }
+  
+  const rightCenterY = 26;
+  const batteryWidth = 33;
+  const networkWidth = 24;
+  const signalWidth = 22;
+  const rightGroupWidth = signalWidth + 8 + networkWidth + 8 + batteryWidth;
+  const rightGroupX = width - 24 - rightGroupWidth;
+  const signalX = rightGroupX + values.iphoneSignalOffset;
+  [5, 8, 11, 14].forEach((barHeight, index) => {
+  context.fillStyle = index < 2 ? '#000000' : '#c7c7cc';
+  roundedPath(context, signalX + index * 6, rightCenterY + 7 - barHeight, 4, barHeight, 2);
+  context.fill();
+  });
+  
+  context.fillStyle = '#000000';
+  context.font = `600 18px ${fontStack}`;
+  context.textAlign = 'left';
+  context.fillText(values.network, rightGroupX + signalWidth + 8 + values.iphoneNetworkOffset, rightCenterY);
+  
+  const batteryX = rightGroupX + signalWidth + 8 + networkWidth + 8 + values.iphoneBatteryOffset;
+        const batteryTop = rightCenterY - 8;
+        context.strokeStyle = '#8e8e93';
+        context.lineWidth = 1.5;
+        roundedPath(context, batteryX, batteryTop, 29, 16, 4);
+        context.stroke();
+        context.fillStyle = '#8e8e93';
+        roundedPath(context, batteryX + 30, batteryTop + 5, 3, 6, 1.5);
+        context.fill();
+        context.fillStyle = '#000000';
+        context.fillRect(batteryX + 3, batteryTop + 3, Math.max(2, 23 * values.battery / 100), 10);
+  } else {
+  const navyCenterY = 29;
+  context.fillStyle = '#f5f7fa';
+  context.textAlign = 'left';
+  context.textBaseline = 'middle';
+  context.font = `700 10px ${fontStack}`;
+  context.fillText('VoLTE', 337, 23);
+  context.fillText('25.84 KB/s', 337, 35);
+  drawWifi(399, navyCenterY, ink);
+  drawSignalBars(423, 39, ink);
+  drawSignalBars(450, 39, ink);
+  const navyBatteryX = 480;
+  context.strokeStyle = '#f5f7fa';
+  context.lineWidth = 1.5;
+  roundedPath(context, navyBatteryX, 22, 26, 14, 3);
+  context.stroke();
+  context.fillStyle = '#f5f7fa';
+  context.fillRect(navyBatteryX + 27, 26, 3, 6);
+  context.fillRect(navyBatteryX + 3, 25, Math.max(2, 20 * values.battery / 100), 8);
+  context.font = `600 13px ${fontStack}`;
+  context.fillText(`${values.battery}%`, navyBatteryX + 36, navyCenterY);
+  }
     }
 
     function drawStatusBar(values) {
@@ -1029,7 +1607,7 @@
       context.textBaseline = 'middle';
       context.textAlign = 'left';
       context.fillStyle = '#20232a';
-      context.font = `500 18px ${fontStack}`;
+      context.font = `600 14px ${fontStack}`;
       const timeParts = values.time.split(':');
       const displayTime = `${Number.parseInt(timeParts[0], 10)}:${timeParts[1] || '01'}`;
       context.fillText(displayTime, 34, 30);
@@ -1077,7 +1655,7 @@
       context.arc(340, 25, 2, 0, Math.PI * 2);
       context.fill();
       context.fillStyle = '#24272c';
-      context.font = `700 8px ${fontStack}`;
+      context.font = `700 10px ${fontStack}`;
       const groupOffset = values.statusGroupPosition;
       context.fillText('0.08 Vo', 366 + groupOffset, 24);
       context.font = `700 7px ${fontStack}`;
@@ -1089,10 +1667,10 @@
   const graphBase = values.graphPosition + groupOffset;
   const graphPositions = values.graphCount === 2 ? [graphBase, graphBase + values.graphGap] : [graphBase];
       for (const graphX of graphPositions) {
-        for (let i = 0; i < 4; i += 1) {
-          const barHeight = 7 + i * 4;
-          context.fillRect(graphX + i * 6, 38 - barHeight, 4, barHeight);
-        }
+        [4, 7, 10, 14].forEach((barHeight, index) => {
+          roundedPath(context, graphX + index * 5, 38 - barHeight, 3, barHeight, 1.5);
+          context.fill();
+        });
       }
       context.font = `600 11px ${fontStack}`;
       context.textAlign = 'right';
@@ -1318,20 +1896,34 @@
   const amountSize = fitFont(amountText, 240, 48, 700, 30);
   context.font = `700 ${amountSize}px ${fontStack}`;
   const amountWidth = context.measureText(amountText).width;
-  const amountGroupWidth = amountWidth + 34 + 44;
+  const amountGap = 12;
+  const iconMarginLeft = 12;
+  const iconSize = 40;
+  const amountGroupWidth = amountWidth + amountGap + iconMarginLeft + iconSize;
   const amountStart = (width - amountGroupWidth) / 2;
   context.fillStyle = '#111';
   context.textAlign = 'left';
   context.fillText(amountText, amountStart, 356);
-      context.textAlign = 'center';
-      const warningX = amountStart + 50 + amountWidth + 34;
-      context.fillStyle = '#f7a900';
-      context.beginPath();
-      context.arc(warningX, 355, 22, 0, Math.PI * 2);
-      context.fill();
-      context.fillStyle = '#fff';
-      context.font = `700 25px ${fontStack}`;
-      context.fillText('!', warningX, 355);
+  context.textAlign = 'center';
+  const warningX = amountStart + amountWidth + amountGap + iconMarginLeft + iconSize / 2;
+  context.fillStyle = '#FF9F0A';
+  context.beginPath();
+  context.arc(warningX, 355, iconSize / 2, 0, Math.PI * 2);
+  context.fill();
+  context.save();
+  context.translate(warningX - iconSize / 2, 355 - iconSize / 2);
+  context.scale(iconSize / 40, iconSize / 40);
+  context.strokeStyle = '#fff';
+  context.lineWidth = 3.5;
+  context.lineCap = 'round';
+  context.beginPath();
+  context.moveTo(20, 10); context.lineTo(20, 25);
+  context.stroke();
+  context.fillStyle = '#fff';
+  context.beginPath();
+  context.arc(20, 31, 2, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
 
       context.fillStyle = '#252525';
       context.font = `700 20px ${fontStack}`;
@@ -1460,7 +2052,7 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       context.textAlign = 'left';
       context.fillStyle = '#fff';
       context.font = `700 28px ${fontStack}`;
-      context.fillText('‹', 30, 105);
+      context.fillText('���', 30, 105);
       context.fillText('Transfer in Progress', 86, 105);
       context.font = `700 21px ${fontStack}`;
       context.fillText('Share', 410, 105);
@@ -1712,6 +2304,9 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       ensureProviderState(activeProvider);
       applyProviderState(providerState[activeProvider]);
       studioScreen.hidden = false;
+      studioScreen.classList.remove('editor-ready');
+      studioScreen.classList.add('editor-revealing');
+      requestAnimationFrame(() => studioScreen.classList.add('editor-ready'));
       const providerCopy = {
         freecharge: {
           title: 'Customize your payment screen',
@@ -1751,32 +2346,190 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
 
     function showFreechargeEditor() {
     selectProvider('freecharge');
-    stepOneButton.textContent = 'Step 1 · Customize';
-    stepTwoButton.textContent = 'Step 2 · Edit payment details';
+  stepOneLabel.textContent = 'Step 1 · Customize';
+  stepTwoLabel.textContent = 'Step 2 · Edit payment details';
     showStep(1);
     }
 
     function showPaytmEditor() {
     selectProvider('paytm');
-    stepOneButton.textContent = 'Step 1 · Paytm pending screen';
-    stepTwoButton.textContent = 'Step 2 · Transfer in progress';
+  stepOneLabel.textContent = 'Step 1 · Paytm pending screen';
+  stepTwoLabel.textContent = 'Step 2 · Transfer in progress';
     showStep(1);
     }
 
     function showMobikwikEditor() {
     selectProvider('mobikwik');
-    stepOneButton.textContent = 'Step 1 · Pending transfer';
-    stepTwoButton.textContent = 'Step 2 · Payment pending details';
+  stepOneLabel.textContent = 'Step 1 · Pending transfer';
+  stepTwoLabel.textContent = 'Step 2 · Payment pending details';
     showStep(1);
     }
 
-    freechargeButton.addEventListener('click', showFreechargeEditor);
-    paytmButton.addEventListener('click', showPaytmEditor);
-    mobikwikButton.addEventListener('click', showMobikwikEditor);
+  function sizeMascotZone() {
+  if (!mascotZone) return;
+  const cards = document.querySelector('.provider-card');
+  const bottom = cards?.getBoundingClientRect().bottom ?? 220;
+  mascotZone.style.setProperty('--cards-bottom', `${bottom}px`);
+  if (window.innerWidth <= 760) mascotZone.style.height = '260px';
+  else mascotZone.style.height = `${Math.max(320, window.innerHeight - bottom - 24)}px`;
+  }
+  function mascotPosition(button) {
+  if (!mascotZone || !button) return 0;
+  const card = button.getBoundingClientRect();
+  const zone = mascotZone.getBoundingClientRect();
+  return card.left + card.width / 2 - (zone.left + zone.width / 2);
+  }
+  function moveMascotTo(button) {
+  if (mascotDismissed || !dogMascot) return;
+  const x = mascotPosition(button);
+  const cardIndex = [freechargeButton, paytmButton, mobikwikButton].indexOf(button);
+  const lookX = cardIndex === 0 ? -20 : cardIndex === 2 ? 20 : 0;
+  const lookAngle = cardIndex === 0 ? -18 : cardIndex === 2 ? 18 : 0;
+  dogMascot.style.setProperty('--look-x', `${lookX}px`);
+  dogMascot.style.setProperty('--look-angle', `${lookAngle}deg`);
+  mascotZone.classList.add('is-hovering');
+  if (mascotShadow) mascotShadow.style.transform = 'translateX(-50%)';
+  }
+  function calmMascot() {
+  if (!dogMascot || mascotDismissed) return;
+  mascotZone.classList.remove('is-hovering');
+  dogMascot.style.removeProperty('--look-x');
+  dogMascot.style.removeProperty('--look-angle');
+  if (mascotShadow) mascotShadow.style.transform = 'translateX(-50%)';
+  }
+  function tapMascotAt(button) {
+  if (mascotDismissed || !dogMascot) return;
+  moveMascotTo(button);
+  button.classList.remove('mascot-tap-target');
+  void button.offsetWidth;
+  button.classList.add('mascot-tap-target');
+  const tapTimer = window.setTimeout(() => { button.classList.remove('mascot-tap-target'); mascotTimers.delete(tapTimer); }, 1200);
+  mascotTimers.add(tapTimer);
+  }
+  function startMascotLoop() {
+  if (!mascotZone || !dogMascot || mascotDismissed) return;
+  dogMascot.style.removeProperty('--look-x');
+  dogMascot.style.removeProperty('--look-angle');
+  mascotZone.classList.remove('is-hovering');
+  }
+  function handleCardEnter(button) {
+  if (mascotDismissed) return;
+  mascotHoverTarget = button;
+  const index = [freechargeButton, paytmButton, mobikwikButton].indexOf(button) + 1;
+  mascotZone.classList.remove('is-idle', 'is-card-1', 'is-card-2', 'is-card-3', 'is-sad');
+  mascotZone.classList.add('is-hovering', `is-card-${index}`);
+  moneyRain?.classList.add('is-fast');
+  moveMascotTo(button);
+  tapMascotAt(button);
+  }
+  function handleCardLeave() {
+  mascotHoverTarget = null;
+  mascotZone.classList.remove('is-hovering', 'is-card-1', 'is-card-2', 'is-card-3');
+  moneyRain?.classList.remove('is-fast');
+  mascotZone.classList.add('is-sad');
+  const calmTimer = window.setTimeout(() => { if (!mascotHoverTarget) { mascotZone.classList.remove('is-sad'); mascotZone.classList.add('is-idle'); calmMascot(); } mascotTimers.delete(calmTimer); }, 1200);
+  mascotTimers.add(calmTimer);
+  }
+  function stopMascotResources() {
+  window.clearTimeout(mascotTimer);
+  mascotTimer = 0;
+  mascotTimers.forEach(timer => window.clearTimeout(timer));
+  mascotTimers.clear();
+  if (dogMascot) {
+    dogMascot.getAnimations().forEach(animation => animation.cancel());
+    dogMascot.querySelectorAll('*').forEach(element => element.getAnimations().forEach(animation => animation.cancel()));
+  }
+  }
+  function collapseMascotZone() {
+  if (!mascotZone) return;
+  const finishCollapse = event => {
+    if (event.propertyName !== 'height') return;
+    mascotZone.removeEventListener('transitionend', finishCollapse);
+    mascotZone.classList.add('is-collapsed');
+    stopMascotResources();
+  };
+  mascotZone.addEventListener('transitionend', finishCollapse);
+  mascotZone.style.height = `${mascotZone.getBoundingClientRect().height}px`;
+  requestAnimationFrame(() => { mascotZone.style.height = '0px'; mascotZone.classList.add('is-collapsing'); });
+  }
+  function dismissMascot() {
+  if (mascotDone) return;
+  mascotDismissed = true;
+  mascotDone = true;
+  stopMascotResources();
+  window.clearTimeout(moneyBurstTimer);
+  if (moneyRain) { moneyRain.classList.remove('is-fast', 'is-burst'); moneyRain.innerHTML = ''; }
+  if (mascotZone) {
+    mascotZone.classList.remove('is-hovering', 'is-jumping', 'is-driving', 'is-sad');
+    mascotZone.classList.add('is-exiting');
+    const removeMascot = event => {
+      if (event.propertyName !== 'opacity') return;
+      mascotZone.removeEventListener('transitionend', removeMascot);
+      mascotZone.remove();
+    };
+    mascotZone.addEventListener('transitionend', removeMascot);
+    window.setTimeout(() => { if (mascotZone.isConnected) mascotZone.remove(); }, 260);
+  }
+  }
+  [freechargeButton, paytmButton, mobikwikButton].forEach(button => {
+  button.addEventListener('mouseenter', () => handleCardEnter(button));
+  button.addEventListener('mouseleave', handleCardLeave);
+  button.addEventListener('touchstart', () => handleCardEnter(button), { passive: true });
+  });
+  window.addEventListener('resize', () => { if (mascotHoverTarget) moveMascotTo(mascotHoverTarget); });
+  sizeMascotZone();
+  window.addEventListener('resize', sizeMascotZone);
+  createMoney();
+  mascotZone.classList.add('is-idle');
+  function addStatusFieldRipple(control, event) {
+  const rect = control.getBoundingClientRect();
+  control.style.setProperty('--ripple-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+  control.style.setProperty('--ripple-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+  control.classList.remove('is-rippling');
+  void control.offsetWidth;
+  control.classList.add('is-rippling');
+  const fieldRippleTimer = window.setTimeout(() => { control.classList.remove('is-rippling'); mascotTimers.delete(fieldRippleTimer); }, 520);
+  mascotTimers.add(fieldRippleTimer);
+  }
+  [editorForm, paytmStepTwoForm].forEach(form => form?.addEventListener('pointerdown', event => {
+  const control = event.target.closest('input, textarea, select');
+  if (control && form.contains(control)) addStatusFieldRipple(control, event);
+  }));
+  function addProviderRipple(button, event) {
+  const rect = button.getBoundingClientRect();
+  button.style.setProperty('--ripple-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+  button.style.setProperty('--ripple-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+  button.classList.remove('is-rippling');
+  void button.offsetWidth;
+  button.classList.add('is-rippling');
+  const providerRippleTimer = window.setTimeout(() => { button.classList.remove('is-rippling'); mascotTimers.delete(providerRippleTimer); }, 520);
+  mascotTimers.add(providerRippleTimer);
+  }
+freechargeButton.addEventListener('click', event => { addProviderRipple(freechargeButton, event); showFreechargeEditor(); dismissMascot(); });
+ paytmButton.addEventListener('click', event => { addProviderRipple(paytmButton, event); showPaytmEditor(); dismissMascot(); });
+  mobikwikButton.addEventListener('click', event => { addProviderRipple(mobikwikButton, event); showMobikwikEditor(); dismissMascot(); });
     stepOneButton.addEventListener('click', () => showStep(1));
     stepTwoButton.addEventListener('click', () => showStep(2));
 
   statusStyleStates['1'] = captureStatusStyle();
+  canvas.addEventListener('click', event => {
+  if (fields.statusStyle.value !== '4') return;
+  const rect = canvas.getBoundingClientRect();
+  const x = (event.clientX - rect.left) * canvas.width / rect.width;
+  const width = canvas.width;
+  const islandWidth = Math.min(Number(fields.iphoneIslandWidth.value) || 200, width - 2 * 24 - 8 - 95);
+  const islandX = (width - islandWidth) / 2 + (Number(fields.iphoneIslandOffset.value) || 0);
+  const groupX = width - 24 - (22 + 8 + 24 + 8 + 33);
+  const distances = [{ key: 'island', test: x >= islandX && x <= islandX + islandWidth }, { key: 'signal', test: x >= groupX && x < groupX + 30 }, { key: 'network', test: x >= groupX + 30 && x < groupX + 54 }, { key: 'battery', test: x >= groupX + 54 && x < groupX + 90 }];
+  const selected = distances.find(item => item.test)?.key;
+  if (selected) {
+    fields.iphoneSelectedElement.value = selected;
+    document.querySelector('#iphoneSelectionHint').textContent = `${selected} selected. Adjust its controls below.`;
+  }
+  });
+
+  [fields.iphoneSelectedElement, fields.iphoneIslandWidth, fields.iphoneIslandOffset, fields.iphoneNetworkOffset, fields.iphoneSignalOffset, fields.iphoneBatteryOffset, fields.iphoneShowChain].forEach(field => field.addEventListener('input', renderMockup));
+
   fields.statusStyle.addEventListener('change', () => {
   statusStyleStates[activeStatusStyle] = captureStatusStyle();
   applyStatusStyle(fields.statusStyle.value);
@@ -1784,6 +2537,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
     const id = field.querySelector('input, select')?.id;
     field.hidden = fields.statusStyle.value !== '1' && ['temperature', 'dotGap', 'graphGap', 'graphPosition', 'statusGroupPosition', 'graphCount'].includes(id);
   });
+  document.querySelector('#iphoneControlsField').hidden = fields.statusStyle.value !== '4';
+  document.querySelector('#iphoneElementControls').hidden = fields.statusStyle.value !== '4';
   renderMockup();
   });
 

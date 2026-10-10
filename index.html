@@ -26,6 +26,7 @@
         }
 
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
     body { min-width: 320px; min-height: 100vh; margin: 0; background: #f2f4f7; }
     button, input, textarea { font: inherit; }
     button { cursor: pointer; }
@@ -374,7 +375,7 @@
         <p class="editor-description">Changes appear instantly in the phone preview. Safety labels remain on the exported image.</p>
 
         <form class="editor-form" id="editorForm">
-          <fieldset class="editor-section">
+          <fieldset class="editor-section" id="statusBarSection">
             <legend class="section-title">Phone status bar</legend>
             <div class="field-grid">
               <div class="field">
@@ -614,8 +615,9 @@
     const freechargeStepTwoSections = [...document.querySelectorAll('.freecharge-step-two-only')];
     const paytmStepTwoSections = [...document.querySelectorAll('.paytm-step-two-only')];
     const stepTwoDescription = document.querySelector('#stepTwoDescription');
-    const senderRecipientSection = document.querySelector('#senderRecipientSection');
-    const senderNameField = document.querySelector('#senderNameField');
+      const senderRecipientSection = document.querySelector('#senderRecipientSection');
+      const statusBarSection = document.querySelector('#statusBarSection');
+      const senderNameField = document.querySelector('#senderNameField');
     const senderDetailsField = document.querySelector('#senderDetailsField');
     const recipientNameField = document.querySelector('#recipientNameField');
     const recipientDetailsField = document.querySelector('#recipientDetailsField');
@@ -789,8 +791,8 @@
   graphPosition: Math.min(480, Math.max(380, Number.parseInt(fields.graphPosition.value, 10) || 415)),
   statusGroupPosition: Math.min(100, Math.max(0, Number.parseInt(fields.statusGroupPosition.value, 10) || 0)),
   graphCount: Number(fields.graphCount.value) === 2 ? 2 : 1,
-        senderName: fields.senderName.value.trim() || 'JOSHI',
-        senderDetails: fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)',
+        senderName: activeProvider === 'mobikwik' ? 'Santanu Roy' : (fields.senderName.value.trim() || 'JOSHI'),
+        senderDetails: activeProvider === 'mobikwik' ? 'JIO PAYMENTS BANK LTD - 2682' : (fields.senderDetails.value.trim() || 'INDIAN BANK (xxxx 0739)'),
         recipientName: activeProvider === 'paytm' ? (fields.paytmRecipient.value.trim() || 'Mr Kinny L Mawnai') : (fields.recipientName.value.trim() || 'Pankaj Chamoli'),
         recipientDetails: activeProvider === 'paytm' ? (fields.paytmBank.value.trim() || 'SBI Bank - 8063') : (fields.recipientDetails.value.trim() || 'PHONE ···· 0000'),
         paytmTransaction: fields.paytmTransaction.value.trim() || 'PTM0e1812ad5dd1484f925d775ff1663395',
@@ -1461,7 +1463,7 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       stepTwoButton.setAttribute('aria-selected', String(!isStepOne));
   const paytmStepActive = activeProvider === 'paytm';
   paytmDetailsSection.hidden = !paytmStepActive || !isStepOne;
-      freechargeStepTwoSections.forEach(section => { section.hidden = paytmStepActive; });
+      freechargeStepTwoSections.forEach(section => { section.hidden = paytmStepActive || activeProvider === 'mobikwik'; });
       paytmStepTwoSections.forEach(section => { section.hidden = !paytmStepActive || isStepOne; });
       if (paytmStepActive) stepTwoDescription.textContent = 'Edit the Paytm transfer screen shown in Step 2.';
       renderMockup();
@@ -1492,13 +1494,14 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       editorDescription.textContent = providerCopy.description;
       freechargeTextSection.hidden = provider !== 'freecharge';
       paytmDetailsSection.hidden = provider !== 'paytm';
+      statusBarSection.hidden = provider === 'mobikwik';
       senderRecipientSection.hidden = provider === 'paytm';
-      const needsSender = provider === 'freecharge' || provider === 'mobikwik';
+      const needsSender = provider === 'freecharge';
       senderNameField.hidden = !needsSender;
       senderDetailsField.hidden = !needsSender;
       recipientNameField.hidden = provider === 'paytm';
       recipientDetailsField.hidden = provider === 'paytm';
-      senderRecipientLegend.textContent = provider === 'paytm' ? 'Recipient' : 'Sender and recipient';
+      senderRecipientLegend.textContent = provider === 'paytm' ? 'Recipient' : provider === 'mobikwik' ? 'Payment details' : 'Sender and recipient';
       Object.entries(providerButtons).forEach(([name, button]) => {
         const isActive = name === provider;
         button.classList.toggle('active', isActive);

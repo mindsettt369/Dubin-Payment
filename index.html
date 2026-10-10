@@ -68,29 +68,29 @@
   .mascot-zone { position: relative; height: 220px; margin: 0; padding: 0; overflow: visible; pointer-events: none; opacity: 1; visibility: visible; transition: height .5s cubic-bezier(.4, 0, .2, 1), opacity .3s ease, margin .5s cubic-bezier(.4, 0, .2, 1); }
   .mascot-zone.is-collapsing { height: 0; margin: 0; padding: 0; overflow: hidden; opacity: 0; pointer-events: none; visibility: hidden; }
   .mascot-zone.is-collapsed { display: none; }
-  .dog-mascot { position: absolute; left: 0; top: 34px; width: 120px; height: 120px; transform: translate3d(0, 0, 0); opacity: 1; transform-origin: 50% 100%; filter: drop-shadow(0 12px 8px rgba(47, 43, 37, .13)); transition: transform 1.2s cubic-bezier(.34, 1.2, .64, 1), opacity .8s ease; }
-  .dog-mascot__body { transform-box: fill-box; transform-origin: 50% 100%; animation: dogBreathe 2.5s ease-in-out infinite; }
-  .dog-mascot__tail { transform-box: fill-box; transform-origin: 15% 75%; animation: dogTail .5s ease-in-out infinite alternate; }
-  .dog-mascot__eyes { transform-box: fill-box; transform-origin: 50% 50%; animation: dogBlink 4s ease-in-out infinite; }
-  .dog-mascot__head { transform-box: fill-box; transform-origin: 50% 100%; transition: transform .5s ease; }
-  .dog-mascot__paw { transform-box: fill-box; transform-origin: 20% 90%; transition: transform .4s cubic-bezier(.34, 1.56, .64, 1); }
-  .dog-mascot.is-looking .dog-mascot__head { transform: rotate(-8deg); }
-  .dog-mascot.is-tapping .dog-mascot__paw { animation: dogTap .4s ease-in-out 3; }
-  .dog-mascot__bubble { transform-box: fill-box; transform-origin: 50% 100%; opacity: 0; transform: scale(0); }
-  .dog-mascot.is-tapping .dog-mascot__bubble { animation: dogBubble .45s cubic-bezier(.34, 1.56, .64, 1) forwards; }
-  .dog-mascot.is-jumping { animation: dogJump .55s cubic-bezier(.34, 1.56, .64, 1); }
-  .dog-mascot.is-leaving { opacity: 0; transform: translate3d(120vw, 0, 0) !important; transition: transform .8s ease-in, opacity .8s ease-in; }
+  .dog-mascot { position: absolute; left: 0; top: 34px; width: 260px; height: auto; max-height: 260px; object-fit: contain; transform: translate3d(0, 40px, 0); opacity: 0; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 12px 8px rgba(47, 43, 37, .18)); animation: dogEntrance .8s cubic-bezier(.34, 1.56, .64, 1) forwards, dogRideBob 1.6s ease-in-out 0.8s infinite, dogRideTilt 2.4s ease-in-out 0.8s infinite; transition: transform .7s ease-in, opacity .7s ease-in; }
+  .dog-mascot.is-looking { filter: drop-shadow(0 12px 8px rgba(47, 43, 37, .18)); }
+  .dog-mascot.is-tapping { animation: dogEntrance .8s cubic-bezier(.34, 1.56, .64, 1) forwards, dogRideBob 1.6s ease-in-out infinite, dogRideTilt 2.4s ease-in-out infinite, dogPointBounce .35s ease-in-out 3; }
+  .dog-mascot.is-jumping { animation: dogHappyJump .55s cubic-bezier(.34, 1.56, .64, 1); }
+  .dog-mascot.is-leaving { opacity: 0; transform: translate3d(120vw, 0, 0) !important; transition: transform .7s ease-in, opacity .7s ease-in; }
   .dog-mascot.is-dismissed { display: none; }
-  .mascot-shadow { position: absolute; left: 0; top: 146px; width: 76px; height: 12px; border-radius: 50%; background: rgba(47, 43, 37, .16); opacity: .7; transform: translateX(22px) scale(1); transition: transform 1.2s ease, opacity .8s ease; }
-  .dog-mascot.is-jumping + .mascot-shadow { transform: translateX(22px) scale(.7); opacity: .35; }
-  @keyframes dogBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-  @keyframes dogTail { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
-  @keyframes dogBlink { 0%, 43%, 47%, 100% { transform: scaleY(1); } 45% { transform: scaleY(.08); } }
-  @keyframes dogTap { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-42deg) translateY(-4px); } }
-  @keyframes dogBubble { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
-  @keyframes dogJump { 0%, 100% { transform: translate3d(var(--dog-x, 0px), var(--dog-y, 0px), 0); } 45% { transform: translate3d(var(--dog-x, 0px), calc(var(--dog-y, 0px) - 20px), 0); } }
-  @media (max-width: 760px) { .mascot-zone { height: 220px; } .dog-mascot { width: 90px; height: 90px; } .mascot-shadow { top: 115px; width: 62px; } }
-  @media (prefers-reduced-motion: reduce) { .dog-mascot__body { animation: dogBreathe 4s ease-in-out infinite; } .dog-mascot__tail { animation-duration: 1.3s; } .dog-mascot__eyes, .dog-mascot.is-tapping .dog-mascot__paw, .dog-mascot.is-tapping .dog-mascot__bubble { animation: none; } .dog-mascot.is-looking .dog-mascot__head { transform: rotate(-8deg); } }
+  .wind-streaks { position: absolute; inset: 20px 0 30px; overflow: hidden; pointer-events: none; }
+  .wind-streaks i { position: absolute; left: 100%; height: 2px; border-radius: 99px; background: rgba(255, 255, 255, .85); opacity: .6; animation: windLeft var(--wind-duration) linear var(--wind-delay) infinite; }
+  .wind-streaks i:nth-child(1) { top: 24%; width: 34px; --wind-duration: .8s; --wind-delay: 0s; }
+  .wind-streaks i:nth-child(2) { top: 38%; width: 58px; --wind-duration: 1.1s; --wind-delay: .2s; }
+  .wind-streaks i:nth-child(3) { top: 52%; width: 24px; --wind-duration: .95s; --wind-delay: .45s; }
+  .wind-streaks i:nth-child(4) { top: 66%; width: 46px; --wind-duration: 1.4s; --wind-delay: .1s; }
+  .wind-streaks i:nth-child(5) { top: 78%; width: 30px; --wind-duration: 1s; --wind-delay: .55s; }
+  .mascot-shadow { position: absolute; left: 50%; top: 292px; width: 150px; height: 14px; border-radius: 50%; background: rgba(47, 43, 37, .16); opacity: .7; transform: translateX(-50%) scale(1); transition: transform .7s ease, opacity .7s ease; }
+  .dog-mascot.is-jumping + .mascot-shadow { transform: translateX(-50%) scale(.7); opacity: .35; }
+  @keyframes dogEntrance { from { transform: translate3d(var(--dog-x, 0px), 40px, 0); opacity: 0; } to { transform: translate3d(var(--dog-x, 0px), var(--dog-y, 34px), 0); opacity: 1; } }
+  @keyframes dogRideBob { 0%, 100% { margin-top: 0; } 50% { margin-top: -6px; } }
+  @keyframes dogRideTilt { 0%, 100% { rotate: -1.5deg; } 50% { rotate: 1.5deg; } }
+  @keyframes dogPointBounce { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+  @keyframes dogHappyJump { 0%, 100% { translate: 0 0; } 45% { translate: 0 -24px; } }
+  @keyframes windLeft { from { translate: 0 0; } to { translate: -130vw 0; } }
+  @media (max-width: 760px) { .mascot-zone { height: 220px; } .dog-mascot { width: 200px; max-height: 200px; } .mascot-shadow { top: 230px; width: 120px; } }
+  @media (prefers-reduced-motion: reduce) { .dog-mascot, .wind-streaks i { animation-duration: 4s; animation-iteration-count: infinite; } .dog-mascot.is-leaving { animation: none; } }
     .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
     .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; overflow: visible; }
     .provider-button {
@@ -557,22 +557,8 @@
       </div>
     </section>
     <div class="mascot-zone" id="mascotZone" aria-hidden="true">
-      <svg class="dog-mascot" id="dogMascot" viewBox="0 0 120 120" role="presentation">
-        <g class="dog-mascot__body">
-          <ellipse cx="60" cy="92" rx="29" ry="20" fill="#E8C9A0"/>
-          <path class="dog-mascot__tail" d="M84 91c18 8 22-7 12-14" fill="none" stroke="#B8895A" stroke-width="8" stroke-linecap="round"/>
-          <ellipse cx="48" cy="108" rx="8" ry="5" fill="#B8895A"/><ellipse cx="72" cy="108" rx="8" ry="5" fill="#B8895A"/>
-          <g class="dog-mascot__paw"><path d="M39 86c-7 5-9 13-4 16 6 3 11-5 12-12" fill="#E8C9A0" stroke="#B8895A" stroke-width="2"/></g>
-        </g>
-        <g class="dog-mascot__head">
-          <path d="M34 42c-15-1-18-20-7-27 9-6 17 4 19 12" fill="#B8895A"/>
-          <path d="M86 42c15-1 18-20 7-27-9-6-17 4-19 12" fill="#B8895A"/>
-          <circle cx="60" cy="43" r="29" fill="#E8C9A0"/>
-          <g class="dog-mascot__eyes"><circle cx="49" cy="40" r="5" fill="#171717"/><circle cx="71" cy="40" r="5" fill="#171717"/><circle cx="47.5" cy="38.5" r="1.7" fill="#fff"/><circle cx="69.5" cy="38.5" r="1.7" fill="#fff"/></g>
-          <ellipse cx="60" cy="52" rx="6" ry="4" fill="#171717"/><path d="M57 58q3 4 6 0" fill="none" stroke="#171717" stroke-width="2" stroke-linecap="round"/><path d="M60 56v8q6 3 8-2" fill="#ef8e9b"/>
-        </g>
-        <g class="dog-mascot__bubble"><circle cx="94" cy="12" r="13" fill="#fff" stroke="#B8895A" stroke-width="2"/><path d="M88 12h12M94 6v12" stroke="#B8895A" stroke-width="2" stroke-linecap="round"/><path d="M90 18l-3 5 7-4" fill="#fff"/></g>
-      </svg>
+      <div class="wind-streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <img class="dog-mascot" id="dogMascot" src="/doberman-dog.png" alt="" aria-hidden="true">
       <div class="mascot-shadow"></div>
     </div>
   </main>

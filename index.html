@@ -1024,19 +1024,18 @@
         roundedPath(context, islandX, 7, islandWidth, 38, 19);
         context.fill();
 
-        // Draw the two interlocking rounded-square chain loops like the reference icon.
-        context.save();
-        context.translate(islandX + 14 + 12, 26);
-        context.rotate(-Math.PI / 4);
-        context.strokeStyle = '#34c759';
-        context.lineWidth = 2.5;
-        context.lineJoin = 'round';
-        context.lineCap = 'round';
-        roundedPath(context, -9, -5, 13, 10, 4);
-        context.stroke();
-        roundedPath(context, -4, -5, 13, 10, 4);
-        context.stroke();
-        context.restore();
+  context.save();
+  context.translate(islandX + 14 + 12, 26);
+  context.rotate(-Math.PI / 4);
+  context.strokeStyle = '#34C759';
+  context.lineWidth = 2.5;
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
+  roundedPath(context, -9, -9, 12, 12, 3.5);
+  context.stroke();
+  roundedPath(context, -3, -3, 12, 12, 3.5);
+  context.stroke();
+  context.restore();
 
         const rightCenterY = 26;
         const signalX = islandX + islandWidth - 86;

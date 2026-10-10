@@ -1040,9 +1040,30 @@
   drawNotificationIcon(77, '#3b3100', 'chat'); drawNotificationIcon(99, '#b7202e', 'alert'); drawNotificationIcon(121, '#3b3100', 'compass'); drawNotificationIcon(143, '#3b3100', 'mail'); drawNotificationIcon(165, '#3b3100', 'game');
   context.font = `600 12px ${fontStack}`;
   context.fillText('◴', 350, iconY);
-  const drawOrangeSim = (x, label) => { context.font = `700 10px ${fontStack}`; context.fillText(label, x, 18); drawSignalBars(x, 39, ink); };
-  drawOrangeSim(374, '5G+'); drawOrangeSim(411, '5G');
-  drawWifi(455, 22, ink); drawBattery(482, 22, ink, values.battery);
+  const drawOrangeSim = (x, label) => {
+    context.font = `700 10px ${fontStack}`;
+    context.textAlign = 'left';
+    context.fillText(label, x, 17);
+    drawSignalBars(x, 39, ink);
+  };
+  drawOrangeSim(390, '5G+');
+  drawOrangeSim(427, '5G');
+
+  context.strokeStyle = ink;
+  context.lineWidth = 1.8;
+  context.lineCap = 'round';
+  context.beginPath();
+  context.arc(457, 27, 9, Math.PI * 1.2, Math.PI * 1.8);
+  context.stroke();
+  context.beginPath();
+  context.arc(457, 27, 5, Math.PI * 1.2, Math.PI * 1.8);
+  context.stroke();
+  context.fillStyle = ink;
+  context.beginPath();
+  context.arc(457, 35, 1.7, 0, Math.PI * 2);
+  context.fill();
+  context.lineCap = 'butt';
+  drawBattery(482, 29, ink, values.battery);
   } else if (style === 3) {
   context.fillStyle = '#fffaf0';
   context.fillRect(0, 0, width, 44);

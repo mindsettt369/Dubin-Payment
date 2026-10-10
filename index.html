@@ -937,41 +937,44 @@
       };
     }
 
-    function drawSignalBars(x, y, color, muted = null) {
+    function drawSignalBars(x, baseline, color, muted = null) {
       context.fillStyle = color;
-      [4, 7, 10, 13].forEach((height, index) => {
-        context.globalAlpha = muted !== null && index >= muted ? 0.25 : 1;
-        context.fillRect(x + index * 5, y - height, 3, height);
+      [4, 7, 10, 14].forEach((height, index) => {
+        context.globalAlpha = muted !== null && index >= muted ? 0.3 : 1;
+        roundedPath(context, x + index * 5, baseline - height, 3, height, 1.5);
+        context.fill();
       });
       context.globalAlpha = 1;
     }
 
-    function drawWifi(x, y, color) {
+    function drawWifi(x, centerY, color) {
       context.strokeStyle = color;
-      context.lineWidth = 2;
+      context.lineWidth = 1.8;
       context.beginPath();
-      context.arc(x, y + 4, 12, Math.PI * 1.2, Math.PI * 1.8);
+      context.arc(x, centerY + 4, 10, Math.PI * 1.2, Math.PI * 1.8);
       context.stroke();
       context.beginPath();
-      context.arc(x, y + 4, 7, Math.PI * 1.2, Math.PI * 1.8);
+      context.arc(x, centerY + 4, 6, Math.PI * 1.2, Math.PI * 1.8);
       context.stroke();
       context.fillStyle = color;
-      context.beginPath(); context.arc(x, y + 6, 2, 0, Math.PI * 2); context.fill();
+      context.beginPath(); context.arc(x, centerY + 7, 1.7, 0, Math.PI * 2); context.fill();
     }
 
-    function drawBattery(x, y, color, percentage, withText = false) {
+    function drawBattery(x, centerY, color, percentage, withText = false) {
+      const top = centerY - 7;
       context.strokeStyle = color;
       context.lineWidth = 1.5;
-      roundedPath(context, x, y, 26, 13, 3);
+      roundedPath(context, x, top, 26, 14, 3);
       context.stroke();
       context.fillStyle = color;
-      context.fillRect(x + 27, y + 4, 3, 5);
-      context.fillRect(x + 3, y + 3, Math.max(2, 20 * percentage / 100), 7);
+      context.fillRect(x + 27, top + 4, 3, 6);
+      context.fillRect(x + 3, top + 3, Math.max(2, 20 * percentage / 100), 8);
       if (withText) {
         context.fillStyle = color;
         context.font = `600 8px ${fontStack}`;
         context.textAlign = 'center';
-        context.fillText(`${percentage}`, x + 13, y + 7);
+        context.textBaseline = 'middle';
+        context.fillText(`${percentage}`, x + 13, centerY);
       }
     }
 
@@ -986,7 +989,7 @@
       context.fillStyle = ink;
       context.textBaseline = 'middle';
       context.textAlign = 'left';
-      context.font = style === 3 ? `700 italic 16px ${fontStack}` : `600 16px ${fontStack}`;
+      context.font = style === 3 ? `700 italic 14px ${fontStack}` : `600 14px ${fontStack}`;
       context.fillText(displayTime, 30, 29);
 
       if (style === 2) {
@@ -994,14 +997,14 @@
         context.fillText('▰  ✦  ◉  ▣  ◆', 77, 29);
         context.font = `600 12px ${fontStack}`;
         context.fillText('◴', 350, 29);
-        context.font = `700 8px ${fontStack}`;
+        context.font = `700 10px ${fontStack}`;
         context.fillText('5G+', 374, 20); drawSignalBars(374, 39, ink);
         context.fillText('5G', 411, 20); drawSignalBars(411, 39, ink);
         drawWifi(455, 22, ink); drawBattery(482, 22, ink, values.battery);
       } else if (style === 3) {
         context.font = `600 11px ${fontStack}`;
         context.fillText('4.8KB/s', 83, 29);
-        context.font = `700 7px ${fontStack}`;
+        context.font = `700 10px ${fontStack}`;
         context.fillText('VoLTE', 352, 18); context.fillText('4G', 370, 18); drawSignalBars(370, 39, ink);
         context.fillText('VoLTE', 410, 18); context.fillText('4G', 428, 18); drawSignalBars(428, 39, ink);
         drawBattery(476, 22, ink, values.battery, true);
@@ -1029,7 +1032,7 @@
       context.textBaseline = 'middle';
       context.textAlign = 'left';
       context.fillStyle = '#20232a';
-      context.font = `500 18px ${fontStack}`;
+      context.font = `600 14px ${fontStack}`;
       const timeParts = values.time.split(':');
       const displayTime = `${Number.parseInt(timeParts[0], 10)}:${timeParts[1] || '01'}`;
       context.fillText(displayTime, 34, 30);
@@ -1077,7 +1080,7 @@
       context.arc(340, 25, 2, 0, Math.PI * 2);
       context.fill();
       context.fillStyle = '#24272c';
-      context.font = `700 8px ${fontStack}`;
+      context.font = `700 10px ${fontStack}`;
       const groupOffset = values.statusGroupPosition;
       context.fillText('0.08 Vo', 366 + groupOffset, 24);
       context.font = `700 7px ${fontStack}`;
@@ -1089,10 +1092,10 @@
   const graphBase = values.graphPosition + groupOffset;
   const graphPositions = values.graphCount === 2 ? [graphBase, graphBase + values.graphGap] : [graphBase];
       for (const graphX of graphPositions) {
-        for (let i = 0; i < 4; i += 1) {
-          const barHeight = 7 + i * 4;
-          context.fillRect(graphX + i * 6, 38 - barHeight, 4, barHeight);
-        }
+        [4, 7, 10, 14].forEach((barHeight, index) => {
+          roundedPath(context, graphX + index * 5, 38 - barHeight, 3, barHeight, 1.5);
+          context.fill();
+        });
       }
       context.font = `600 11px ${fontStack}`;
       context.textAlign = 'right';

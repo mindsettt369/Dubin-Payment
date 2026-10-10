@@ -1161,7 +1161,7 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
     }
 
     function drawYesBankBadge(context, x, y, size = 22) {
-      const svg = `<svg class="bank-logo" viewBox="0 0 32 32" width="22" height="22" xmlns="http://www.w3.org/2000/svg" aria-label="Yes Bank"><circle cx="16" cy="16" r="16" fill="#0B5CA8"/><circle cx="16" cy="16" r="15" fill="none" stroke="#2E86D6" stroke-width="1"/><text x="16" y="18.5" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#FFFFFF">YES</text><rect x="9" y="22" width="14" height="1.8" rx="0.9" fill="#E31E24"/></svg>`;
+      const svg = `<svg viewBox="0 0 32 32" width="22" height="22" xmlns="http://www.w3.org/2000/svg" aria-label="Yes Bank"><circle cx="16" cy="16" r="16" fill="#0B5CA8"/><circle cx="16" cy="16" r="15" fill="none" stroke="#2E86D6" stroke-width="1"/><text x="16" y="18.5" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#FFFFFF">YES</text><rect x="9" y="22" width="14" height="1.8" rx="0.9" fill="#E31E24"/></svg>`;
       const image = new Image();
       image.onload = () => context.drawImage(image, x, y, size, size);
       image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -1258,8 +1258,10 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       const bankRowY = 710;
       const bankText = senderDetails;
       context.fillText(bankText, 52, bankRowY);
-      const bankBadgeX = 52 + context.measureText(bankText).width + 8;
-      const bankBadgeY = bankRowY - 20;
+      const bankMetrics = context.measureText(bankText);
+      const bankBadgeX = 52 + bankMetrics.width + 8;
+      const bankTextHeight = bankMetrics.actualBoundingBoxAscent - bankMetrics.actualBoundingBoxDescent;
+      const bankBadgeY = bankRowY - (bankTextHeight / 2) - 11;
       if (values.bankLogo) {
         drawPaytmImage(context, values.bankLogo, bankBadgeX, bankBadgeY, 22, true);
       } else {

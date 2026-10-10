@@ -220,7 +220,10 @@
   .paytm-control-row label, .paytm-toggle-row span { color: #111827; font-size: 14px; font-weight: 500; }
   .paytm-control-row input:not([type=color]) { width: 55%; min-height: 40px; }
   .color-swatch { width: 36px !important; height: 36px; padding: 3px !important; border-radius: 9px !important; }
-  .paytm-file-row { display: grid; grid-template-columns: minmax(0, 1fr) 40px; gap: 8px; align-items: center; }
+  .paytm-file-row { display: flex; gap: 8px; align-items: center; }
+  .paytm-file-row .upload-button { flex: 1; }
+  .paytm-media-card .paytm-control-row, .paytm-media-card .paytm-toggle-row, .paytm-media-card .paytm-file-row { flex-wrap: nowrap; }
+  .paytm-media-card .destructive, .bank-badge-button, .paytm-media-card .paytm-toggle-row:has(#showPaytmSenderPhoto) { display: none; }
   .paytm-file-row input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
   .upload-button { height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; border: 1.5px dashed #CBD5E1; border-radius: 12px; background: #F9FAFB; color: #374151; font-size: 14px; font-weight: 500; cursor: pointer; }
   .upload-button:hover { border-color: #2563EB; background: #EFF4FF; color: #2563EB; }
@@ -526,16 +529,17 @@
       <div class="paytm-toggle-row"><span>Show avatar</span><label class="switch"><input id="showPaytmRecipientAvatar" type="checkbox" checked><span class="switch-track"></span></label></div>
       <div class="paytm-file-row"><label class="upload-button" for="paytmRecipientPhoto"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 20h14"/></svg> Upload photo</label><input id="paytmRecipientPhoto" type="file" accept="image/*"><button class="icon-button destructive" id="removePaytmRecipientPhoto" type="button" title="Remove photo" aria-label="Remove photo">×</button></div>
     </section>
-    <section class="paytm-media-card" aria-labelledby="senderPhotoTitle">
-      <h3 id="senderPhotoTitle">Sender photo</h3>
-      <div class="paytm-file-row"><label class="upload-button" for="paytmSenderPhoto"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 20h14"/></svg> Upload photo</label><input id="paytmSenderPhoto" type="file" accept="image/*"><button class="icon-button destructive" id="removePaytmSenderPhoto" type="button" title="Remove photo" aria-label="Remove photo">×</button></div>
-      <div class="paytm-toggle-row"><span>Show photo</span><label class="switch"><input id="showPaytmSenderPhoto" type="checkbox" checked><span class="switch-track"></span></label></div>
-    </section>
+  <section class="paytm-media-card" aria-labelledby="senderPhotoTitle">
+  <h3 id="senderPhotoTitle">Sender avatar</h3>
+  <p class="field-hint">Use a photo or generate initials for the sender.</p>
+  <div class="paytm-control-row"><label for="paytmSenderInitials">Avatar initials</label><input id="paytmSenderInitials" value="KR" maxlength="4"></div>
+  <div class="paytm-control-row"><label for="paytmSenderAvatarColor">Avatar color</label><input id="paytmSenderAvatarColor" class="color-swatch" type="color" value="#D9C7A8"></div>
+  <div class="paytm-file-row"><label class="upload-button" for="paytmSenderPhoto"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 20h14"/></svg> Upload photo</label><input id="paytmSenderPhoto" type="file" accept="image/*"><button class="icon-button destructive" id="removePaytmSenderPhoto" type="button" title="Remove photo" aria-label="Remove sender photo">×</button></div>
+  </section>
     <section class="paytm-media-card" aria-labelledby="bankLogoTitle">
       <h3 id="bankLogoTitle">Bank logo</h3>
       <div class="paytm-file-row"><label class="upload-button" for="paytmBankLogo"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 20h14"/></svg> Upload photo</label><input id="paytmBankLogo" type="file" accept="image/*"><button class="icon-button destructive" id="removePaytmBankLogo" type="button" title="Remove logo" aria-label="Remove logo">×</button></div>
-      <button class="secondary-button bank-badge-button" id="useYesBankBadge" type="button"><span class="yes-bank-mini" aria-hidden="true">YES</span> Use Yes Bank badge</button>
-    </section>
+        </section>
   </div>
   <p class="field-hint">Only these fields control the Paytm transfer screen.</p>
   </fieldset>
@@ -710,17 +714,18 @@
       paytmTimelineSent: document.querySelector('#paytmTimelineSent'),
       paytmTimelineDepositing: document.querySelector('#paytmTimelineDepositing'),
       paytmRecipientInitials: document.querySelector('#paytmRecipientInitials'),
-      paytmRecipientAvatarColor: document.querySelector('#paytmRecipientAvatarColor')
-
+  paytmRecipientAvatarColor: document.querySelector('#paytmRecipientAvatarColor'),
+  paytmSenderInitials: document.querySelector('#paytmSenderInitials'),
+  paytmSenderAvatarColor: document.querySelector('#paytmSenderAvatarColor')
+  
   };
     const paytmSenderPhotoInput = document.querySelector('#paytmSenderPhoto');
     const paytmBankLogoInput = document.querySelector('#paytmBankLogo');
     const removePaytmSenderPhoto = document.querySelector('#removePaytmSenderPhoto');
     const removePaytmBankLogo = document.querySelector('#removePaytmBankLogo');
-    const showPaytmSenderPhoto = document.querySelector('#showPaytmSenderPhoto');
-    const defaultSenderPhoto = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6a24d"/><stop offset="1" stop-color="#4d2c25"/></linearGradient></defs><rect width="128" height="128" fill="url(#g)"/><circle cx="64" cy="47" r="18" fill="#f4c58b"/><path d="M28 112c7-29 22-43 36-43s29 14 36 43" fill="#26384c"/><path d="M10 76h108M18 62h92" stroke="#ffd486" stroke-width="5" opacity=".65"/><path d="M48 20h32l8 42H40z" fill="#8a4028" opacity=".75"/></svg>');
+      const defaultSenderPhoto = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6a24d"/><stop offset="1" stop-color="#4d2c25"/></linearGradient></defs><rect width="128" height="128" fill="url(#g)"/><circle cx="64" cy="47" r="18" fill="#f4c58b"/><path d="M28 112c7-29 22-43 36-43s29 14 36 43" fill="#26384c"/><path d="M10 76h108M18 62h92" stroke="#ffd486" stroke-width="5" opacity=".65"/><path d="M48 20h32l8 42H40z" fill="#8a4028" opacity=".75"/></svg>');
     const defaultBankLogo = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" fill="#1B6CA8"/><text x="24" y="28" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="700">YES</text></svg>');
-    let paytmSenderPhotoData = defaultSenderPhoto;
+    let paytmSenderPhotoData = '';
     let paytmBankLogoData = defaultBankLogo;
     let paytmRecipientPhotoData = '';
     const showPaytmRecipientAvatar = document.querySelector('#showPaytmRecipientAvatar');
@@ -886,12 +891,15 @@
         paytmTimelineDepositing: fields.paytmTimelineDepositing.value.trim() || "Depositing money in Mr ABHILASH REDDY PANDIRI's...",
         recipientAvatarInitials: fields.paytmRecipientInitials.value.trim(),
         recipientAvatarColor: fields.paytmRecipientAvatarColor.value || '#C9D9A8',
-        recipientInitialsColor: '#4A5D23',
-        showRecipientAvatar: showPaytmRecipientAvatar.checked,
-        recipientPhoto: paytmRecipientPhotoData,
-        senderPhoto: paytmSenderPhotoData,
-        showSenderPhoto: showPaytmSenderPhoto.checked,
-        bankLogo: paytmBankLogoData
+  recipientInitialsColor: '#4A5D23',
+  showRecipientAvatar: showPaytmRecipientAvatar.checked,
+  recipientPhoto: paytmRecipientPhotoData,
+  senderAvatarInitials: fields.paytmSenderInitials.value.trim(),
+  senderAvatarColor: fields.paytmSenderAvatarColor.value || '#D9C7A8',
+  senderInitialsColor: '#5D4523',
+  senderPhoto: paytmSenderPhotoData,
+  showSenderPhoto: true,
+  bankLogo: paytmBankLogoData
       };
     }
 
@@ -1298,6 +1306,24 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       context.restore();
     }
 
+    function drawPaytmSenderAvatar(values, x, y) {
+      if (values.senderPhoto) {
+        drawPaytmImage(context, values.senderPhoto, x, y, 64, true);
+        return;
+      }
+      context.save();
+      context.fillStyle = values.senderAvatarColor;
+      context.beginPath();
+      context.arc(x + 32, y + 32, 32, 0, Math.PI * 2);
+      context.fill();
+      context.fillStyle = values.senderInitialsColor;
+      context.font = `700 20px ${fontStack}`;
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      context.fillText((values.senderAvatarInitials || 'KR').slice(0, 4).toUpperCase(), x + 32, y + 32);
+      context.restore();
+    }
+
     function drawPaytmStepTwo(values) {
       context.fillStyle = '#fff';
       context.fillRect(0, 0, width, height);
@@ -1356,7 +1382,7 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       context.fillStyle = '#222';
       context.font = `600 22px ${fontStack}`;
       context.fillText('From', 52, 555);
-      if (values.showSenderPhoto) drawPaytmImage(context, values.senderPhoto, width - 116, 523, 64);
+      drawPaytmSenderAvatar(values, width - 116, 523);
       context.font = `800 32px ${fontStack}`;
       context.fillStyle = '#111';
       context.fillText(sender, 52, 610);
@@ -1647,12 +1673,9 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   paytmRecipientPhotoInput.addEventListener('change', () => readPaytmAsset(paytmRecipientPhotoInput, value => { paytmRecipientPhotoData = value; }));
   showPaytmRecipientAvatar.addEventListener('change', renderMockup);
   removePaytmRecipientPhoto.addEventListener('click', () => { paytmRecipientPhotoData = ''; paytmRecipientPhotoInput.value = ''; renderMockup(); });
-  showPaytmSenderPhoto.addEventListener('change', renderMockup);
-  removePaytmSenderPhoto.addEventListener('click', () => { paytmSenderPhotoData = defaultSenderPhoto; paytmSenderPhotoInput.value = ''; showPaytmSenderPhoto.checked = true; renderMockup(); });
-  const useYesBankBadge = document.querySelector('#useYesBankBadge');
+  removePaytmSenderPhoto.addEventListener('click', () => { paytmSenderPhotoData = ''; paytmSenderPhotoInput.value = ''; renderMockup(); });
   const resetPaytmBankLogo = () => { paytmBankLogoData = defaultBankLogo; paytmBankLogoInput.value = ''; renderMockup(); };
   removePaytmBankLogo.addEventListener('click', resetPaytmBankLogo);
-  useYesBankBadge.addEventListener('click', resetPaytmBankLogo);
   
   resetButton.addEventListener('click', () => {
       form.reset();

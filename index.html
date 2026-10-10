@@ -196,20 +196,30 @@
       border: 1px solid rgba(210, 218, 228, .9);
       border-radius: 15px;
       background: rgba(255, 255, 255, .5);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 7px 16px rgba(93, 105, 122, .1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .08), inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -2px 6px rgba(0, 0, 0, .04);
       backdrop-filter: blur(14px) saturate(145%);
       color: #667181;
       font-size: 14px;
       font-weight: 650;
       line-height: 1.2;
-      transition: border-color .28s ease, background .28s ease, box-shadow .28s ease, color .28s ease, transform .28s ease;
+      transition: all .35s cubic-bezier(.34, 1.56, .64, 1);
     }
-  .step-button:hover { transform: translateY(-1px); background: rgba(255, 255, 255, .72); }
-  .step-button.active { border-color: rgba(237, 148, 23, .8); background: rgba(255, 244, 225, .82); box-shadow: 0 0 0 2px rgba(237, 148, 23, .12), 0 9px 20px rgba(237, 148, 23, .18), inset 0 1px 0 rgba(255, 255, 255, .9); color: #9d5018; }
+  .step-button:hover,
+  .step-button:focus-visible {
+    transform: scale(.98);
+    background-color: rgba(255, 255, 255, .72);
+    background-image: radial-gradient(circle at 50% 120%, rgba(255, 159, 10, .25), transparent 65%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .10), inset 0 3px 10px rgba(0, 0, 0, .12), inset 0 -2px 8px rgba(255, 255, 255, .8);
+  }
+  .step-button:active { transform: scale(.96); box-shadow: 0 1px 4px rgba(0, 0, 0, .12), inset 0 4px 12px rgba(0, 0, 0, .16), inset 0 -2px 8px rgba(255, 255, 255, .72); }
+  .step-button.active:hover,
+  .step-button.active:focus-visible { transform: none; }
+  .step-button.active:active { transform: scale(.96); }
+  .step-button.active { border-color: rgba(237, 148, 23, .8); background-color: rgba(255, 244, 225, .82); background-image: none; box-shadow: 0 2px 6px rgba(0, 0, 0, .10), inset 0 3px 10px rgba(0, 0, 0, .12), inset 0 -2px 8px rgba(255, 255, 255, .8); color: #9d5018; }
   .step-label {
     display: inline-block;
     font-weight: 700;
-    transition: filter .3s ease;
+    transition: filter .3s ease, opacity .3s ease;
   }
   @supports ((-webkit-background-clip: text) or (background-clip: text)) {
     .step-label {
@@ -224,10 +234,26 @@
       animation: bubbleFlow 7s linear infinite;
     }
     .step-button:not(.active) .step-label { opacity: .7; animation-duration: 11s; }
-    .step-button:hover .step-label { filter: drop-shadow(0 0 10px rgba(255, 159, 10, .42)) drop-shadow(0 0 18px rgba(94, 92, 230, .32)); }
+    .step-button:hover .step-label,
+    .step-button:focus-visible .step-label {
+      background-image: linear-gradient(100deg, #e8501f 0%, #e07b00 18%, #c99a00 32%, #1f9d3f 46%, #0f7fc0 60%, #3d3bc4 74%, #9333d4 88%, #e8501f 100%);
+      background-size: 300% 100%;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .18));
+      opacity: 1;
+    }
+  }
+  .step-button:hover .step-label,
+  .step-button:focus-visible .step-label { background-image: none; color: #1d1d1f; -webkit-text-fill-color: #1d1d1f; }
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .step-button:hover .step-label,
+    .step-button:focus-visible .step-label { background-image: linear-gradient(100deg, #e8501f 0%, #e07b00 18%, #c99a00 32%, #1f9d3f 46%, #0f7fc0 60%, #3d3bc4 74%, #9333d4 88%, #e8501f 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
   }
   @keyframes bubbleFlow { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 300% 50%; } }
-  @media (prefers-reduced-motion: reduce) { .step-label { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) {
+    .step-button { transition: background-color .01ms, background-image .01ms, box-shadow .01ms, color .01ms; }
+    .step-button:hover, .step-button:focus-visible, .step-button:active { transform: none; }
+    .step-label { animation: none !important; transition: filter .01ms, opacity .01ms; }
+  }
   .step-view[hidden] { display: none; }
     .coming-soon { min-height: 420px; display: grid; place-items: center; padding: 30px 10px; text-align: center; }
     .coming-soon-card { max-width: 260px; }

@@ -1516,13 +1516,13 @@
   const amountSize = fitFont(amountText, 240, 48, 700, 30);
   context.font = `700 ${amountSize}px ${fontStack}`;
   const amountWidth = context.measureText(amountText).width;
-  const amountGroupWidth = amountWidth + 24 + 44;
+  const amountGroupWidth = amountWidth + 16 + 44;
   const amountStart = (width - amountGroupWidth) / 2;
   context.fillStyle = '#111';
   context.textAlign = 'left';
   context.fillText(amountText, amountStart, 356);
   context.textAlign = 'center';
-  const warningX = amountStart + amountWidth + 24;
+  const warningX = amountStart + amountWidth + 16;
       context.fillStyle = '#f7a900';
       context.beginPath();
       context.arc(warningX, 355, 22, 0, Math.PI * 2);

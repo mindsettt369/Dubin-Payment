@@ -1038,32 +1038,48 @@
     else { context.beginPath(); context.arc(x + 8, iconY, 7, 0, Math.PI * 2); context.fill(); context.fillStyle = '#ffad05'; context.beginPath(); context.arc(x + 8, iconY, 2.5, 0, Math.PI * 2); context.fill(); }
   };
   drawNotificationIcon(77, '#3b3100', 'chat'); drawNotificationIcon(99, '#b7202e', 'alert'); drawNotificationIcon(121, '#3b3100', 'compass'); drawNotificationIcon(143, '#3b3100', 'mail'); drawNotificationIcon(165, '#3b3100', 'game');
-  context.font = `600 12px ${fontStack}`;
-  context.fillText('◴', 350, iconY);
+  context.fillStyle = ink;
+  context.strokeStyle = ink;
+  context.lineWidth = 1.6;
+  context.lineCap = 'round';
+  context.beginPath();
+  context.arc(352, 27, 6, Math.PI * 1.15, Math.PI * 1.85);
+  context.stroke();
+  context.beginPath();
+  context.moveTo(348, 21); context.lineTo(352, 18); context.lineTo(356, 21);
+  context.stroke();
+  context.fillRect(349, 29, 1.5, 3);
+  context.fillRect(352, 27, 1.5, 5);
+  context.fillRect(355, 25, 1.5, 7);
+
   const drawOrangeSim = (x, label) => {
-    context.font = `700 10px ${fontStack}`;
-    context.textAlign = 'left';
-    context.fillText(label, x, 17);
-    drawSignalBars(x, 39, ink);
+    context.textAlign = 'center';
+    context.font = `700 9px ${fontStack}`;
+    context.fillText(label, x + 9, 15);
+    context.fillStyle = ink;
+    [4, 7, 10, 13].forEach((height, index) => {
+      roundedPath(context, x + index * 5, 40 - height, 3, height, 1.2);
+      context.fill();
+    });
   };
-  drawOrangeSim(390, '5G+');
-  drawOrangeSim(427, '5G');
+  drawOrangeSim(374, '5G+');
+  drawOrangeSim(407, '5G');
 
   context.strokeStyle = ink;
   context.lineWidth = 1.8;
   context.lineCap = 'round';
   context.beginPath();
-  context.arc(457, 27, 9, Math.PI * 1.2, Math.PI * 1.8);
+  context.arc(448, 25, 8, Math.PI * 1.2, Math.PI * 1.8);
   context.stroke();
   context.beginPath();
-  context.arc(457, 27, 5, Math.PI * 1.2, Math.PI * 1.8);
+  context.arc(448, 25, 4.5, Math.PI * 1.2, Math.PI * 1.8);
   context.stroke();
   context.fillStyle = ink;
   context.beginPath();
-  context.arc(457, 35, 1.7, 0, Math.PI * 2);
+  context.arc(448, 34, 1.7, 0, Math.PI * 2);
   context.fill();
   context.lineCap = 'butt';
-  drawBattery(482, 29, ink, values.battery);
+  drawBattery(474, 29, ink, values.battery);
   } else if (style === 3) {
   context.fillStyle = '#fffaf0';
   context.fillRect(0, 0, width, 44);

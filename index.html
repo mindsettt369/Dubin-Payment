@@ -1034,13 +1034,21 @@
         context.fillText('5G+', 374, 20); drawSignalBars(374, 39, ink);
         context.fillText('5G', 411, 20); drawSignalBars(411, 39, ink);
         drawWifi(455, 22, ink); drawBattery(482, 22, ink, values.battery);
-      } else if (style === 3) {
-        context.font = `600 11px ${fontStack}`;
-        context.fillText('4.8KB/s', 83, 29);
-        context.font = `700 10px ${fontStack}`;
-        context.fillText('VoLTE', 352, 18); context.fillText('4G', 370, 18); drawSignalBars(370, 39, ink);
-        context.fillText('VoLTE', 410, 18); context.fillText('4G', 428, 18); drawSignalBars(428, 39, ink);
-        drawBattery(476, 22, ink, values.battery, true);
+  } else if (style === 3) {
+  context.font = `600 11px ${fontStack}`;
+  context.fillText('4.8KB/s', 83, 29);
+  context.font = `700 8px ${fontStack}`;
+  const xRight = width - 18;
+  const batteryX = xRight - 30;
+  const secondSignalX = batteryX - 42;
+  const firstSignalX = secondSignalX - 50;
+  context.fillText('VoLTE', firstSignalX - 4, 16);
+  context.fillText('4G', firstSignalX + 17, 26);
+  drawSignalBars(firstSignalX + 34, 39, ink);
+  context.fillText('VoLTE', secondSignalX - 4, 16);
+  context.fillText('4G', secondSignalX + 17, 26);
+  drawSignalBars(secondSignalX + 34, 39, ink);
+  drawBattery(batteryX, 22, ink, values.battery, true);
       } else if (style === 4) {
         context.fillStyle = '#f2f2f2';
         context.fillRect(0, 0, width, 52);

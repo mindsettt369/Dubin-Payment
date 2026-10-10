@@ -65,6 +65,30 @@
       font-weight: 800;
     }
     .provider-card h1 { margin: 0; font-size: 28px; letter-spacing: -.6px; }
+  .mascot-zone { position: relative; min-height: 270px; overflow: visible; pointer-events: none; }
+  .dog-mascot { position: absolute; left: 0; top: 34px; width: 120px; height: 120px; transform: translate3d(0, 0, 0); opacity: 1; transform-origin: 50% 100%; filter: drop-shadow(0 12px 8px rgba(47, 43, 37, .13)); transition: transform 1.2s cubic-bezier(.34, 1.2, .64, 1), opacity .8s ease; }
+  .dog-mascot__body { transform-box: fill-box; transform-origin: 50% 100%; animation: dogBreathe 2.5s ease-in-out infinite; }
+  .dog-mascot__tail { transform-box: fill-box; transform-origin: 15% 75%; animation: dogTail .5s ease-in-out infinite alternate; }
+  .dog-mascot__eyes { transform-box: fill-box; transform-origin: 50% 50%; animation: dogBlink 4s ease-in-out infinite; }
+  .dog-mascot__head { transform-box: fill-box; transform-origin: 50% 100%; transition: transform .5s ease; }
+  .dog-mascot__paw { transform-box: fill-box; transform-origin: 20% 90%; transition: transform .4s cubic-bezier(.34, 1.56, .64, 1); }
+  .dog-mascot.is-looking .dog-mascot__head { transform: rotate(-8deg); }
+  .dog-mascot.is-tapping .dog-mascot__paw { animation: dogTap .4s ease-in-out 3; }
+  .dog-mascot__bubble { transform-box: fill-box; transform-origin: 50% 100%; opacity: 0; transform: scale(0); }
+  .dog-mascot.is-tapping .dog-mascot__bubble { animation: dogBubble .45s cubic-bezier(.34, 1.56, .64, 1) forwards; }
+  .dog-mascot.is-jumping { animation: dogJump .55s cubic-bezier(.34, 1.56, .64, 1); }
+  .dog-mascot.is-leaving { opacity: 0; transform: translate3d(120vw, 0, 0) !important; transition: transform .8s ease-in, opacity .8s ease-in; }
+  .dog-mascot.is-dismissed { display: none; }
+  .mascot-shadow { position: absolute; left: 0; top: 146px; width: 76px; height: 12px; border-radius: 50%; background: rgba(47, 43, 37, .16); opacity: .7; transform: translateX(22px) scale(1); transition: transform 1.2s ease, opacity .8s ease; }
+  .dog-mascot.is-jumping + .mascot-shadow { transform: translateX(22px) scale(.7); opacity: .35; }
+  @keyframes dogBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+  @keyframes dogTail { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
+  @keyframes dogBlink { 0%, 43%, 47%, 100% { transform: scaleY(1); } 45% { transform: scaleY(.08); } }
+  @keyframes dogTap { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-42deg) translateY(-4px); } }
+  @keyframes dogBubble { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes dogJump { 0%, 100% { transform: translate3d(var(--dog-x, 0px), var(--dog-y, 0px), 0); } 45% { transform: translate3d(var(--dog-x, 0px), calc(var(--dog-y, 0px) - 20px), 0); } }
+  @media (max-width: 760px) { .mascot-zone { min-height: 220px; } .dog-mascot { width: 90px; height: 90px; } .mascot-shadow { top: 115px; width: 62px; } }
+  @media (prefers-reduced-motion: reduce) { .dog-mascot__body { animation: dogBreathe 4s ease-in-out infinite; } .dog-mascot__tail { animation-duration: 1.3s; } .dog-mascot__eyes, .dog-mascot.is-tapping .dog-mascot__paw, .dog-mascot.is-tapping .dog-mascot__bubble { animation: none; } .dog-mascot.is-looking .dog-mascot__head { transform: rotate(-8deg); } }
     .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
     .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; overflow: visible; }
     .provider-button {
@@ -109,6 +133,7 @@
       opacity: 0;
       pointer-events: none;
     }
+    .provider-button.mascot-tap-target { transform: translateY(-4px); transition: transform .4s cubic-bezier(.34, 1.2, .64, 1); }
     .provider-button:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, .10), inset 0 1px 0 rgba(255, 255, 255, 1); transition: transform .35s ease, box-shadow .35s ease; }
     .provider-button:hover::before { opacity: .22; animation-play-state: running; }
     .provider-button:hover::after { opacity: 1; animation: selectorShine .8s ease-out 1; }
@@ -529,6 +554,25 @@
         <button class="provider-button" id="mobikwikButton" type="button" aria-pressed="false"><img src="/mobikwik-logo.png" alt="Mobikwik"><small>Open editor</small></button>
       </div>
     </section>
+    <div class="mascot-zone" id="mascotZone" aria-hidden="true">
+      <svg class="dog-mascot" id="dogMascot" viewBox="0 0 120 120" role="presentation">
+        <g class="dog-mascot__body">
+          <ellipse cx="60" cy="92" rx="29" ry="20" fill="#E8C9A0"/>
+          <path class="dog-mascot__tail" d="M84 91c18 8 22-7 12-14" fill="none" stroke="#B8895A" stroke-width="8" stroke-linecap="round"/>
+          <ellipse cx="48" cy="108" rx="8" ry="5" fill="#B8895A"/><ellipse cx="72" cy="108" rx="8" ry="5" fill="#B8895A"/>
+          <g class="dog-mascot__paw"><path d="M39 86c-7 5-9 13-4 16 6 3 11-5 12-12" fill="#E8C9A0" stroke="#B8895A" stroke-width="2"/></g>
+        </g>
+        <g class="dog-mascot__head">
+          <path d="M34 42c-15-1-18-20-7-27 9-6 17 4 19 12" fill="#B8895A"/>
+          <path d="M86 42c15-1 18-20 7-27-9-6-17 4-19 12" fill="#B8895A"/>
+          <circle cx="60" cy="43" r="29" fill="#E8C9A0"/>
+          <g class="dog-mascot__eyes"><circle cx="49" cy="40" r="5" fill="#171717"/><circle cx="71" cy="40" r="5" fill="#171717"/><circle cx="47.5" cy="38.5" r="1.7" fill="#fff"/><circle cx="69.5" cy="38.5" r="1.7" fill="#fff"/></g>
+          <ellipse cx="60" cy="52" rx="6" ry="4" fill="#171717"/><path d="M57 58q3 4 6 0" fill="none" stroke="#171717" stroke-width="2" stroke-linecap="round"/><path d="M60 56v8q6 3 8-2" fill="#ef8e9b"/>
+        </g>
+        <g class="dog-mascot__bubble"><circle cx="94" cy="12" r="13" fill="#fff" stroke="#B8895A" stroke-width="2"/><path d="M88 12h12M94 6v12" stroke="#B8895A" stroke-width="2" stroke-linecap="round"/><path d="M90 18l-3 5 7-4" fill="#fff"/></g>
+      </svg>
+      <div class="mascot-shadow"></div>
+    </div>
   </main>
 
   <main class="studio-shell" id="studioScreen" hidden>
@@ -815,6 +859,12 @@
     const freechargeButton = document.querySelector('#freechargeButton');
     const paytmButton = document.querySelector('#paytmButton');
   const mobikwikButton = document.querySelector('#mobikwikButton');
+  const mascotZone = document.querySelector('#mascotZone');
+  const dogMascot = document.querySelector('#dogMascot');
+  const mascotShadow = mascotZone?.querySelector('.mascot-shadow');
+  let mascotTimer = 0;
+  let mascotDismissed = false;
+  let mascotHoverTarget = null;
   const providerButtons = {
       freecharge: freechargeButton,
       paytm: paytmButton,
@@ -2141,6 +2191,70 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
     showStep(1);
     }
 
+  function mascotPosition(button) {
+  if (!mascotZone || !dogMascot || !button) return { x: 0, y: 34 };
+  const card = button.getBoundingClientRect();
+  const zone = mascotZone.getBoundingClientRect();
+  const size = dogMascot.getBoundingClientRect();
+  return { x: card.left + card.width / 2 - zone.left - size.width / 2, y: Math.max(24, card.bottom - zone.top + 10) };
+  }
+  function moveMascotTo(button, look = true) {
+  if (mascotDismissed || !dogMascot) return;
+  const { x, y } = mascotPosition(button);
+  dogMascot.style.setProperty('--dog-x', `${x}px`);
+  dogMascot.style.setProperty('--dog-y', `${y}px`);
+  dogMascot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  if (mascotShadow) mascotShadow.style.transform = `translate3d(${x + 22}px, ${y + 112}px, 0) scale(1)`;
+  dogMascot.classList.toggle('is-looking', look);
+  }
+  function tapMascotAt(button) {
+  if (mascotDismissed || !dogMascot) return;
+  moveMascotTo(button);
+  dogMascot.classList.remove('is-tapping');
+  void dogMascot.offsetWidth;
+  dogMascot.classList.add('is-tapping');
+  button.classList.remove('mascot-tap-target');
+  void button.offsetWidth;
+  button.classList.add('mascot-tap-target');
+  window.setTimeout(() => button.classList.remove('mascot-tap-target'), 1200);
+  }
+  function startMascotLoop() {
+  if (!mascotZone || !dogMascot || mascotDismissed) return;
+  window.clearTimeout(mascotTimer);
+  const cards = [freechargeButton, paytmButton, mobikwikButton];
+  let index = 0;
+  const cycle = () => {
+    if (mascotDismissed) return;
+    if (mascotHoverTarget) { moveMascotTo(mascotHoverTarget); mascotTimer = window.setTimeout(cycle, 900); return; }
+    tapMascotAt(cards[index]);
+    index = (index + 1) % cards.length;
+    mascotTimer = window.setTimeout(cycle, index === 0 ? 4200 : 3000);
+  };
+  const zoneRect = mascotZone.getBoundingClientRect();
+  const dogRect = dogMascot.getBoundingClientRect();
+  const centerX = Math.max(0, (zoneRect.width - dogRect.width) / 2);
+  dogMascot.style.setProperty('--dog-x', `${centerX}px`);
+  dogMascot.style.setProperty('--dog-y', '34px');
+  dogMascot.style.transform = `translate3d(${centerX}px, 34px, 0)`;
+  if (mascotShadow) mascotShadow.style.transform = `translate3d(${centerX + 22}px, 146px, 0) scale(1)`;
+  mascotTimer = window.setTimeout(cycle, 2000);
+  }
+  function dismissMascot() {
+  mascotDismissed = true;
+  window.clearTimeout(mascotTimer);
+  if (!dogMascot) return;
+  dogMascot.classList.remove('is-tapping');
+  dogMascot.classList.add('is-jumping');
+  window.setTimeout(() => dogMascot.classList.add('is-leaving'), 520);
+  window.setTimeout(() => dogMascot.classList.add('is-dismissed'), 1350);
+  if (mascotShadow) mascotShadow.style.opacity = '0';
+  }
+  [freechargeButton, paytmButton, mobikwikButton].forEach(button => {
+  button.addEventListener('mouseenter', () => { mascotHoverTarget = button; moveMascotTo(button); });
+  button.addEventListener('mouseleave', () => { mascotHoverTarget = null; });
+  });
+  window.addEventListener('resize', () => { if (mascotHoverTarget) moveMascotTo(mascotHoverTarget); });
+  startMascotLoop();
   function addStatusFieldRipple(control, event) {
   const rect = control.getBoundingClientRect();
   control.style.setProperty('--ripple-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
@@ -2163,9 +2277,9 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   button.classList.add('is-rippling');
   window.setTimeout(() => button.classList.remove('is-rippling'), 520);
   }
-  freechargeButton.addEventListener('click', event => { addProviderRipple(freechargeButton, event); showFreechargeEditor(); });
-  paytmButton.addEventListener('click', event => { addProviderRipple(paytmButton, event); showPaytmEditor(); });
-  mobikwikButton.addEventListener('click', event => { addProviderRipple(mobikwikButton, event); showMobikwikEditor(); });
+  freechargeButton.addEventListener('click', event => { addProviderRipple(freechargeButton, event); dismissMascot(); showFreechargeEditor(); });
+  paytmButton.addEventListener('click', event => { addProviderRipple(paytmButton, event); dismissMascot(); showPaytmEditor(); });
+  mobikwikButton.addEventListener('click', event => { addProviderRipple(mobikwikButton, event); dismissMascot(); showMobikwikEditor(); });
     stepOneButton.addEventListener('click', () => showStep(1));
     stepTwoButton.addEventListener('click', () => showStep(2));
 

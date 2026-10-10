@@ -1211,8 +1211,10 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       context.fillText(recipientPrefix, 52, 270);
       const lastLineY = 301;
       context.fillText(recipientLastWord, 52, lastLineY);
-      const verifiedX = 52 + context.measureText(recipientLastWord).width + 8;
-      drawPaytmVerifiedBadge(context, verifiedX, lastLineY - 27);
+  const verifiedX = 52 + context.measureText(recipientLastWord).width + 8;
+  const nameMetrics = context.measureText(recipientLastWord);
+  const nameCenterY = lastLineY - (nameMetrics.actualBoundingBoxAscent - nameMetrics.actualBoundingBoxDescent) / 2;
+  drawPaytmVerifiedBadge(context, verifiedX, nameCenterY - 15);
       context.font = `500 22px ${fontStack}`;
       context.fillStyle = '#222';
       context.fillText(recipientBank, 52, lastLineY + 49);

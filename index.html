@@ -122,8 +122,30 @@
   @keyframes roadMove { to { transform: translateX(-48px); } }
   @keyframes cloudDrift { to { transform: translateX(-20px); } }
   @keyframes sceneJump { 0%,100% { transform: translateX(-50%) translateY(0); } 45% { transform: translateX(-50%) translateY(-20px); } }
-  @media (max-width: 760px) { .mascot-zone { height: 210px; } .dog-mascot { height: 210px; } }
+  @media (max-width: 760px) { .mascot-zone { height: 220px; } .dog-mascot { height: 100%; } }
   @media (prefers-reduced-motion: reduce) { .dog-mascot .head, .dog-mascot .sunglasses { animation: none; } .mascot-zone.is-hovering .dog-mascot * { animation: none; } .mascot-zone.is-jumping .dog-mascot, .mascot-zone.is-driving .dog-mascot { animation: none; transition: none; } }
+  /* Final mascot scene behavior: the car stays fixed while only the dog reacts. */
+  .mascot-zone { width: 100%; max-width: none; height: 280px; margin: 16px 0 0; overflow: hidden; border: 1px solid rgba(255,255,255,.9); border-radius: 28px; background: linear-gradient(#bfe3ff,#f1f8ff); box-shadow: 0 8px 28px rgba(0,0,0,.06); }
+  .mascot-zone.is-collapsing { height: 0; margin: 0; border-width: 0; }
+  .dog-mascot { inset: 0; width: 100%; max-width: none; height: 100%; transform: none; overflow: hidden; }
+  .dog-mascot .car { transform: none !important; }
+  .dog-mascot .dog { transform: none; }
+  .dog-mascot .head { transform-box: fill-box; transform-origin: 50% 100%; animation: calmBreath 3s ease-in-out infinite; }
+  .dog-mascot .head, .dog-mascot .ear-left, .dog-mascot .ear-right, .dog-mascot .sunglasses, .dog-mascot .tongue { transition: transform .5s cubic-bezier(.34,1.4,.64,1); }
+  .mascot-zone.is-hovering .dog-mascot .head { transform: translate(var(--look-x, 0px), -40px) rotate(var(--look-angle, 0deg)); }
+  .mascot-zone.is-hovering .dog-mascot .ear-left { animation: earFlapLeft .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .ear-right { animation: earFlapRight .3s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .tongue { animation: tongueWobble .35s ease-in-out infinite alternate; }
+  .mascot-zone.is-hovering .dog-mascot .wind-lines { animation: windRush .45s linear infinite; }
+  .mascot-zone.is-hovering .dog-mascot .wheels { animation: wheelSpin .5s linear infinite; transform-origin: 50% 78%; }
+  .mascot-zone.is-hovering .dog-mascot .road-lines { animation: roadMove .5s linear infinite; }
+  .mascot-zone.is-hovering .dog-mascot .clouds { animation: cloudDrift 3s linear infinite; }
+  .mascot-zone.is-jumping .dog-mascot .head { animation: headHappyJump .4s ease-in-out; }
+  .mascot-zone.is-driving .dog-mascot .car { animation: carDrive .8s ease-in forwards; }
+  @keyframes headHappyJump { 0%,100% { transform: translate(var(--look-x,0px), -40px) rotate(var(--look-angle,0deg)); } 45% { transform: translate(var(--look-x,0px), -60px) rotate(var(--look-angle,0deg)); } }
+  @keyframes carDrive { from { transform: translateX(0); } to { transform: translateX(130%); } }
+  @media (max-width: 760px) { .mascot-zone { height: 220px; } }
+  @media (prefers-reduced-motion: reduce) { .dog-mascot .head { animation: none; } .mascot-zone.is-hovering .dog-mascot * { animation: none; } .mascot-zone.is-driving .dog-mascot .car { animation: none; } }
   .provider-card p { margin: 9px auto 28px; max-width: 430px; color: var(--muted); font-size: 13px; line-height: 1.55; }
     .provider-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; overflow: visible; }
     .provider-button {
@@ -2230,14 +2252,19 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   function moveMascotTo(button) {
   if (mascotDismissed || !dogMascot) return;
   const x = mascotPosition(button);
-  dogMascot.style.transform = `translateX(calc(-50% + ${x}px))`;
+  const cardIndex = [freechargeButton, paytmButton, mobikwikButton].indexOf(button);
+  const lookX = cardIndex === 0 ? -20 : cardIndex === 2 ? 20 : 0;
+  const lookAngle = cardIndex === 0 ? -18 : cardIndex === 2 ? 18 : 0;
+  dogMascot.style.setProperty('--look-x', `${lookX}px`);
+  dogMascot.style.setProperty('--look-angle', `${lookAngle}deg`);
   mascotZone.classList.add('is-hovering');
-  if (mascotShadow) mascotShadow.style.transform = `translateX(calc(-50% + ${x}px))`;
+  if (mascotShadow) mascotShadow.style.transform = 'translateX(-50%)';
   }
   function calmMascot() {
   if (!dogMascot || mascotDismissed) return;
   mascotZone.classList.remove('is-hovering');
-  dogMascot.style.transform = 'translateX(-50%)';
+  dogMascot.style.removeProperty('--look-x');
+  dogMascot.style.removeProperty('--look-angle');
   if (mascotShadow) mascotShadow.style.transform = 'translateX(-50%)';
   }
   function tapMascotAt(button) {
@@ -2251,7 +2278,8 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
   }
   function startMascotLoop() {
   if (!mascotZone || !dogMascot || mascotDismissed) return;
-  dogMascot.style.transform = 'translateX(-50%)';
+  dogMascot.style.removeProperty('--look-x');
+  dogMascot.style.removeProperty('--look-angle');
   mascotZone.classList.remove('is-hovering');
   }
   function handleCardEnter(button) {

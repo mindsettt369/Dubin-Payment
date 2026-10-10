@@ -1089,6 +1089,9 @@
   const freechargeLogo = new Image();
   freechargeLogo.src = '/freecharge-biz-logo.png';
   freechargeLogo.addEventListener('load', renderMockup);
+  const paytmLogo = new Image();
+  paytmLogo.src = '/paytm-logo.png';
+  paytmLogo.addEventListener('load', renderMockup);
     realPromoImage.addEventListener('load', renderMockup);
 
     function drawRealPromoImage() {
@@ -1154,15 +1157,14 @@
       drawStatusBar(values);
       context.textBaseline = 'middle';
 
-      context.font = `800 46px ${fontStack}`;
-      const paytmPayWidth = context.measureText('Pay').width;
-      const paytmTmWidth = context.measureText('tm').width;
-      const paytmLogoStart = (width - paytmPayWidth - paytmTmWidth) / 2;
       context.textAlign = 'left';
-      context.fillStyle = '#153d82';
-      context.fillText('Pay', paytmLogoStart, 105);
-      context.fillStyle = '#10a9dc';
-      context.fillText('tm', paytmLogoStart + paytmPayWidth, 105);
+      if (paytmLogo.complete && paytmLogo.naturalWidth) {
+        context.drawImage(paytmLogo, 54, 25, 121, 43, (width - 132) / 2, 83, 132, 47);
+      } else {
+        context.font = `800 46px ${fontStack}`;
+        context.fillStyle = '#153d82';
+        context.fillText('Paytm', (width - context.measureText('Paytm').width) / 2, 105);
+      }
       context.fillStyle = '#20232a';
       context.font = `500 34px ${fontStack}`;
       context.textAlign = 'left';

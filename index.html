@@ -1799,7 +1799,7 @@
     }
 
     function drawStepTwo(values) {
-      context.fillStyle = '#FFFBEF';
+      context.fillStyle = '#ffffff';
       context.fillRect(0, 0, width, height);
       drawStatusBar(values);
       context.textAlign = 'left';
@@ -1841,7 +1841,7 @@
       context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('Bank Account', 30, 735); context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoBank, 30, 775);
       context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('UPI Transaction ID', 30, 835); context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoTransaction, 30, 875);
       context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('Comments', 30, 935); context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoComments, 30, 975);
-      roundedRect(context, 32, 1050, 245, 62, 15, '#FFFBEF', '#d8dde3'); roundedRect(context, 299, 1050, 245, 62, 15, '#FFFBEF', '#d8dde3'); context.fillStyle = '#354252'; context.font = `700 16px ${fontStack}`; context.textAlign = 'center'; context.fillText('CHECK STATUS', 154, 1081); context.fillText('SHARE', 421, 1081);
+      roundedRect(context, 32, 1050, 245, 62, 15, '#ffffff', '#d8dde3'); roundedRect(context, 299, 1050, 245, 62, 15, '#ffffff', '#d8dde3'); context.fillStyle = '#354252'; context.font = `700 16px ${fontStack}`; context.textAlign = 'center'; context.fillText('CHECK STATUS', 154, 1081); context.fillText('SHARE', 421, 1081);
       canvas.setAttribute('aria-label', `Editable payment details screen for ${values.stepTwoRecipient}, ${values.stepTwoAmount}`);
     }
 

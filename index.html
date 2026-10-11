@@ -1842,10 +1842,10 @@
       context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('UPI Transaction ID', 30, 835); context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoTransaction, 30, 875);
       context.fillStyle = '#858990'; context.font = `500 18px ${fontStack}`; context.fillText('Comments', 30, 935); context.fillStyle = '#20232a'; context.font = `700 19px ${fontStack}`; context.fillText(values.stepTwoComments, 30, 975);
       roundedRect(context, 32, 1050, 245, 62, 15, '#ffffff', '#d8dde3'); roundedRect(context, 299, 1050, 245, 62, 15, '#ffffff', '#d8dde3'); context.fillStyle = '#354252'; context.font = `700 16px ${fontStack}`; context.textAlign = 'center'; context.fillText('CHECK STATUS', 154, 1081); context.fillText('SHARE', 421, 1081);
-  context.fillStyle = '#eef0f3'; context.fillRect(0, 1118, width, 32);
-  context.fillStyle = '#4b525b'; context.fillRect(48, 1128, 13, 13);
-  context.beginPath(); context.arc(width / 2, 1134, 10, 0, Math.PI * 2); context.strokeStyle = '#4b525b'; context.lineWidth = 3; context.stroke();
-  context.fillStyle = '#4b525b'; context.beginPath(); context.moveTo(width - 48, 1127); context.lineTo(width - 34, 1134); context.lineTo(width - 48, 1141); context.closePath(); context.fill();
+  context.fillStyle = '#eef0f3'; context.fillRect(0, 1124, width, 26);
+  context.fillStyle = '#4b525b'; context.fillRect(48, 1132, 13, 13);
+  context.beginPath(); context.arc(width / 2, 1138, 10, 0, Math.PI * 2); context.strokeStyle = '#4b525b'; context.lineWidth = 3; context.stroke();
+  context.fillStyle = '#4b525b'; context.beginPath(); context.moveTo(width - 48, 1131); context.lineTo(width - 34, 1138); context.lineTo(width - 48, 1145); context.closePath(); context.fill();
       canvas.setAttribute('aria-label', `Editable payment details screen for ${values.stepTwoRecipient}, ${values.stepTwoAmount}`);
     }
 

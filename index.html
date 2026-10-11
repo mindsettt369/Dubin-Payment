@@ -508,6 +508,9 @@
     .field textarea { min-height: 66px; resize: vertical; line-height: 1.45; }
     .field input:focus, .field textarea:focus { border-color: #dd8a22; box-shadow: 0 0 0 3px rgba(237, 148, 23, .15); }
     .field-hint { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+  .date-time-controls { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 8px; }
+  .date-time-controls input, .date-time-controls select { min-width: 0; }
+  .mobikwik-date-time-field > input[type="hidden"] { display: none; }
   .editor-form .field input, .editor-form .field textarea, .editor-form .field select {
     border: 1px solid rgba(0, 0, 0, .08);
     border-radius: 14px;
@@ -945,7 +948,7 @@
   <fieldset class="editor-section mobikwik-step-two-only" hidden>
   <legend class="section-title">MobiKwik pending details</legend>
   <div class="field-grid">
-  <div class="field"><label for="mobikwikDateTime">Payment date and time</label><input id="mobikwikDateTime" value="5 Oct '26 at 7:00PM" maxlength="28"></div>
+  <div class="field mobikwik-date-time-field"><label>Payment date and time</label><div class="date-time-controls"><input id="mobikwikDate" type="date" value="2026-10-05" aria-label="Payment date"><select id="mobikwikTime" aria-label="Payment time"><option value="07:00">7:00 AM</option><option value="12:00">12:00 PM</option><option value="19:00" selected>7:00 PM</option><option value="23:00">11:00 PM</option></select></div><input id="mobikwikDateTime" type="hidden" value="5 Oct '26 at 7:00PM"></div>
   <div class="field"><label for="mobikwikInitiatedFrom">Initiated from</label><input id="mobikwikInitiatedFrom" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
   <div class="field"><label for="mobikwikCreditedText">Credited status text</label><input id="mobikwikCreditedText" value="Amount credited to the beneficiary account" maxlength="52"></div>
   <div class="field"><label for="mobikwikRecipientName">Recipient name</label><input id="mobikwikRecipientName" value="Pankaj Chamoli" maxlength="32"></div>
@@ -1100,6 +1103,8 @@
   mobikwikReceivedBy: document.querySelector('#mobikwikReceivedBy'),
   mobikwikPaymentMode: document.querySelector('#mobikwikPaymentMode'),
   mobikwikDateTime: document.querySelector('#mobikwikDateTime'),
+  mobikwikDate: document.querySelector('#mobikwikDate'),
+  mobikwikTime: document.querySelector('#mobikwikTime'),
   mobikwikInitiatedFrom: document.querySelector('#mobikwikInitiatedFrom'),
   mobikwikCreditedText: document.querySelector('#mobikwikCreditedText'),
   mobikwikRecipientBank: document.querySelector('#mobikwikRecipientBank'),
@@ -1157,6 +1162,21 @@
     const width = canvas.width;
     const height = canvas.height;
     const fontStack = 'Inter, "Noto Sans", "DejaVu Sans", Roboto, Arial, sans-serif';
+
+    function syncMobikwikDateTime() {
+      const date = fields.mobikwikDate.value;
+      const time = fields.mobikwikTime.value;
+      if (!date || !time) return;
+      const [year, month, day] = date.split('-').map(Number);
+      const [hours, minutes] = time.split(':').map(Number);
+      const monthName = new Date(year, month - 1, day).toLocaleString('en-US', { month: 'short' });
+      const suffix = hours >= 12 ? 'PM' : 'AM';
+      const displayHour = hours % 12 || 12;
+      fields.mobikwikDateTime.value = `${day} ${monthName} '${String(year).slice(-2)} at ${displayHour}:${String(minutes).padStart(2, '0')}${suffix}`;
+      renderMockup();
+    }
+
+    [fields.mobikwikDate, fields.mobikwikTime].forEach(field => field.addEventListener('change', syncMobikwikDateTime));
 
     const providerState = {
       freecharge: null,

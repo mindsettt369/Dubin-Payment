@@ -2589,9 +2589,11 @@ freechargeButton.addEventListener('click', event => { addProviderRipple(freechar
 
   form.addEventListener('input', () => {
   providerState[activeProvider] = captureProviderState();
-      renderMockup();
-      downloadStatus.textContent = `${activeProvider} preview updated.`;
-    });
+  renderMockup();
+  downloadStatus.textContent = `${activeProvider} preview updated.`;
+  });
+  fields.paytmBank.addEventListener('input', renderMockup);
+  fields.paytmBank.addEventListener('change', renderMockup);
 
   document.querySelector('#stepTwoForm').addEventListener('input', () => {
   providerState[activeProvider] = captureProviderState();

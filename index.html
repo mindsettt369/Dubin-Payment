@@ -1177,9 +1177,10 @@
       renderMockup();
     }
 
-    [fields.mobikwikDate, fields.mobikwikTime].forEach(field => field.addEventListener('change', syncMobikwikDateTime));
+  [fields.mobikwikDate, fields.mobikwikTime].forEach(field => field.addEventListener('change', syncMobikwikDateTime));
+  syncMobikwikDateTime();
 
-    const providerState = {
+  const providerState = {
       freecharge: null,
       paytm: null,
       mobikwik: null
@@ -1329,7 +1330,10 @@
         recipientName: activeProvider === 'paytm' ? (fields.paytmRecipient.value.trim() || 'Mr Kinny L Mawnai') : activeProvider === 'mobikwik' ? (fields.mobikwikRecipientName.value.trim() || 'Pankaj Chamoli') : (fields.recipientName.value.trim() || 'Pankaj Chamoli'),
         recipientDetails: activeProvider === 'paytm' ? (fields.paytmBank.value.trim() || 'SBI Bank - 8063') : (fields.recipientDetails.value.trim() || 'PHONE ···· 0000'),
         mobikwikReceivedBy: fields.mobikwikReceivedBy.value.trim() || 'XXXX-XXX8-141',
-  mobikwikPaymentMode: fields.mobikwikPaymentMode.value.trim() || 'INDIAN BANK 8737',
+        mobikwikPaymentMode: fields.mobikwikPaymentMode.value.trim() || 'INDIAN BANK 8737',
+        mobikwikDateTime: fields.mobikwikDateTime.value.trim() || "5 Oct '26 at 7:00PM",
+        mobikwikInitiatedFrom: fields.mobikwikInitiatedFrom.value.trim() || 'JIO PAYMENTS BANK LTD - 2682',
+        mobikwikCreditedText: fields.mobikwikCreditedText.value.trim() || 'Amount credited to the beneficiary account',
   paytmTransaction: fields.paytmTransaction.value.trim() || 'PTM0e1812ad5dd1484f925d775ff1663395',
         paytmTimestamp: fields.paytmTimestamp.value.trim() || '05 Oct, 06:33 PM',
         amount: validAmount ? new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(numericAmount) : 'SET AMOUNT',

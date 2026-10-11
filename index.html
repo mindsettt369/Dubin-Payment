@@ -1404,7 +1404,7 @@
 
     function drawPresetStatusBar(values) {
       const style = Number(values.statusStyle);
-      const background = style === 2 ? '#ffad05' : style === 3 ? '#FFFBEF' : style === 4 ? '#f4f5f7' : '#183149';
+      const background = style === 2 ? '#ffad05' : style === 3 ? (activeProvider === 'mobikwik' ? '#FEF4DF' : '#ffffff') : style === 4 ? '#f4f5f7' : '#183149';
       const ink = style === 4 ? '#14171b' : style === 3 ? '#343434' : style === 2 ? '#3b3100' : '#f5f7fa';
       context.fillStyle = background;
       context.fillRect(0, 0, width, 58);
@@ -1458,7 +1458,7 @@
   context.lineCap = 'butt';
   drawBattery(474, 29, ink, values.battery);
   } else if (style === 3) {
-  context.fillStyle = '#FFFBEF';
+  context.fillStyle = activeProvider === 'mobikwik' ? '#FEF4DF' : '#ffffff';
   context.fillRect(0, 0, width, 44);
   context.fillStyle = '#343434';
   context.textBaseline = 'middle';

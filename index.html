@@ -510,6 +510,7 @@
     .field-hint { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
   .date-time-controls { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 8px; }
   .date-time-controls input, .date-time-controls select { min-width: 0; }
+  .date-time-controls input[type="time"] { color-scheme: light; }
   .mobikwik-date-time-field > input[type="hidden"] { display: none; }
   .editor-form .field input, .editor-form .field textarea, .editor-form .field select {
     border: 1px solid rgba(0, 0, 0, .08);
@@ -948,7 +949,7 @@
   <fieldset class="editor-section mobikwik-step-two-only" hidden>
   <legend class="section-title">MobiKwik pending details</legend>
   <div class="field-grid">
-  <div class="field mobikwik-date-time-field"><label>Payment date and time</label><div class="date-time-controls"><input id="mobikwikDate" type="date" value="2026-10-05" aria-label="Payment date"><select id="mobikwikTime" aria-label="Payment time"><option value="07:00">7:00 AM</option><option value="12:00">12:00 PM</option><option value="19:00" selected>7:00 PM</option><option value="23:00">11:00 PM</option></select></div><input id="mobikwikDateTime" type="hidden" value="5 Oct '26 at 7:00PM"></div>
+  <div class="field mobikwik-date-time-field"><label>Payment date and time</label><div class="date-time-controls"><input id="mobikwikDate" type="date" value="2026-10-05" aria-label="Payment date"><input id="mobikwikTime" type="time" value="19:00" aria-label="Payment time"></div><input id="mobikwikDateTime" type="hidden" value="5 Oct '26 at 7:00PM"></div>
   <div class="field"><label for="mobikwikInitiatedFrom">Initiated from</label><input id="mobikwikInitiatedFrom" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
   <div class="field"><label for="mobikwikCreditedText">Credited status text</label><input id="mobikwikCreditedText" value="Amount credited to the beneficiary account" maxlength="52"></div>
   <div class="field"><label for="mobikwikRecipientName">Recipient name</label><input id="mobikwikRecipientName" value="Pankaj Chamoli" maxlength="32"></div>

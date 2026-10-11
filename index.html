@@ -1844,10 +1844,10 @@
       context.fillStyle = '#354252'; context.textAlign = 'left'; context.font = `700 18px ${fontStack}`; context.fillText('UPI', 30, 1012);
   roundedRect(context, 32, 1050, 245, 62, 15, '#ffffff', '#d8dde3'); roundedRect(context, 299, 1050, 245, 62, 15, '#ffffff', '#d8dde3'); context.fillStyle = '#354252'; context.font = `700 16px ${fontStack}`; context.textAlign = 'center'; context.fillText('CHECK STATUS', 154, 1081); context.fillText('SHARE', 421, 1081);
   context.fillStyle = '#ffffff'; context.fillRect(0, 1118, width, 100);
-  context.fillStyle = '#eef0f3'; context.fillRect(0, 1218, width, 26);
-  context.fillStyle = '#4b525b'; context.fillRect(48, 1226, 13, 13);
-  context.beginPath(); context.arc(width / 2, 1232, 10, 0, Math.PI * 2); context.strokeStyle = '#4b525b'; context.lineWidth = 3; context.stroke();
-  context.fillStyle = '#4b525b'; context.beginPath(); context.moveTo(width - 48, 1225); context.lineTo(width - 34, 1232); context.lineTo(width - 48, 1239); context.closePath(); context.fill();
+  context.fillStyle = '#ffffff'; context.fillRect(0, 1218, width, 26);
+  context.fillStyle = '#374151'; context.fillRect(48, 1226, 13, 13);
+  context.beginPath(); context.arc(width / 2, 1232, 10, 0, Math.PI * 2); context.strokeStyle = '#374151'; context.lineWidth = 3; context.stroke();
+  context.fillStyle = '#374151'; context.beginPath(); context.moveTo(width - 48, 1225); context.lineTo(width - 34, 1232); context.lineTo(width - 48, 1239); context.closePath(); context.fill();
       canvas.setAttribute('aria-label', `Editable payment details screen for ${values.stepTwoRecipient}, ${values.stepTwoAmount}`);
     }
 

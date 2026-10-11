@@ -2097,7 +2097,14 @@ function drawPaytmVerifiedBadge(context, x, baselineY) {
       context.textAlign = 'left';
       context.fillStyle = '#fff';
       context.font = `700 28px ${fontStack}`;
-      context.fillText('���', 30, 105);
+      context.strokeStyle = '#fff';
+      context.lineWidth = 3;
+      context.lineCap = 'round';
+      context.beginPath();
+      context.moveTo(42, 94);
+      context.lineTo(28, 105);
+      context.lineTo(42, 116);
+      context.stroke();
       context.fillText('Transfer in Progress', 86, 105);
       context.font = `700 21px ${fontStack}`;
       context.fillText('Share', 410, 105);

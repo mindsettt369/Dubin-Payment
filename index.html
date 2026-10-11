@@ -509,6 +509,10 @@
     .field input:focus, .field textarea:focus { border-color: #dd8a22; box-shadow: 0 0 0 3px rgba(237, 148, 23, .15); }
     .field-hint { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
   .mobikwik-date-time-field { grid-column: 1 / -1; gap: 6px; margin-bottom: 5px; }
+  .editor-party-group { grid-column: 1 / -1; padding: 12px 0 4px; border-top: 1px solid #e5e7eb; }
+  .editor-party-group h3 { margin: 0 0 10px; color: #64748b; font-size: 11px; letter-spacing: .08em; font-weight: 800; }
+  .party-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 480px) { .party-fields { grid-template-columns: minmax(0, 1fr); } }
   .date-time-controls { display: flex; gap: 12px; align-items: center; width: 100%; }
   .date-time-controls input { flex: 1; min-width: 120px; width: auto; height: 44px; padding: 0 12px; box-sizing: border-box; border-radius: 12px; font-size: 14px; overflow: visible; }
   .date-time-controls input[type="date"] { flex: 1.4; min-width: 150px; }
@@ -956,12 +960,16 @@
   <div class="field mobikwik-date-time-field"><label>Payment date and time</label><div class="date-time-controls"><input id="mobikwikDate" type="date" value="2026-10-05" aria-label="Payment date"><input id="mobikwikTime" type="time" value="19:00" aria-label="Payment time"></div><input id="mobikwikDateTime" type="hidden" value="5 Oct '26 at 7:00PM"></div>
   <div class="field"><label for="mobikwikInitiatedFrom">Initiated from</label><input id="mobikwikInitiatedFrom" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
   <div class="field"><label for="mobikwikCreditedText">Credited status text</label><input id="mobikwikCreditedText" value="Amount credited to the beneficiary account" maxlength="52"></div>
-  <div class="field"><label for="mobikwikRecipientName">Recipient name</label><input id="mobikwikRecipientName" value="Pankaj Chamoli" maxlength="32"></div>
-  <div class="field"><label for="mobikwikSenderName">Sender name</label><input id="mobikwikSenderName" value="Santanu Roy" maxlength="32"></div>
-  <div class="field"><label for="mobikwikRecipientBank">Recipient bank/account</label><input id="mobikwikRecipientBank" value="SBIN0012485" maxlength="30"></div>
-  <div class="field"><label for="mobikwikRecipientAccount">Recipient account</label><input id="mobikwikRecipientAccount" value="XXXXXXX2247" maxlength="30"></div>
-  <div class="field"><label for="mobikwikSenderUpi">Sender UPI ID</label><input id="mobikwikSenderUpi" value="8293293132@mbkns" maxlength="40"></div>
-  <div class="field"><label for="mobikwikSenderBank">Sender bank</label><input id="mobikwikSenderBank" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
+  <div class="editor-party-group"><h3>TO · RECIPIENT</h3><div class="party-fields">
+    <div class="field"><label for="mobikwikRecipientName">Recipient name</label><input id="mobikwikRecipientName" value="Pankaj Chamoli" maxlength="32"></div>
+    <div class="field"><label for="mobikwikRecipientBank">Recipient bank/account</label><input id="mobikwikRecipientBank" value="SBIN0012485" maxlength="30"></div>
+    <div class="field"><label for="mobikwikRecipientAccount">Recipient account</label><input id="mobikwikRecipientAccount" value="XXXXXXX2247" maxlength="30"></div>
+  </div></div>
+  <div class="editor-party-group"><h3>FROM · SENDER</h3><div class="party-fields">
+    <div class="field"><label for="mobikwikSenderName">Sender name</label><input id="mobikwikSenderName" value="Santanu Roy" maxlength="32"></div>
+    <div class="field"><label for="mobikwikSenderUpi">Sender UPI ID</label><input id="mobikwikSenderUpi" value="8293293132@mbkns" maxlength="40"></div>
+    <div class="field"><label for="mobikwikSenderBank">Sender bank</label><input id="mobikwikSenderBank" value="JIO PAYMENTS BANK LTD - 2682" maxlength="40"></div>
+  </div></div>
   </div>
   </fieldset>
   <fieldset class="editor-section freecharge-step-two-only">

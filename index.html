@@ -508,10 +508,14 @@
     .field textarea { min-height: 66px; resize: vertical; line-height: 1.45; }
     .field input:focus, .field textarea:focus { border-color: #dd8a22; box-shadow: 0 0 0 3px rgba(237, 148, 23, .15); }
     .field-hint { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
-  .date-time-controls { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 8px; }
-  .date-time-controls input, .date-time-controls select { min-width: 0; }
+  .mobikwik-date-time-field { grid-column: 1 / -1; gap: 6px; margin-bottom: 5px; }
+  .date-time-controls { display: flex; gap: 12px; align-items: center; width: 100%; }
+  .date-time-controls input { flex: 1; min-width: 120px; width: auto; height: 44px; padding: 0 12px; box-sizing: border-box; border-radius: 12px; font-size: 14px; overflow: visible; }
+  .date-time-controls input[type="date"] { flex: 1.4; min-width: 150px; }
   .date-time-controls input[type="time"] { color-scheme: light; }
+  .date-time-controls input::-webkit-calendar-picker-indicator { opacity: 1; cursor: pointer; margin-left: 8px; width: 17px; height: 17px; }
   .mobikwik-date-time-field > input[type="hidden"] { display: none; }
+  @media (max-width: 480px) { .date-time-controls { flex-direction: column; align-items: stretch; } .date-time-controls input, .date-time-controls input[type="date"] { width: 100%; min-width: 0; flex: none; } }
   .editor-form .field input, .editor-form .field textarea, .editor-form .field select {
     border: 1px solid rgba(0, 0, 0, .08);
     border-radius: 14px;

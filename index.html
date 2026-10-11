@@ -517,7 +517,13 @@
   .date-time-controls input { flex: 1; min-width: 120px; width: auto; height: 44px; padding: 0 12px; box-sizing: border-box; border-radius: 12px; font-size: 14px; overflow: visible; }
   .date-time-controls input[type="date"] { flex: 1.4; min-width: 150px; }
   .date-time-controls input[type="time"] { color-scheme: light; }
-  .paytm-datetime-field input[type="datetime-local"] { width: 100%; height: 44px; padding: 0 12px; border-radius: 12px; box-sizing: border-box; font-size: 14px; color-scheme: light; }
+  .paytm-picker-wrap { position: relative; display: flex; width: 100%; }
+  .paytm-picker-wrap > input[type="text"] { width: 100%; height: 44px; padding: 0 44px 0 12px; border-radius: 12px; box-sizing: border-box; font-size: 14px; cursor: pointer; }
+  .paytm-picker-trigger { position: absolute; right: 8px; top: 6px; width: 32px; height: 32px; border: 0; background: transparent; color: #374151; cursor: pointer; font-size: 18px; }
+  .paytm-datetime-popover { position: absolute; z-index: 10; top: calc(100% + 8px); right: 0; width: 240px; padding: 14px; display: grid; gap: 10px; border: 1px solid #e5e7eb; border-radius: 14px; background: #fff; box-shadow: 0 12px 30px rgba(15,23,42,.18); }
+  .paytm-datetime-popover label { display: grid; gap: 4px; color: #475569; font-size: 12px; font-weight: 700; }
+  .paytm-datetime-popover input { width: 100%; height: 38px; padding: 0 8px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box; }
+  .paytm-datetime-popover button { height: 36px; border: 0; border-radius: 8px; background: #252f3e; color: #fff; font-weight: 700; cursor: pointer; }
   .paytm-datetime-field input[type="datetime-local"]::-webkit-calendar-picker-indicator { opacity: 1; cursor: pointer; margin-left: 8px; width: 17px; height: 17px; }
   .date-time-controls input::-webkit-calendar-picker-indicator { opacity: 1; cursor: pointer; margin-left: 8px; width: 17px; height: 17px; }
   .mobikwik-date-time-field > input[type="hidden"] { display: none; }
@@ -880,7 +886,7 @@
               <div class="field"><label for="paytmRecipient">Recipient name</label><input id="paytmRecipient" type="text" value="Mr Kinny L Mawnai" maxlength="36" autocomplete="off"></div>
               <div class="field"><label for="paytmBank">Bank and account</label><input id="paytmBank" type="text" value="SBI Bank - 8063" maxlength="28" autocomplete="off"></div>
               <div class="field"><label for="paytmTransaction">Transaction ID</label><input id="paytmTransaction" type="text" value="PTM0e1812ad5dd1484f925d775ff1663395" maxlength="42" autocomplete="off"></div>
-              <div class="field paytm-datetime-field"><label for="paytmTimestamp">Payment date and time</label><input id="paytmTimestamp" type="datetime-local" value="2026-10-05T18:33" max="2026-10-11T23:59" aria-label="Payment date and time"></div>
+              <div class="field paytm-datetime-field"><label for="paytmTimestamp">Payment date and time</label><div class="paytm-picker-wrap"><input id="paytmTimestampDisplay" type="text" value="05 Oct, 06:33 PM" readonly aria-label="Payment date and time" aria-haspopup="dialog"><input id="paytmTimestamp" type="hidden" value="2026-10-05T18:33"><button type="button" class="paytm-picker-trigger" aria-label="Open payment date and time picker">▣</button><div id="paytmDateTimePopover" class="paytm-datetime-popover" role="dialog" aria-label="Choose payment date and time" hidden><label>Date<input id="paytmPickerDate" type="date"></label><label>Time<input id="paytmPickerTime" type="time"></label><button type="button" id="paytmPickerDone">Done</button></div></div></div>
             </div>
             <p class="field-hint">Status, warning icon, passbook button and footer stay fixed to match the Paytm reference.</p>
           </fieldset>
@@ -1186,7 +1192,21 @@
   };
   const now = new Date();
   fields.paytmTimestamp.max = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-  // Native datetime-local controls open from their own click and keyboard interactions.
+  const pickerDisplay = document.querySelector('#paytmTimestampDisplay');
+  const pickerTrigger = document.querySelector('.paytm-picker-trigger');
+  const pickerPopover = document.querySelector('#paytmDateTimePopover');
+  const pickerDate = document.querySelector('#paytmPickerDate');
+  const pickerTime = document.querySelector('#paytmPickerTime');
+  const pickerDone = document.querySelector('#paytmPickerDone');
+  const pickerMax = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  pickerDate.max = pickerMax.slice(0, 10);
+  const openPaytmPicker = () => { const current = fields.paytmTimestamp.value || '2026-10-05T18:33'; pickerDate.value = current.slice(0, 10); pickerTime.value = current.slice(11, 16); pickerPopover.hidden = false; pickerDate.focus(); };
+  const closePaytmPicker = () => { pickerPopover.hidden = true; };
+  pickerDisplay.addEventListener('click', openPaytmPicker);
+  pickerTrigger.addEventListener('click', openPaytmPicker);
+  pickerDisplay.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPaytmPicker(); } });
+  pickerDone.addEventListener('click', () => { const selected = `${pickerDate.value}T${pickerTime.value}`; if (!pickerDate.value || !pickerTime.value || selected > pickerMax) return; fields.paytmTimestamp.value = selected; pickerDisplay.value = formatPaytmDateTime(selected); fields.paytmTimestamp.dispatchEvent(new Event('input', { bubbles: true })); closePaytmPicker(); });
+  document.addEventListener('click', event => { if (!event.target.closest('.paytm-picker-wrap')) closePaytmPicker(); });
   
   function syncMobikwikDateTime() {
       const date = fields.mobikwikDate.value;

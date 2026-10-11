@@ -1186,8 +1186,7 @@
   };
   const now = new Date();
   fields.paytmTimestamp.max = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-  fields.paytmTimestamp.addEventListener('click', () => fields.paytmTimestamp.showPicker?.());
-  fields.paytmTimestamp.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') fields.paytmTimestamp.showPicker?.(); });
+  // Native datetime-local controls open from their own click and keyboard interactions.
   
   function syncMobikwikDateTime() {
       const date = fields.mobikwikDate.value;

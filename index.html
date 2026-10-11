@@ -1825,10 +1825,11 @@
       wrapText(values.stepTwoUpi, 285, 2, `500 18px ${fontStack}`).forEach((line, index) => context.fillText(line, 100, 184 + index * 24));
       context.fillStyle = '#777b82'; context.font = `500 17px ${fontStack}`; context.fillText('Today, 12:07 AM', 100, 232);
       context.fillStyle = '#20232a'; context.font = `700 22px ${fontStack}`; context.textAlign = 'right'; context.fillText(values.stepTwoAmount, 542, 150);
-      roundedRect(context, 474, 218, 88, 38, 20, '#354252'); context.fillStyle = '#ffffff'; context.font = `700 15px ${fontStack}`; context.textAlign = 'center'; context.fillText(values.stepTwoStatus, 518, 237);
+      roundedRect(context, 474, 218, 88, 38, 20, '#f5a000'); context.fillStyle = '#ffffff'; context.font = `700 15px ${fontStack}`; context.textAlign = 'center'; context.fillText(values.stepTwoStatus, 518, 237);
 
-      roundedRect(context, 31, 260, 514, 165, 20, '#ffffff');
-      context.fillStyle = '#f5bd20'; context.beginPath(); context.arc(70, 293, 13, 0, Math.PI * 2); context.fill();
+      roundedRect(context, 31, 260, 514, 165, 20, '#fff1e8');
+      context.fillStyle = '#f5a000'; context.beginPath(); context.arc(70, 293, 13, 0, Math.PI * 2); context.fill();
+      context.strokeStyle = '#ffffff'; context.lineWidth = 2; context.beginPath(); context.moveTo(70, 286); context.lineTo(70, 293); context.lineTo(75, 296); context.stroke();
       context.fillStyle = '#3e3d3c'; context.textAlign = 'left'; context.font = `500 18px ${fontStack}`;
       const noticeLines = wrapText(values.stepTwoNotice, 435, 5, `500 18px ${fontStack}`);
       noticeLines.forEach((line, index) => context.fillText(line, 92, 293 + index * 27));
